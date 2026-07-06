@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/ekyc",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\EKYC\\": "app/",
+            "Modules\\EKYC\\Database\\Factories\\": "database/factories/",
+            "Modules\\EKYC\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\EKYC\\Tests\\": "tests/"
+        }
+    }
+}

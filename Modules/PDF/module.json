@@ -1,0 +1,11 @@
+{
+    "name": "PDF",
+    "alias": "pdf",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PDF\\Providers\\PDFServiceProvider"
+    ],
+    "files": []
+}

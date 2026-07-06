@@ -1,0 +1,13 @@
+{
+    "Core": true,
+    "User": true,
+    "Patient": true,
+    "EKYC": true,
+    "Document": true,
+    "PDF": true,
+    "Report": true,
+    "Setting": true,
+    "AuditLog": true,
+    "Dashbord": true,
+    "Dashboards": true
+}

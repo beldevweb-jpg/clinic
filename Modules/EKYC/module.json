@@ -1,0 +1,11 @@
+{
+    "name": "EKYC",
+    "alias": "ekyc",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\EKYC\\Providers\\EKYCServiceProvider"
+    ],
+    "files": []
+}
