@@ -1,96 +1,127 @@
-.pt28 {
-    font-family: "Sarabun", sans-serif;
-    font-size: 14px;
-    color: #000;
-
-    /* พื้นที่ใช้งานภายใน A4 */
-    width: 190mm;
-    min-height: 277mm;
-    margin: 0 auto;
-    box-sizing: border-box;
+@page {
+    size: A4;
+    margin: 12mm;
 }
 
-/* header */
+@font-face {
+    font-family: "TH Sarabun New";
+    src: url("{{ resource_path('fonts/THSarabunNew.ttf') }}") format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "TH Sarabun New";
+    src: url("{{ resource_path('fonts/THSarabunNew-Bold.ttf') }}") format("truetype");
+    font-weight: bold;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "TH Sarabun New", sans-serif;
+    font-size: 16pt;
+    line-height: 1;
+}
+
+.pt28 {
+    width: 186mm;
+    margin: 0 auto;
+}
+
+/* ส่วนหัว */
 .header-right {
     text-align: right;
-    font-weight: bold;
+    font-size: 16pt;
+    margin-bottom: 2mm;
 }
 
 .title {
     text-align: center;
+    font-size: 20pt;
     font-weight: bold;
-    margin-top: 5px;
+    margin-bottom: 1mm;
 }
 
 .sub-title {
     text-align: center;
-    margin-bottom: 10px;
+    font-size: 16pt;
+    margin-bottom: 1mm;
 }
 
-/* dotted line input style */
-.line {
-    border-bottom: 1px dotted #000;
+.note {
+    text-align: center;
+    font-size: 14pt;
+    margin-bottom: 3mm;
+}
+
+/* ข้อมูลทั่วไป */
+.receiver,
+.license-info {
+    font-size: 16pt;
+    line-height: 1;
+}
+
+.receiver {
+    margin: 2mm 0;
+}
+
+.license-info {
+    margin-bottom: 1.5mm;
+}
+
+/* Checkbox */
+.box {
     display: inline-block;
-    min-width: 180px;
+    width: 10px;
+    height: 10px;
+    border: 1px solid #000;
+    vertical-align: middle;
+    margin: 0 1px;
 }
 
-/* meta section */
-.meta {
-    margin-bottom: 10px;
-}
-
-/* table */
-table {
+/* ตาราง */
+.report-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    font-size: 12px;
 }
 
-th,
-td {
+.report-table th,
+.report-table td {
     border: 1px solid #000;
-    padding: 2px;
     text-align: center;
-    vertical-align: middle;
+    padding: 1px;
+    line-height: 0.9;
 }
 
-thead th {
+/* หัวตาราง */
+.report-table th {
+    font-size: 11pt;
     font-weight: bold;
 }
 
-/* vertical header */
+/* ข้อมูลในตาราง */
+.report-table td {
+    font-size: 12pt;
+    height: 7mm;
+}
+
+/* ตัวหนังสือแนวตั้ง */
 .vertical {
     writing-mode: vertical-rl;
-    text-orientation: mixed;
+    transform: rotate(180deg);
     white-space: nowrap;
-    width: 28px;
-    height: 100px;
-    padding: 0;
+    font-size: 10pt;
 }
 
-th.rotate {
-    padding: 0;
+/* ท้ายเอกสาร */
+.footer-note {
+    margin-top: 2mm;
+    font-size: 12pt;
+    line-height: 1;
 }
 
-th.rotate > div {
-    white-space: nowrap;
-}
-
-/* A4 */
-@page {
-    size: A4 portrait;
-    margin: 8mm 10mm;
-}
-
-/* สำหรับ preview บน browser */
-@media screen {
-    .pt28 {
-        width: 210mm;
-        min-height: 297mm;
-        padding: 8mm 10mm;
-        margin: 10px auto;
-        background: #fff;
-        box-sizing: border-box;
-    }
+.footer-title {
+    font-size: 14pt;
+    font-weight: bold;
 }
