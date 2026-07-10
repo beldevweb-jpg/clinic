@@ -20,24 +20,16 @@
         }
 
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: #fff;
-            font-family: "TH Sarabun New", sans-serif;
-            font-size: 16pt;
-            line-height: 1.1;
+        body,
+        .pt33-paper,
+        .text-line,
+        .remark-item {
+            line-height: 0.8;
         }
 
-
         .pt33-paper {
-            width: 170mm;
-            min-height: 257mm;
-            margin: auto;
-            background: #fff;
-            font-family: "TH Sarabun New", sans-serif;
             font-size: 16pt;
-            line-height: 1.1;
+            line-height: 0.95;
         }
 
 
@@ -66,7 +58,7 @@
 
         /* ข้อมูล */
         .line {
-            margin: 1mm 0;
+            margin: 0;
         }
 
         .line span {
@@ -78,7 +70,7 @@
 
         /* ช่องว่าง */
         .space {
-            height: 2mm;
+            height: 1mm;
         }
 
 
@@ -92,7 +84,7 @@
         /* ข้อความปริมาณ */
         .text-line {
             font-size: 16pt;
-            line-height: 1.1;
+            line-height: 0.95;
             margin-bottom: 1mm;
         }
 
@@ -122,15 +114,11 @@
 
         .remark-item {
             display: block;
-
-            .remark-item {
-                margin-left: 10mm;
-                margin-bottom: 0.5mm;
-                line-height: 1.1;
-            }
-
+            margin-left: 10mm;
+            margin-bottom: 0.5mm;
             padding-left: 8mm;
             position: relative;
+            line-height: 0.95;
         }
 
         .remark-no {
@@ -142,7 +130,7 @@
 
         /* ลายเซ็น */
         .signature {
-            margin-top: 8mm;
+            margin-top: 10mm;
             display: table;
             width: 100%;
             text-align: center;
@@ -154,14 +142,26 @@
             vertical-align: bottom;
             white-space: nowrap;
             font-size: 16pt;
+            height: 45px;
         }
 
+
+        .signature-placeholder {
+            height: 25px;
+        }
+
+        .signature-area {
+            position: relative;
+            height: 45px;
+        }
+
+
         .signature-image {
-            width: 90px;
-            height: 35px;
+            width: 80px;
+            height: 30px;
             object-fit: contain;
             display: block;
-            margin: 0 auto 1mm;
+            margin: 0 auto -2m
         }
 
         /* เส้นก่อน Footer */
@@ -177,7 +177,7 @@
         .footer {
             text-align: center;
             font-size: 16pt;
-            line-height: 1.35;
+            line-height: 1.1;
         }
 
         .profession-row {
@@ -208,11 +208,15 @@
             width: 11px;
             height: 11px;
             border: 1px solid #000;
-            margin-right: 2mm;
-            vertical-align: middle;
             text-align: center;
-            line-height: 9px;
-            font-size: 13px;
+            line-height: 11px;
+            font-size: 9px;
+            font-weight: bold;
+            font-family: DejaVu Sans, sans-serif;
+        }
+
+        .tick {
+            font-size: 22px;
             font-weight: bold;
         }
     </style>
@@ -295,7 +299,6 @@
         </div>
 
         <div class="profession-row">
-
             <table class="profession-table">
                 <tr>
                     <td class="profession-title">
@@ -304,28 +307,28 @@
 
                     <td>
                         <span class="box">
-                            {{ in_array('เวชกรรม', $professions) ? '×' : '' }}
+                            {!! in_array('เวชกรรม', $professions) ? '<span class="tick">✓</span>' : '' !!}
                         </span>
                         เวชกรรม
                     </td>
 
                     <td>
                         <span class="box">
-                            {{ in_array('แพทย์แผนไทย', $professions) ? '×' : '' }}
+                            {!! in_array('แพทย์แผนไทย', $professions) ? '<span class="tick">✓</span>' : '' !!}
                         </span>
                         แพทย์แผนไทย
                     </td>
 
                     <td>
                         <span class="box">
-                            {{ in_array('แพทย์แผนไทยประยุกต์', $professions) ? '×' : '' }}
+                            {!! in_array('แพทย์แผนไทยประยุกต์', $professions) ? '<span class="tick">✓</span>' : '' !!}
                         </span>
                         แพทย์แผนไทยประยุกต์
                     </td>
 
                     <td>
                         <span class="box">
-                            {{ in_array('ทันตกรรม', $professions) ? '×' : '' }}
+                            {!! in_array('ทันตกรรม', $professions) ? '<span class="tick">✓</span>' : '' !!}
                         </span>
                         ทันตกรรม
                     </td>
@@ -336,26 +339,25 @@
 
                     <td>
                         <span class="box">
-                            {{ in_array('เภสัชกรรม', $professions) ? '×' : '' }}
+                            {!! in_array('เภสัชกรรม', $professions) ? '<span class="tick">✓</span>' : '' !!}
                         </span>
                         เภสัชกรรม
                     </td>
 
                     <td colspan="2">
                         <span class="box">
-                            {{ in_array('ผู้ประกอบโรคศิลปะ สาขาการแพทย์แผนจีน', $professions) ? '×' : '' }}
+                            {!! in_array('ผู้ประกอบโรคศิลปะ สาขาการแพทย์แผนจีน', $professions) ? '<span class="tick">✓</span>' : '' !!}
                         </span>
                         ผู้ประกอบโรคศิลปะ สาขาการแพทย์แผนจีน
                     </td>
 
                     <td>
                         <span class="box">
-                            {{ in_array('หมอพื้นบ้าน', $professions) ? '×' : '' }}
+                            {!! in_array('หมอพื้นบ้าน', $professions) ? '<span class="tick">✓</span>' : '' !!}
                         </span>
                         หมอพื้นบ้าน
                     </td>
                 </tr>
-
             </table>
 
         </div>
@@ -459,11 +461,24 @@
 
             <div class="signature-box">
 
-                @if ($medic->signature)
-                    <img src="{{ storage_path('app/public/' . $medic->signature) }}" class="signature-image">
-                @endif
+                <div class="signature-area">
 
-                ลงชื่อ..................................ผู้สั่งจ่าย
+                    @if ($medic->signature)
+                        @php
+                            $path = public_path('storage/' . $medic->signature);
+                        @endphp
+
+                        @if (file_exists($path))
+                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents($path)) }}"
+                                class="signature-image">
+                        @endif
+                    @endif
+
+                    <div>
+                        ลงชื่อ..................................ผู้สั่งจ่าย
+                    </div>
+
+                </div>
 
             </div>
 
