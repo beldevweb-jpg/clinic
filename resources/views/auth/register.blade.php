@@ -167,13 +167,14 @@
             </button>
 
         </form>
-
-        <div class="login-link">
-            มีบัญชีแล้ว?
-            <a href="{{ route('login') }}">
-                เข้าสู่ระบบ
-            </a>
-        </div>
+        @if (!auth()->check())
+            <div class="login-link">
+                มีบัญชีแล้ว?
+                <a href="{{ route('login') }}">
+                    เข้าสู่ระบบ
+                </a>
+            </div>
+        @endif
 
     </div>
 

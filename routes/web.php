@@ -7,6 +7,10 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/dashboard', function () {
+    return redirect()->route('dashboards.index');
+})->name('dashboard');
+
 Route::get('/dashboards', function () {
     return view('dashboards::dashboards.index');
 })->middleware(['role:1'])->name('dashboards.index');

@@ -4,7 +4,15 @@ namespace Modules\PDF\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Modules\Document\Models\Pt33;
+use Modules\Setting\Models\Setting;
+use Modules\Patient\Models\Patient;
+use Modules\Medics\Models\Medics;
+use Modules\Document\Models\Document;
+use App\Helpers\ThaiHelper;
+
 
 class PDFController extends Controller
 {
@@ -15,21 +23,70 @@ class PDFController extends Controller
     {
         return view('pdf::index');
     }
-
-    public function exportPdf(Request $request)
+    public function generatePT33(Pt33 $pt33, $medicId)
     {
-        $data = $request->all();
+        $setting = Setting::first();
 
-        $pdf = Pdf::loadView(
-            'pdf::pt33',
-            compact('data')
+        $medic = Medics::with('professions.profession')
+            ->findOrFail($medicId);
+
+
+        $pt33->load([
+            'patient',
+            'visit.medic'
+        ]);
+
+
+        $pdf = Pdf::loadView('pdf::pt33', [
+            'pt33' => $pt33,
+            'patient' => $pt33->patient,
+            'setting' => $setting,
+            'medic' => $medic,
+        ])
+            ->setPaper('a4')
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'defaultFont' => 'TH Sarabun New',
+            ]);
+
+
+        $filename = $pt33->document_no . '.pdf';
+
+        $path = 'documents/PT33/' . $filename;
+
+
+        Storage::disk('public')
+            ->makeDirectory('documents/PT33');
+
+
+        Storage::disk('public')->put(
+            $path,
+            $pdf->output()
         );
 
-        $pdf->setPaper('a4', 'portrait');
 
-        return $pdf->stream('PT33.pdf');
+        return $path;
     }
-    
+
+
+    // public function previewPT33(Pt33 $pt33, $medicId)
+    // {
+    //     $setting = Setting::first();
+
+    //     $medic = Medics::with('professions.profession')
+    //         ->findOrFail($medicId);
+
+    //     $patient = $pt33->patient;$pdf = Pdf::loadView('pdf::pt33'
+
+    //     return view('pdf::pt33', compact(
+    //         'pt33',
+    //         'patient',
+    //         'setting',
+    //         'medic'
+    //     ));
+    // }
+
 
     /**
      * Show the form for creating a new resource.

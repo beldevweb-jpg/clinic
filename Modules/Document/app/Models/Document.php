@@ -1,0 +1,56 @@
+<?php
+
+namespace Modules\Document\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+class Document extends Model
+{
+    use HasFactory;
+
+    protected $table = 'documents';
+
+    protected $fillable = [
+        'patient_id',
+        'document_no',
+        'document_name',
+        'type',
+        'status',
+        'pdf_path',
+        'document_date',
+        'created_by',
+    ];
+
+
+    protected $casts = [
+        'document_date' => 'date',
+    ];
+
+
+    public function patient()
+    {
+        return $this->belongsTo(
+            \Modules\Patient\Models\Patient::class,
+            'patient_id'
+        );
+    }
+
+
+    public function creator()
+    {
+        return $this->belongsTo(
+            \App\Models\User::class,
+            'created_by'
+        );
+    }
+
+    public function pt33()
+    {
+        return $this->hasOne(
+            Pt33::class,
+            'document_no',
+            'document_no'
+        );
+    }
+}

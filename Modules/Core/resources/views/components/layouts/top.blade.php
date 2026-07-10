@@ -17,13 +17,21 @@
             ผู้ใช้งาน
         </a>
 
-        <a href="{{ route('pt33.index') }}" class="{{ request()->routeIs('pt33.index') ? 'active' : '' }}">
-            พท.33
+        <a href="{{ route('patient.index') }}" class="{{ request()->routeIs('patient.index') ? 'active' : '' }}">
+            ผู้ป่วย
         </a>
 
-        <a href="{{ route('pt28.index') }}" class="{{ request()->routeIs('pt28.index') ? 'active' : '' }}">
-            พท.28
+        <a href="{{ route('medics.index') }}" class="{{ request()->routeIs('medics.index') ? 'active' : '' }}">
+            แพทย์
         </a>
+
+        <a href="{{ route('documents.index') }}" class="{{ request()->routeIs('documents.index') ? 'active' : '' }}">
+            เอกสาร ภท.
+        </a>
+
+        {{-- <a href="{{ route('pt28.index') }}" class="{{ request()->routeIs('pt28.index') ? 'active' : '' }}">
+            พท.28
+        </a> --}}
     </nav>
 
     <div class="profile">

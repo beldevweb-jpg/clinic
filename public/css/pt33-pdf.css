@@ -1,0 +1,209 @@
+@page {
+    size: A4;
+    margin: 20mm;
+}
+
+@font-face {
+    font-family: "TH Sarabun New";
+    src: url("{{ resource_path('fonts/THSarabunNew.ttf') }}") format("truetype");
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: "TH Sarabun New";
+    src: url("{{ resource_path('fonts/THSarabunNew-Bold.ttf') }}") format("truetype");
+    font-weight: bold;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    font-family: "TH Sarabun New", sans-serif;
+    font-size: 16pt;
+}
+
+
+.pt33-paper {
+    width: 170mm;
+    /* A4 width 210mm - margin 40mm */
+    min-height: 257mm;
+    /* A4 height 297mm - margin 40mm */
+    margin: auto;
+    background: #fff;
+    font-family: "TH Sarabun New", sans-serif;
+    font-size: 16pt;
+    line-height: 1.35;
+}
+
+
+/* เลขแบบฟอร์ม */
+.form-number {
+    text-align: right;
+    margin-bottom: 3mm;
+}
+
+
+/* หัวข้อ */
+h2 {
+    margin: 0 0 5mm 0;
+    text-align: center;
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+
+/* วันที่ */
+.date {
+    text-align: right;
+    margin-bottom: 4mm;
+}
+
+
+/* ข้อมูล */
+.line {
+    margin: 2mm 0;
+}
+
+.line span {
+    display: inline-block;
+    border-bottom: 1px dotted #000;
+    min-width: 200px;
+}
+
+
+/* ช่องว่าง */
+.space {
+    height: 5mm;
+}
+
+
+/* Checkbox */
+.checkbox {
+    border: none !important;
+    min-width: auto !important;
+}
+
+
+/* ข้อความปริมาณ */
+.text-line {
+    font-size: 16pt;
+    line-height: 1.35;
+    margin-bottom: 2mm;
+}
+
+.indent {
+    text-indent: 15mm;
+}
+
+
+/* เส้นกรอกข้อมูล */
+.underline {
+    display: inline-block;
+    min-width: 80px;
+    border-bottom: 1px solid #000;
+    text-align: center;
+}
+
+
+/* หมายเหตุ */
+.remark {
+    margin-top: 5mm;
+    text-align: left;
+}
+
+.remark b {
+    display: block;
+    margin-bottom: 2mm;
+}
+
+.remark-item {
+    display: block;
+    margin-left: 10mm;
+    margin-bottom: 1mm;
+    padding-left: 8mm;
+    position: relative;
+}
+
+.remark-no {
+    position: absolute;
+    left: 0;
+    width: 8mm;
+}
+
+
+/* ลายเซ็น */
+.signature {
+    margin-top: 12mm;
+    display: table;
+    width: 100%;
+    text-align: center;
+}
+
+.signature-box {
+    display: table-cell;
+    width: 50%;
+    vertical-align: bottom;
+}
+
+
+.signature-image {
+    width: 180px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
+/* เส้นก่อน Footer */
+.footer-line {
+    width: 100%;
+    border-top: 1px solid #000;
+    margin-top: 8mm;
+    margin-bottom: 3mm;
+}
+
+
+/* Footer */
+.footer {
+    text-align: center;
+    font-size: 16pt;
+    line-height: 1.35;
+}
+
+.profession-row {
+    margin: 2mm 0;
+}
+
+.profession-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16pt;
+}
+
+.profession-table td {
+    padding: 0;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+
+.profession-title {
+    width: 38mm;
+}
+
+
+/* ช่องสี่เหลี่ยม */
+.box {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border: 1px solid #000;
+    margin-right: 2mm;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 9px;
+    font-size: 13px;
+    font-weight: bold;
+}

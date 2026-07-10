@@ -28,7 +28,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'string'],
+            'username' => ['nullable', 'string', 'required_without:email'],
+            'email' => ['nullable', 'string', 'required_without:username'],
             'password' => ['required', 'string'],
         ];
     }
@@ -42,8 +43,19 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        $loginValue = $this->input('username', $this->input('email'));
+        $user = \App\Models\User::where('username', $loginValue)->first();
+
+        if ($user && $user->status === 'inactive') {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'username' => trans('auth.failed'),
+            ]);
+        }
+
         if (! Auth::attempt([
-            'username' => $this->input('username'),
+            'username' => $loginValue,
             'password' => $this->password,
         ], $this->boolean('remember'))) {
 

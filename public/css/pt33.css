@@ -1,63 +1,329 @@
 body {
     font-family: "Sarabun", sans-serif;
     background: #eee;
+    margin: 0;
+    padding: 0;
 }
 
-/* A4 */
+/* ==========================
+   A4
+========================== */
 .a4 {
     width: 210mm;
     min-height: 297mm;
-    background: white;
     margin: auto;
     padding: 15mm;
+    background: #fff;
     box-sizing: border-box;
 }
 
-/* HEADER (เหมือนฟอร์มราชการ) */
+/* ==========================
+   HEADER
+========================== */
 .header {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    font-size: 14px;
+    gap: 12px;
+    margin-bottom: 28px;
 }
 
-.header h2 {
-    font-size: 18px;
+.form-no {
+    width: 100%;
+    text-align: right;
+    font-weight: bold;
+}
+
+.title h2 {
     margin: 0;
+    font-size: 24px;
 }
 
-/* ROW */
+.date-row {
+    align-self: flex-end;
+}
+
+.card-section {
+    margin-top: 20px;
+    padding: 18px;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0d6efd;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.line-textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    resize: vertical;
+    font-size: 15px;
+    font-family: "TH Sarabun New", sans-serif;
+    line-height: 1.6;
+    transition: .2s;
+}
+
+.action {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-save,
+.btn-print,
+.btn-cancel {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: .2s;
+}
+
+.btn-save {
+    background: #198754;
+    color: #fff;
+}
+
+.btn-save:hover {
+    background: #157347;
+}
+
+.btn-print {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.btn-print:hover {
+    background: #0b5ed7;
+}
+
+.btn-cancel {
+    background: #6c757d;
+    color: #fff;
+}
+
+.btn-cancel:hover {
+    background: #5c636a;
+}
+
+.line-textarea:focus {
+    border-color: #0d6efd;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, .15);
+}
+
+.form-hint {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.title {
+    text-align: center;
+}
+
+.title h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.date-row {
+    text-align: right;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.note {
+    margin-top: 14px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.note strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.note ol {
+    margin: 0;
+    padding-left: 22px;
+    /* ระยะเลขกับขอบ */
+}
+
+.note li {
+    margin-bottom: 6px;
+    padding-left: 4px;
+    text-align: justify;
+}
+
+/* ==========================
+   ROW
+========================== */
 .row {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 6px 0;
+    margin-bottom: 8px;
 }
 
-/* underline line (ราชการจริง) */
-.fill-line {
-    flex: 1;
-    border-bottom: 1px solid #000;
-    height: 18px;
-}
-
-.small-line {
-    flex: 0.4;
-}
-
-/* checkbox wrap */
 .wrap {
     flex-wrap: wrap;
 }
 
-/* diagnosis box */
+.address-row {
+    align-items: flex-start;
+}
+
+/* ==========================
+   INPUT
+========================== */
+.line-input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    height: 28px;
+
+    border: none;
+    border-bottom: 1px solid #000;
+
+    background: transparent;
+    outline: none;
+
+    font-size: 16px;
+    font-family: "Sarabun", sans-serif;
+
+    padding: 2px 4px;
+    box-sizing: border-box;
+}
+
+.line-input:focus {
+    border-bottom: 2px solid #000;
+}
+
+.line-textarea {
+    flex: 1;
+
+    min-height: 90px;
+
+    border: 1px solid #000;
+
+    padding: 8px;
+
+    resize: none;
+
+    font-size: 16px;
+    font-family: "Sarabun", sans-serif;
+
+    box-sizing: border-box;
+}
+
+/* ==========================
+   DISPLAY LINE
+========================== */
+.fill-line {
+    flex: 1;
+
+    min-height: 24px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 4px;
+
+    border-bottom: 1px solid #000;
+
+    white-space: normal;
+    word-break: break-word;
+}
+
+.fill-line-address {
+    flex: 1;
+
+    min-height: 50px;
+    line-height: 24px;
+
+    background-image:
+        repeating-linear-gradient(to bottom,
+            transparent 0,
+            transparent 23px,
+            #000 23px,
+            #000 24px);
+
+    white-space: normal;
+    word-break: break-word;
+
+    padding: 0 4px;
+}
+
+/* ==========================
+   FLEX SIZE
+========================== */
+.flex-1 {
+    flex: 1;
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.flex-3 {
+    flex: 3;
+}
+
+.flex-4 {
+    flex: 4;
+}
+
+.small-line {
+    flex: .4;
+}
+
+/* ==========================
+   TEXT
+========================== */
+.text-center {
+    text-align: center;
+}
+
+.center-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* ==========================
+   BOX
+========================== */
 .box {
     border: 1px solid #000;
     padding: 10px;
 }
 
-/* grid inside box */
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -65,31 +331,48 @@ body {
     font-size: 13px;
 }
 
-/* signature */
+/* ==========================
+   SIGNATURE
+========================== */
 .sign {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
-/* note */
-.note {
-    font-size: 12px;
+/* ==========================
+   NOTE
+========================== */
+/* ==========================
+   HR
+========================== */
+hr {
+    border: none;
+    border-top: 1px solid #000;
+    margin: 20px 0;
 }
 
-/* print */
+/* ==========================
+   PRINT
+========================== */
 @page {
     size: A4;
     margin: 10mm;
 }
 
 @media print {
+
     body {
-        background: white;
+        background: #fff;
     }
 
     .a4 {
         margin: 0;
         box-shadow: none;
+    }
+
+    .line-input,
+    .line-textarea {
+        border-color: #000;
     }
 }

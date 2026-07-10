@@ -9,5 +9,6 @@
     "Setting": true,
     "AuditLog": true,
     "Dashbord": true,
-    "Dashboards": true
+    "Dashboards": true,
+    "Medics": true
 }

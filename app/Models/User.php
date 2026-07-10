@@ -22,7 +22,19 @@ class User extends Authenticatable
         'name',
         'username',
         'password',
+        'role_id',
+        'status',
     ];
+
+    public function getEmailAttribute($value = null): ?string
+    {
+        return $value ?? $this->attributes['username'] ?? $this->username;
+    }
+
+    public function getRoleAttribute(): ?int
+    {
+        return $this->attributes['role_id'] ?? null;
+    }
 
     /**
      * The attributes that should be hidden for serialization.

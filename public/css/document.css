@@ -1,0 +1,353 @@
+.document-card {
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .08);
+
+}
+
+
+.document-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.document-header h2 {
+
+    margin: 0;
+
+    font-size: 28px;
+
+}
+
+
+.document-header p {
+
+    color: #777;
+
+}
+
+
+
+.btn-create {
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 12px 22px;
+
+    border-radius: 12px;
+
+    text-decoration: none;
+
+}
+
+
+
+.filter-box {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin: 25px 0;
+
+}
+
+
+.filter-box input,
+.filter-box select {
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    border: 1px solid #ddd;
+
+}
+
+
+
+.summary {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.summary div {
+
+    background: #f8fafc;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+}
+
+
+.summary strong {
+
+    display: block;
+
+    font-size: 28px;
+
+}
+
+
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+
+th {
+
+    background: #f1f5f9;
+
+    padding: 15px;
+
+}
+
+
+td {
+
+    padding: 15px;
+
+    border-bottom: 1px solid #eee;
+
+}
+
+
+
+.badge,
+.status {
+
+    padding: 5px 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+}
+
+
+.blue {
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+}
+
+
+.purple {
+
+    background: #ede9fe;
+
+    color: #6d28d9;
+
+}
+
+
+.success {
+
+    background: #dcfce7;
+
+    color: #15803d;
+
+}
+
+.document-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+}
+
+
+
+.document-tabs {
+
+    display: flex;
+    background: #f1f5f9;
+    padding: 5px;
+    border-radius: 12px;
+
+}
+
+
+.document-tabs a {
+
+    text-decoration: none;
+
+    padding: 10px 18px;
+
+    border-radius: 10px;
+
+    color: #64748b;
+
+    font-weight: 600;
+
+    transition: .2s;
+
+}
+
+
+
+.document-tabs a:hover {
+
+    background: white;
+
+    color: #2563eb;
+
+}
+
+
+
+.document-tabs a.active {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+.warning {
+
+    background: #fef3c7;
+
+    color: #b45309;
+
+}
+
+
+.danger {
+
+    background: #fee2e2;
+
+    color: #b91c1c;
+
+
+}
+
+.table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+.table-responsive th {
+
+    padding: 12px;
+
+    font-size: 14px;
+
+    text-align: center;
+
+}
+
+
+.table-responsive td {
+
+    padding: 10px 12px;
+
+    font-size: 14px;
+
+    vertical-align: middle;
+
+}
+
+
+
+/* เลขเอกสาร */
+.table-responsive th:nth-child(1),
+.table-responsive td:nth-child(1) {
+
+    width: 25%;
+
+}
+
+
+
+/* ผู้ป่วย */
+.table-responsive th:nth-child(2),
+.table-responsive td:nth-child(2) {
+
+    width: 18%;
+
+    text-align: center;
+
+}
+
+
+
+/* ประเภท */
+.table-responsive th:nth-child(3),
+.table-responsive td:nth-child(3) {
+
+    width: 10%;
+
+    text-align: center;
+
+}
+
+
+
+/* วันที่ */
+.table-responsive th:nth-child(4),
+.table-responsive td:nth-child(4) {
+
+    width: 12%;
+
+    text-align: center;
+
+}
+
+
+
+/* สถานะ */
+.table-responsive th:nth-child(5),
+.table-responsive td:nth-child(5) {
+
+    width: 10%;
+
+    text-align: center;
+
+}
+
+
+
+/* จัดการ */
+.table-responsive th:nth-child(6),
+.table-responsive td:nth-child(6) {
+
+    width: 25%;
+
+    text-align: center;
+
+}

@@ -1,0 +1,187 @@
+.medic-container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Card */
+.medic-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .08);
+    overflow: hidden;
+}
+
+.medic-header {
+    padding: 20px;
+    background: #2563eb;
+    color: #fff;
+}
+
+.medic-header h4 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.medic-body {
+    padding: 25px;
+}
+
+/* Form */
+.medic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.medic-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.medic-group>label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+/* ยกเว้น checkbox */
+.medic-group input:not([type="checkbox"]),
+.medic-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: .2s;
+    box-sizing: border-box;
+}
+
+.medic-group input:not([type="checkbox"]):focus,
+.medic-group select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+}
+
+.medic-full {
+    grid-column: 1 / -1;
+}
+
+/* ==========================
+   Profession
+========================== */
+
+.profession-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 20px;
+}
+
+.profession-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #fff;
+    transition: all .2s ease;
+}
+
+.profession-item:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.profession-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.profession-item span {
+    font-weight: normal;
+    color: #374151;
+    line-height: 1.4;
+}
+
+/* Upload */
+
+.signature-preview {
+    margin-top: 10px;
+    width: 150px;
+    height: 80px;
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.signature-preview img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* Buttons */
+
+.medic-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-save-medic {
+    background: #16a34a;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-save-medic:hover {
+    background: #15803d;
+}
+
+.btn-cancel-medic {
+    background: #6b7280;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.btn-cancel-medic:hover {
+    background: #4b5563;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .medic-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profession-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .medic-actions {
+        flex-direction: column;
+    }
+
+    .btn-save-medic,
+    .btn-cancel-medic {
+        width: 100%;
+        text-align: center;
+    }
+}

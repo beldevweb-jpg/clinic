@@ -25,6 +25,11 @@
             @endif
 
             <div class="table-container">
+                <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
+                    <a href="{{ route('register') }}" style="font-weight:bold;text-decoration:none;">
+                        เพิ่มผู้ใช้
+                    </a>
+                </div>
                 <table class="table">
 
                     <thead>

@@ -60,8 +60,7 @@ class SettingController extends Controller
         ]);
 
         // dd($request);
-        $setting = Setting::firstOrCreate(['id' => 1]);
-
+        $setting = Setting::firstOrNew(['id' => 1]);
         $data = [
             'clinic'  => $request->clinic,
             'license' => $request->license,
@@ -81,15 +80,26 @@ class SettingController extends Controller
             $data['logo'] = $filename;
         }
 
-        if (!empty($setting->logo)) {
-            $oldPath = public_path('uploads/logo/' . $setting->logo);
-            if (file_exists($oldPath)) {
-                unlink($oldPath);
+        if ($request->hasFile('logo')) {
+
+            if (!empty($setting->logo)) {
+                $oldPath = public_path('uploads/logo/' . $setting->logo);
+
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
+                }
             }
+
+            $file = $request->file('logo');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('uploads/logo'), $filename);
+
+            $data['logo'] = $filename;
         }
 
-        $setting->update($data);
-
+        $setting->fill($data);
+        $setting->save();
         return redirect()->route('dashboards.index')
             ->with('success', 'บันทึกข้อมูลเรียบร้อย');
     }
