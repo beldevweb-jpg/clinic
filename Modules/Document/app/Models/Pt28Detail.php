@@ -18,6 +18,11 @@ class Pt28Detail extends Model
         'license_no',
         'dosage',
         'flower_unit',
+        'objective',
+    ];
+
+    protected $casts = [
+        'objective' => 'array',
     ];
 
 

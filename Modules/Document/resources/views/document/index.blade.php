@@ -5,7 +5,20 @@
     <div class="container">
 
         <div class="document-card">
+            {{-- แจ้งเตือน --}}
+            @if (session('success'))
+                <div class="alert success">
+                    {{ session('success') }}
+                </div>
+            @endif
 
+            @if ($errors->any())
+                <div class="alert error">
+                    @foreach ($errors->all() as $error)
+                        <div>• {{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
 
             <!-- Header -->
             <div class="document-header">
@@ -14,18 +27,23 @@
                         📄 เอกสารทั้งหมด
                     </h2>
                     <p>
-                        รายการเอกสารผู้ป่วย PT33 และ PT28
+                        รายการเอกสารผู้ป่วย
                     </p>
                 </div>
 
                 <!-- Document Tabs -->
                 <div class="document-tabs">
-                    <a href="{{ route('pt33.index') }}" class="{{ request()->routeIs('pt33.index') ? 'active' : '' }}">
+                    <a href="{{ route('pt33.create') }}" class="{{ request()->routeIs('pt33.create') ? 'active' : '' }}">
                         พท.33
                     </a>
 
-                    <a href="{{ route('pt28.index') }}" class="{{ request()->routeIs('pt28.index') ? 'active' : '' }}">
+                    <a href="{{ route('pt28.create') }}" class="{{ request()->routeIs('pt28.create') ? 'active' : '' }}">
                         พท.28
+                    </a>
+
+                    <a href="{{ route('medical-certificate.create') }}"
+                        class="{{ request()->routeIs('medical-certificate.create') ? 'active' : '' }}">
+                        ใบรับรองแพทย์
                     </a>
                 </div>
             </div>
@@ -33,60 +51,46 @@
             <!-- Filter -->
 
             <form method="GET" action="{{ route('documents.index') }}">
-
                 <div class="filter-box">
-                    {{-- แจ้งเตือน --}}
-                    @if (session('success'))
-                        <div class="alert success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
 
-                    @if ($errors->any())
-                        <div class="alert error">
-                            @foreach ($errors->all() as $error)
-                                <div>• {{ $error }}</div>
-                            @endforeach
-                        </div>
-                    @endif
                     <input type="text" name="search" value="{{ request('search') }}"
                         placeholder="🔎 ค้นหาเลขเอกสาร / ชื่อผู้ป่วย">
-                    <select name="type">
-                        <option value="">
-                            ทุกประเภท
-                        </option>
 
+                    <select name="type">
+                        <option value="">ทุกประเภท</option>
                         <option value="PT33" {{ request('type') == 'PT33' ? 'selected' : '' }}>
                             PT33
                         </option>
-
                         <option value="PT28" {{ request('type') == 'PT28' ? 'selected' : '' }}>
                             PT28
                         </option>
                     </select>
 
                     <select name="status">
-                        <option value="">
-                            ทุกสถานะ
-                        </option>
+                        <option value="">ทุกสถานะ</option>
                         <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>
                             ร่าง
                         </option>
-
                         <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>
                             สำเร็จ
                         </option>
-
                         <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>
                             ยกเลิก
                         </option>
                     </select>
+
                     <button type="submit">
                         ค้นหา
                     </button>
+
+                    @if (request()->filled('search') || request()->filled('type') || request()->filled('status'))
+                        <a href="{{ route('documents.index') }}" class="btn-reset">
+                            ล้างตัวกรอง
+                        </a>
+                    @endif
+
                 </div>
             </form>
-
             <!-- Summary -->
             <div class="summary">
                 <div>

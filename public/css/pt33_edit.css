@@ -1,0 +1,294 @@
+/* ===============================
+   PT33 FORM DESIGN
+================================ */
+
+
+body {
+    background: #f1f3f5;
+}
+
+
+.a4 {
+
+    width: 210mm;
+    min-height: 297mm;
+
+    margin: 20px auto;
+
+    background: white;
+
+    padding: 15mm;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, .15);
+
+}
+
+
+.header {
+
+    margin-bottom: 15px;
+
+}
+
+
+.form-no {
+
+    text-align: right;
+
+    font-size: 18pt;
+
+}
+
+
+.header h2 {
+
+    text-align: center;
+
+    font-size: 22pt;
+
+    margin: 10px 0;
+
+}
+
+
+.divider {
+
+    border-bottom: 1px solid #333;
+
+}
+
+
+
+/* section */
+
+.section {
+
+    border: 1px solid #ddd;
+
+    border-radius: 10px;
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.section-title {
+
+    font-size: 18pt;
+
+    font-weight: bold;
+
+    margin-bottom: 10px;
+
+    color: #333;
+
+}
+
+
+
+/* row */
+
+.row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+    flex-wrap: wrap;
+
+}
+
+
+.row label {
+
+    font-size: 16pt;
+
+}
+
+
+
+/* input */
+
+.line-input {
+
+
+    border: none;
+
+    border-bottom: 1px dotted #555;
+
+    background: transparent;
+
+    font-family: "TH Sarabun New";
+
+    font-size: 16pt;
+
+    padding: 3px 5px;
+
+
+}
+
+
+.line-input:focus {
+
+    outline: none;
+
+    border-bottom: 2px solid #0d6efd;
+
+}
+
+
+
+/* textarea */
+
+.line-textarea {
+
+    width: 100%;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    padding: 10px;
+
+    font-family: "TH Sarabun New";
+
+    font-size: 16pt;
+
+    resize: none;
+
+}
+
+
+
+/* checkbox */
+
+.row label input[type="checkbox"] {
+
+    width: 16px;
+
+    height: 16px;
+
+}
+
+
+
+/* select */
+
+.select2-container {
+
+    font-family: "TH Sarabun New";
+
+    font-size: 16pt;
+
+}
+
+
+.select2-selection {
+
+    min-height: 38px !important;
+
+}
+
+
+
+/* button */
+
+
+.action {
+
+    text-align: center;
+
+    margin-top: 25px;
+
+}
+
+
+.btn-save {
+
+    background: #198754;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 12px 40px;
+
+    font-size: 18pt;
+
+    cursor: pointer;
+
+}
+
+
+.btn-save:hover {
+
+    background: #157347;
+
+}
+
+
+
+.alert {
+
+    padding: 12px;
+
+    border-radius: 8px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.alert.success {
+
+    background: #d1e7dd;
+
+}
+
+
+.alert.error {
+
+    background: #f8d7da;
+
+}
+
+
+
+/* print */
+
+@media print {
+
+    body {
+
+        background: white;
+
+    }
+
+
+    .a4 {
+
+        box-shadow: none;
+
+        margin: 0;
+
+    }
+
+
+    .btn-save {
+
+        display: none;
+
+    }
+
+}

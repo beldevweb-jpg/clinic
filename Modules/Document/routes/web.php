@@ -10,7 +10,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('documents.index');
 
     Route::get('/documents/pt33', [DocumentController::class, 'pt33'])
-        ->name('pt33.index');
+        ->name('pt33.create');
 
     Route::POST('/documents/pt33/stor', [DocumentController::class, 'pt33_store'])
         ->name('pt33.store');
@@ -34,10 +34,13 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/documents/pt28', [DocumentController::class, 'pt28'])
-        ->name('pt28.index');
+        ->name('pt28.create');
 
     Route::POST('/documents/pt28/stor', [DocumentController::class, 'pt28_store'])
         ->name('pt28.store');
 
-        
+    Route::put(
+        '/pt28/{id}',
+        [DocumentController::class, 'pt28_update']
+    )->name('pt28.update');
 });

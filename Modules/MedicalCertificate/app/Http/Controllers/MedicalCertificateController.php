@@ -4,6 +4,9 @@ namespace Modules\MedicalCertificate\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Patient\Models\patient;
+use Modules\Setting\Models\setting;
+use Modules\Medics\Models\medics;
 
 class MedicalCertificateController extends Controller
 {
@@ -12,7 +15,7 @@ class MedicalCertificateController extends Controller
      */
     public function index()
     {
-        return view('medicalcertificate::index');
+        return view('medicalcertificate::medicalcertificate.index');
     }
 
     /**
@@ -20,7 +23,10 @@ class MedicalCertificateController extends Controller
      */
     public function create()
     {
-        return view('medicalcertificate::create');
+        $patients = patient::get();
+        $setting = setting::get();
+        $medics = medics::get();
+        return view('medicalcertificate::MedicalCertificate.create', compact('patients', 'setting', 'medics'));
     }
 
     /**
@@ -33,7 +39,7 @@ class MedicalCertificateController extends Controller
      */
     public function show($id)
     {
-        return view('medicalcertificate::show');
+        return view('medicalcertificate::medicalcertificate.show');
     }
 
     /**
@@ -41,7 +47,7 @@ class MedicalCertificateController extends Controller
      */
     public function edit($id)
     {
-        return view('medicalcertificate::edit');
+        return view('medicalcertificate::medicalcertificate.edit');
     }
 
     /**

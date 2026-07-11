@@ -42,15 +42,14 @@
         }
     @endphp
     <div class="pt28">
+
         <form action="{{ route('pt28.store') }}" method="POST">
             @csrf
             <div class="header-right">
                 แบบ ภ.ท. ๒๘
             </div>
 
-            <div class="title">
-                แบบรายงานข้อมูลการนำไปใช้ สมุนไพรควบคุม (กัญชา)
-            </div>
+
 
             <div class="sub-title">
                 ประจำเดือน
@@ -58,27 +57,24 @@
                 พ.ศ.
                 <span class="underline">{{ thaiNumber(now()->year + 543) }}</span>
             </div>
-
-            <div class="note">
-                (ผู้ได้รับอนุญาตต้องปฏิบัติตามข้อกำหนดแนบท้ายรายงานนี้)
-            </div>
-
-            <div class="receiver">
-                เรียน
-                นายทะเบียนกลาง หมายถึง อธิบดีกรมการแพทย์แผนไทยและการแพทย์ทางเลือก
-            </div>
-
-            <div class="license-info">
-                ชื่อผู้รับอนุญาต
-            </div>
-
-            <div class="license-info">
-                เลขที่ใบอนุญาต
-            </div>
             <button type="button" class="btn-add-row">
                 + เพิ่มรายการ
             </button>
             <table class="report-table">
+                {{-- แจ้งเตือน --}}
+                @if (session('success'))
+                    <div class="alert success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert error">
+                        @foreach ($errors->all() as $error)
+                            <div>• {{ $error }}</div>
+                        @endforeach
+                    </div>
+                @endif
                 <thead>
 
                     <tr>
@@ -140,38 +136,26 @@
                     <tr>
                         <th>
                             ใช้เอง
-                            <br>
-                            <input type="checkbox" name="objective[]" value="ใช้เอง">
                         </th>
 
                         <th>
                             ขายต่อ
-                            <br>
-                            <input type="checkbox" name="objective[]" value="ขายต่อ">
                         </th>
 
                         <th>
                             ศึกษาวิจัย
-                            <br>
-                            <input type="checkbox" name="objective[]" value="ศึกษาวิจัย">
                         </th>
 
                         <th>
                             ศึกษาวิจัย (หน่วยงานรัฐ)
-                            <br>
-                            <input type="checkbox" name="objective[]" value="หน่วยงานรัฐ">
                         </th>
 
                         <th>
                             แปรรูป
-                            <br>
-                            <input type="checkbox" name="objective[]" value="ปรรูป">
                         </th>
 
                         <th>
                             ส่งออก
-                            <br>
-                            <input type="checkbox" name="objective[]" value="ส่งออก">
                         </th>
                     </tr>
 
@@ -197,7 +181,6 @@
 
             let rowNumber = 0;
 
-
             function initSelect2() {
 
                 $('.patient-select:not(.select2-hidden-accessible)').select2({
@@ -209,11 +192,10 @@
             }
 
 
-
             function addRow() {
 
+                let index = rowNumber;
                 rowNumber++;
-
 
                 let html = `
 
@@ -263,27 +245,27 @@
 
 
 <td>
-    <input type="checkbox" name="objective[${rowNumber}][]" value="ใช้เอง">
+    <input type="checkbox" name="objective[${index}][]" value="ใช้เอง">
 </td>
 
 <td>
-    <input type="checkbox" name="objective[${rowNumber}][]" value="ขายต่อ">
+    <input type="checkbox" name="objective[${index}][]" value="ขายต่อ">
 </td>
 
 <td>
-    <input type="checkbox" name="objective[${rowNumber}][]" value="ศึกษาวิจัย">
+    <input type="checkbox" name="objective[${index}][]" value="ศึกษาวิจัย">
 </td>
 
 <td>
-    <input type="checkbox" name="objective[${rowNumber}][]" value="หน่วยงานรัฐ">
+    <input type="checkbox" name="objective[${index}][]" value="หน่วยงานรัฐ">
 </td>
 
 <td>
-    <input type="checkbox" name="objective[${rowNumber}][]" value="แปรรูป">
+    <input type="checkbox" name="objective[${index}][]" value="แปรรูป">
 </td>
 
 <td>
-    <input type="checkbox" name="objective[${rowNumber}][]" value="ส่งออก">
+    <input type="checkbox" name="objective[${index}][]" value="ส่งออก">
 </td>
 
 

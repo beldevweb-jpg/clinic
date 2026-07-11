@@ -1,90 +1,229 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
 
     console.log('PT33 JS Loaded');
 
-    $('#medicSelect').select2({
-        placeholder: 'ค้นหาหรือเลือกแพทย์',
-        allowClear: true,
-        width: '350px'
+
+    /* =========================
+        Medic Select
+    ========================= */
+
+    const medicSelect = new TomSelect("#medicSelect", {
+
+        create: false,
+
+        placeholder: "ค้นหาหรือเลือกแพทย์",
+
+        maxOptions: 50
+
     });
 
 
-    $('#medicSelect').on('change', function () {
-
-        const option = $(this).find(':selected');
-
-        $('#medic_id').val(option.val());
-
-        $('#doctorLicense').text(option.data('license') || '');
+    document
+    .querySelector("#medicSelect")
+    .addEventListener("change", function () {
 
 
-        // ล้าง checkbox
-        $('input[name="profession[]"]')
-            .prop('checked', false)
-            .prop('disabled', true);
+        const option = this.options[this.selectedIndex];
 
 
-        let professions = option.attr('data-professions') || [];
-
-        if (typeof professions === 'string') {
-            professions = JSON.parse(professions);
-        }
+        document.getElementById('medic_id').value =
+            option.value;
 
 
-        professions.forEach(function (profession) {
+        document.getElementById('doctorLicense').value =
+            option.dataset.license || '';
 
-            $('input[name="profession[]"][value="' + profession + '"]')
-                .prop('checked', true);
+
+
+        // reset profession
+
+        document
+        .querySelectorAll('input[name="profession[]"]')
+        .forEach(function(item){
+
+            item.checked = false;
+
+            item.disabled = true;
 
         });
 
+
+
+        let professions =
+            option.dataset.professions || "[]";
+
+
+
+        professions = JSON.parse(professions);
+
+
+
+        professions.forEach(function(profession){
+
+
+            let checkbox =
+                document.querySelector(
+                    'input[name="profession[]"][value="' + profession + '"]'
+                );
+
+
+            if(checkbox){
+
+                checkbox.checked = true;
+
+                checkbox.disabled = false;
+
+            }
+
+
+        });
+
+
     });
 
 
+
+
+
+    /* =========================
+        Patient Select
+    ========================= */
+
+
+    const patientSelect = new TomSelect("#patientSelect", {
+
+
+        create:false,
+
+        placeholder:"ค้นหา HN / ชื่อ / เลขบัตร",
+
+        maxOptions:50
+
+
+    });
+
+
+
+    document
+    .querySelector("#patientSelect")
+    .addEventListener("change", function(){
+
+
+        const option = this.options[this.selectedIndex];
+
+
+        document.getElementById('patient_id').value =
+            option.value;
+
+
+
+        document.getElementById('patient_name').value =
+            option.dataset.name || '';
+
+
+
+        document.getElementById('age').value =
+            option.dataset.age || '';
+
+
+
+        document.getElementById('nationality').value =
+            option.dataset.nationality || '';
+
+
+
+        document.getElementById('idcard').value =
+            option.dataset.cid || '';
+
+
+
+    });
+
+
+
+
+
+
+
+    /* =========================
+        Calculate Total
+    ========================= */
+
+
+    const gram =
+        document.getElementById('gram');
+
+
+    const days =
+        document.getElementById('days');
+
+
+    const total =
+        document.getElementById('total');
+
+
+
+    function calculateTotal(){
+
+
+        let g =
+            parseFloat(gram.value) || 0;
+
+
+        let d =
+            parseInt(days.value) || 0;
+
+
+
+        total.value =
+            (g * d).toFixed(2);
+
+
+    }
+
+
+
+    gram.addEventListener(
+        'input',
+        calculateTotal
+    );
+
+
+    days.addEventListener(
+        'input',
+        calculateTotal
+    );
+
+
+    calculateTotal();
+
+
+
+
+
+    /* =========================
+        Submit
+    ========================= */
+
+
+    document
+    .getElementById('pt33Form')
+    .addEventListener('submit', function(){
+
+
+        document
+        .querySelectorAll('input[name="profession[]"]')
+        .forEach(function(item){
+
+
+            item.disabled = false;
+
+
+        });
+
+
+    });
+
+
+
 });
-
-
-// เอาส่วนนี้ออก ❌
-// $('#pt33Form').on('submit', function () {
-//     $('input[name="profession[]"]').prop('disabled', false);
-// });
-$('#pt33Form').on('submit', function () {
-
-    $('input[name="profession[]"]').prop('disabled', false);
-
-});
-
-$('#patientSelect').select2({
-    placeholder: 'ค้นหาหรือเลือกผู้ป่วย',
-    allowClear: true,
-    width: '350px'
-});
-
-$('#patientSelect').on('change', function () {
-
-    const option = $(this).find(':selected');
-
-    $('#patient_id').val(option.val());
-
-    $('#patient_name').val(option.data('name') || '');
-
-    $('#age').val(option.data('age') || '');
-
-    $('#nationality').val(option.data('nationality') || '');
-
-    $('#idcard').val(option.data('cid') || '');
-
-});
-
-function calculateTotal() {
-
-    const gram = parseFloat($('#gram').val()) || 0;
-    const days = parseInt($('#days').val()) || 0;
-
-    const total = gram * days;
-
-    $('#total').val(total.toFixed(2));
-
-}
-
-$('#gram, #days').on('input', calculateTotal);

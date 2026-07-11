@@ -2,6 +2,30 @@
 
 @section('content')
     <style>
+        @page {
+            size: A4 portrait;
+            margin: 12mm 15mm;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "TH Sarabun New";
+        }
+
+        body,
+        .pt33-paper,
+        .text-line,
+        .remark-item {
+            line-height: 1;
+        }
+
+        .pt33-paper {
+            width: 100%;
+            height: auto;
+            font-size: 16pt;
+        }
+
         @font-face {
             font-family: "TH Sarabun New";
             src: url("{{ resource_path('fonts/THSarabunNew.ttf') }}") format("truetype");
@@ -12,19 +36,6 @@
             font-family: "TH Sarabun New";
             src: url("{{ resource_path('fonts/THSarabunNew-Bold.ttf') }}") format("truetype");
             font-weight: bold;
-        }
-
-
-        body,
-        .pt33-paper,
-        .text-line,
-        .remark-item {
-            line-height: 0.8;
-        }
-
-        .pt33-paper {
-            font-size: 16pt;
-            line-height: 0.95;
         }
 
 
@@ -125,7 +136,7 @@
 
         /* ลายเซ็น */
         .signature {
-            margin-top: 10mm;
+            margin-top: 5mm;
             display: table;
             width: 100%;
             text-align: center;
@@ -148,6 +159,7 @@
         .signature-area {
             position: relative;
             height: 45px;
+            top: -20px;
         }
 
 
@@ -156,17 +168,18 @@
             height: 30px;
             object-fit: contain;
             display: block;
-            margin: 0 auto -2m
+            margin: 0 auto -2px;
+            position: relative;
+            top: 20px;
         }
 
         /* เส้นก่อน Footer */
         .footer-line {
             width: 100%;
             border-top: 1px solid #000;
-            margin-top: 8mm;
-            margin-bottom: 3mm;
+            margin-top: 4mm;
+            margin-bottom: 2mm;
         }
-
 
         /* Footer */
         .footer {

@@ -57,25 +57,45 @@
 
 
 .filter-box {
-
     display: flex;
-
-    gap: 10px;
-
+    gap: 12px;
     margin: 25px 0;
-
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-
-.filter-box input,
-.filter-box select {
-
-    padding: 12px;
-
+.filter-box input {
+    width: 320px;
+    height: 45px;
+    padding: 0 15px;
     border-radius: 10px;
-
     border: 1px solid #ddd;
+    font-size: 15px;
+}
 
+.filter-box select {
+    width: 160px;
+    height: 45px;
+    padding: 0 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    background: white;
+}
+
+.filter-box button {
+    height: 45px;
+    padding: 0 25px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.filter-box button:hover {
+    background: #1d4ed8;
 }
 
 

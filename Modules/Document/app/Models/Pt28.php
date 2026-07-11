@@ -15,6 +15,11 @@ class Pt28 extends Model
     protected $fillable = [
         'document_no',
         'issue_date',
+        'pt28_id',
+        'patient_id',
+        'license_no',
+        'dosage',
+        'flower_unit',
         'objective',
     ];
 

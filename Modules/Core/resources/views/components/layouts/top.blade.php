@@ -26,12 +26,8 @@
         </a>
 
         <a href="{{ route('documents.index') }}" class="{{ request()->routeIs('documents.index') ? 'active' : '' }}">
-            เอกสาร ภท.
+            เอกสาร
         </a>
-
-        {{-- <a href="{{ route('pt28.index') }}" class="{{ request()->routeIs('pt28.index') ? 'active' : '' }}">
-            พท.28
-        </a> --}}
     </nav>
 
     <div class="profile">
