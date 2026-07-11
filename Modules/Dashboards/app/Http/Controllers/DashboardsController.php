@@ -3,54 +3,24 @@
 namespace Modules\Dashboards\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Modules\Patient\Models\patient;
+use Modules\Medics\Models\medics;
+use Modules\MedicalCertificate\Models\MedicalCertificate;
+use Modules\Document\Models\Document;
+use Modules\Document\Models\Visit;
 
 class DashboardsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('dashboards::dashboards.index');
+        $data = [
+            'patients' => patient::count(),
+            'medics' => medics::count(),
+            'certificates' => MedicalCertificate::count(),
+            'documents' => Document::count(),
+            'visits' => Visit::count(),
+        ];
+
+        return view('dashboards::dashboards.index', $data);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('dashboards::dashboards.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('dashboards::dashboards.show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('dashboards::dashboards.edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }

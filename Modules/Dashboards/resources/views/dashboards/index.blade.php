@@ -1,35 +1,26 @@
 @extends('core::components.layouts.master')
-@section('content')
-    <div class="dashboard">
+<link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+<div class="cards">
 
-        <div class="cards">
-
-            <div class="card">
-                <h3>Users</h3>
-                <p>1,240</p>
-            </div>
-
-            <div class="card">
-                <h3>Sales</h3>
-                <p>฿ 32,500</p>
-            </div>
-
-            <div class="card">
-                <h3>Orders</h3>
-                <p>320</p>
-            </div>
-
-            <div class="card">
-                <h3>Visits</h3>
-                <p>8,920</p>
-            </div>
-
-        </div>
-
-        <div class="panel">
-            <h3>Overview</h3>
-            <canvas id="chart"></canvas>
-        </div>
-
+    <div class="card">
+        <h3>Patients</h3>
+        <p>{{ number_format($patients) }}</p>
     </div>
+
+    <div class="card">
+        <h3>Medics</h3>
+        <p>{{ number_format($medics) }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Certificates</h3>
+        <p>{{ number_format($certificates) }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Visits</h3>
+        <p>{{ number_format($visits) }}</p>
+    </div>
+
+</div>
 @endsection
