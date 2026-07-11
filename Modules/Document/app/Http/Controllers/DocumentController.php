@@ -209,7 +209,6 @@ class DocumentController extends Controller
                     ->get();
 
 
-            case 'MedicalCertificate':
                 return view(
                     'medicalcertificate::MedicalCertificate.edit',
                     compact(
@@ -688,7 +687,7 @@ class DocumentController extends Controller
 
             DB::commit();
 
-            
+
             // โหลดข้อมูลใหม่ก่อนสร้าง PDF
             $pt28->load([
                 'details.patient'

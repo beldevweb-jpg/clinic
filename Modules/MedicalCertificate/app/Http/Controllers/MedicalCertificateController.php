@@ -27,9 +27,7 @@ class MedicalCertificateController extends Controller
         return view('medicalcertificate::medicalcertificate.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         $patients = patient::get();
@@ -38,9 +36,6 @@ class MedicalCertificateController extends Controller
         return view('medicalcertificate::MedicalCertificate.create', compact('patients', 'setting', 'medics'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -103,25 +98,14 @@ class MedicalCertificateController extends Controller
             throw $e;
         }
     }
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('medicalcertificate::medicalcertificate.show');
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit($id)
     {
         return view('medicalcertificate::medicalcertificate.edit');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -189,9 +173,4 @@ class MedicalCertificateController extends Controller
             throw $e;
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }
