@@ -17,8 +17,6 @@
                 '9' => '๙',
             ]);
         }
-        $objectives = json_decode($pt28->objective ?? '[]', true);
-        $objectives = array_unique($objectives);
     @endphp
     <style>
         .page {
@@ -87,7 +85,7 @@
             @foreach ($page as $index => $detail)
                 @php
                     $offset = $pageIndex * -87;
-
+                    $objectives = $detail->objective ?? [];
                     $top = 116 + $offset + $index * 6.21;
                 @endphp
 
@@ -118,54 +116,55 @@
                             (\Carbon\Carbon::parse($detail->patient->birthday)->year + 543)
                         : '' }}
                 </div>
+
                 {{-- ใช้เอง --}}
                 @if (in_array('ใช้เอง', $objectives))
-                    <div style="position:absolute; left:125mm; top:{{ $top }}mm;">
-                        ✓
+                    <div style="position:absolute; left:111mm; top:{{ $top }}mm;">
+                        /
                     </div>
                 @endif
 
 
                 {{-- ขายต่อ --}}
                 @if (in_array('ขายต่อ', $objectives))
-                    <div style="position:absolute; left:133mm; top:{{ $top }}mm;">
-                        ✓
+                    <div style="position:absolute; left:120mm; top:{{ $top }}mm;">
+                        /
                     </div>
                 @endif
 
 
                 {{-- ศึกษาวิจัย --}}
                 @if (in_array('ศึกษาวิจัย', $objectives))
-                    <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
-                        ✓
+                    <div style="position:absolute; left:128mm; top:{{ $top }}mm;">
+                        /
                     </div>
                 @endif
 
 
                 {{-- หน่วยงานรัฐ --}}
                 @if (in_array('หน่วยงานรัฐ', $objectives))
-                    <div style="position:absolute; left:149mm; top:{{ $top }}mm;">
-                        ✓
+                    <div style="position:absolute; left:139mm; top:{{ $top }}mm;">
+                        /
                     </div>
                 @endif
 
 
                 {{-- แปรรูป --}}
                 @if (in_array('แปรรูป', $objectives))
-                    <div style="position:absolute; left:157mm; top:{{ $top }}mm;">
-                        ✓
+                    <div style="position:absolute; left:149mm; top:{{ $top }}mm;">
+                        /
                     </div>
                 @endif
 
 
                 {{-- ส่งออก --}}
                 @if (in_array('ส่งออก', $objectives))
-                    <div style="position:absolute; left:165mm; top:{{ $top }}mm;">
-                        ✓
+                    <div style="position:absolute; left:158mm; top:{{ $top }}mm;">
+                        /
                     </div>
                 @endif
 
-                <div style="position:absolute; left:150mm; top:{{ $top }}mm;">
+                <div style="position:absolute; left:155mm; top:{{ $top }}mm;">
                     {{ $detail->license_no }}
                 </div>
 

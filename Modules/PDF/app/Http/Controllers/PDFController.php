@@ -73,26 +73,13 @@ class PDFController extends Controller
 
     public function generatePT28(Pt28 $pt28)
     {
-        \Log::info('PT28 PDF START');
-
         $setting = Setting::first();
-
-        \Log::info('SETTING OK');
-
 
         $pt28->load([
             'details.patient'
         ]);
 
-        \Log::info('RELATION LOAD OK', [
-            'details' => $pt28->details->count()
-        ]);
-
-
         $pages = $pt28->details->chunk(14);
-
-        \Log::info('CHUNK OK');
-
 
         $pdf = Pdf::loadView('pdf::pt28', [
             'pt28' => $pt28,
@@ -107,37 +94,19 @@ class PDFController extends Controller
                 'defaultFont' => 'thsarabunnew',
             ]);
 
-        \Log::info('LOAD VIEW OK');
-
-
         $filename = $pt28->document_no . '.pdf';
 
         $path = 'documents/PT28/' . $filename;
 
-
         Storage::disk('public')
             ->makeDirectory('documents/PT28');
 
-
-        \Log::info('BEFORE PDF OUTPUT');
-
         $pdfContent = $pdf->output();
-
-        \Log::info('AFTER PDF OUTPUT', [
-            'size' => strlen($pdfContent)
-        ]);
-
 
         Storage::disk('public')->put(
             $path,
             $pdfContent
         );
-
-        \Log::info('SAVE PDF OK', [
-            'path' => $path
-        ]);
-
-
         return $path;
     }
 }

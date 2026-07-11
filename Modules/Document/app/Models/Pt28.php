@@ -21,6 +21,7 @@ class Pt28 extends Model
         'dosage',
         'flower_unit',
         'objective',
+        'pdf_path',
     ];
 
     public function details()

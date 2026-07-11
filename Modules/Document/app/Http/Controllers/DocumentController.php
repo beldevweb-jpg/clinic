@@ -15,6 +15,8 @@ use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;
 use Modules\Document\Models\Document;
 use Modules\Document\Models\Pt28Detail;
+use Illuminate\Support\Facades\File;
+
 use Modules\PDF\Http\Controllers\PDFController as PDFGenerator;
 
 class DocumentController extends Controller
@@ -75,13 +77,11 @@ class DocumentController extends Controller
                 'updated_at' => now(),
             ]);
 
-
             $pt33 = Pt33::create([
                 'patient_id' => $validated['patient_id'],
                 'visit_id' => $visitId,
                 'document_no' => 'PT33-' . now()->format('YmdHis'),
                 'issue_date' => now()->toDateString(),
-
                 'profession' => isset($validated['profession'])
                     ? json_encode($validated['profession'], JSON_UNESCAPED_UNICODE)
                     : null,
@@ -93,13 +93,22 @@ class DocumentController extends Controller
             ]);
 
 
+
             DB::commit();
+
             // Generate PDF
             $pdfPath = app(PDFGenerator::class)
                 ->generatePT33(
                     $pt33,
                     $validated['medic_id']
                 );
+
+
+            // update pdf_path กลับเข้า PT33
+            $pt33->update([
+                'pdf_path' => $pdfPath,
+            ]);
+
             // Save document
             Document::create([
                 'patient_id' => $validated['patient_id'],
@@ -381,10 +390,24 @@ class DocumentController extends Controller
         try {
             $document = Document::findOrFail($id);
 
+            // ลบ PDF จาก storage ปกติ
+            if ($document->pdf_path && Storage::exists($document->pdf_path)) {
+                Storage::delete($document->pdf_path);
+            }
+
+            // ลบโฟลเดอร์ PT28
+            $pt28Path = public_path('storage/documents/PT28');
+
+            if (File::exists($pt28Path)) {
+                File::deleteDirectory($pt28Path);
+            }
+
+
             // หา PT28 จาก document_no
             $pt28 = Pt28::where('document_no', $document->document_no)->first();
 
             if ($pt28) {
+
                 // ลบรายละเอียด PT28
                 $pt28->details()->delete();
 
@@ -392,8 +415,26 @@ class DocumentController extends Controller
                 $pt28->delete();
             }
 
+
+            // หา PT33 จาก document_no
+            $pt33 = Pt33::where('document_no', $document->document_no)->first();
+
+            if ($pt33) {
+
+                // ลบโฟลเดอร์ PT33
+                $pt33Path = public_path('storage/documents/PT33');
+
+                if (File::exists($pt33Path)) {
+                    File::deleteDirectory($pt33Path);
+                }
+
+                $pt33->delete();
+            }
+
+
             // ลบ Document
             $document->delete();
+
 
             DB::commit();
 
@@ -434,8 +475,6 @@ class DocumentController extends Controller
         }
         return response()->file($file);
     }
-
-
 
     public function pt28()
     {
@@ -520,7 +559,9 @@ class DocumentController extends Controller
             // Generate PDF ครั้งเดียว
             $pdfPath = app(PDFGenerator::class)
                 ->generatePT28($pt28);
-
+            $pt28->update([
+                'pdf_path' => $pdfPath,
+            ]);
             // Document 1 รายการ
             Document::create([
                 'patient_id' => null,
@@ -528,7 +569,7 @@ class DocumentController extends Controller
                 'type' => 'PT28',
                 'status' => 'completed',
                 'document_date' => now(),
-                'pdf_path' => '',
+                'pdf_path' => $pdfPath,
                 'created_by' => Auth::id() ?? 1,
             ]);
 
