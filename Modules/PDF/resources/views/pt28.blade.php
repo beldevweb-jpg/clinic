@@ -26,17 +26,6 @@
             overflow: hidden;
         }
 
-        .bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 210mm;
-            height: 297mm;
-            background-image: url("{{ public_path('templates/PT28.jpg') }}");
-            background-size: 210mm 297mm;
-            background-repeat: no-repeat;
-        }
-
         .text {
 
             position: absolute;

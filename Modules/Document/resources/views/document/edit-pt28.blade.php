@@ -170,11 +170,16 @@
                                     @endif
                                 </span>
                             </td>
+                            @php
+                                $detailObjectives = is_array($detail->objective)
+                                    ? $detail->objective
+                                    : json_decode($detail->objective ?? '[]', true);
+                            @endphp
                             @foreach (['ใช้เอง', 'ขายต่อ', 'ศึกษาวิจัย', 'หน่วยงานรัฐ', 'แปรรูป', 'ส่งออก'] as $obj)
                                 <td>
                                     <input type="checkbox" name="objective[{{ $index }}][]"
                                         value="{{ $obj }}"
-                                        {{ in_array($obj, $detail->objective ?? []) ? 'checked' : '' }}>
+                                        {{ in_array($obj, $detailObjectives ?? []) ? 'checked' : '' }}>
                                 </td>
                             @endforeach
                             <td>
@@ -200,25 +205,70 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(function() {
+
             $('.patient-select').select2({
                 placeholder: '-- ค้นหาผู้ป่วย --',
                 width: '100%'
             });
 
+
+            // เปลี่ยนผู้ป่วยแล้วแสดงชื่อ + วันเกิด
+            $('#pt28-body').on('change', '.patient-select', function() {
+
+                let selected = $(this).find(':selected');
+
+                let row = $(this).closest('tr');
+
+
+                row.find('.name-text').text(
+                    selected.data('name') || ''
+                );
+
+
+                let birth = selected.data('birthdate');
+
+
+                if (birth) {
+
+                    let date = new Date(birth);
+
+                    let thaiDate =
+                        String(date.getDate()).padStart(2, '0') +
+                        '/' +
+                        String(date.getMonth() + 1).padStart(2, '0') +
+                        '/' +
+                        (date.getFullYear() + 543);
+
+
+                    row.find('.birthdate-text')
+                        .text(thaiDate);
+
+                } else {
+
+                    row.find('.birthdate-text').text('');
+
+                }
+
+            });
+
+
+
+            // เพิ่มแถว
             $('.btn-add-row').click(function() {
+
                 let index = $('#pt28-body tr').length;
+
+
                 let html = `
 <tr>
 
-<td>${index+1}</td>
-
+<td>${index + 1}</td>
 
 <td>
 <input type="date"
 name="date[]"
 value="{{ now()->format('Y-m-d') }}">
 </td>
-
 
 
 <td>
@@ -230,13 +280,10 @@ class="patient-select">
 -- ค้นหาผู้ป่วย --
 </option>
 
-
 @foreach ($patients as $patient)
 
 <option value="{{ $patient->id }}"
-
 data-name="{{ $patient->firstname }} {{ $patient->lastname }}"
-
 data-birthdate="{{ $patient->birthdate }}">
 
 {{ $patient->cid }}
@@ -245,11 +292,9 @@ data-birthdate="{{ $patient->birthdate }}">
 
 @endforeach
 
-
 </select>
 
 </td>
-
 
 
 <td>
@@ -257,25 +302,20 @@ data-birthdate="{{ $patient->birthdate }}">
 </td>
 
 
-
 <td>
 <span class="birthdate-text"></span>
 </td>
 
 
-
 @foreach (['ใช้เอง', 'ขายต่อ', 'ศึกษาวิจัย', 'หน่วยงานรัฐ', 'แปรรูป', 'ส่งออก'] as $obj)
 
 <td>
-
-<input type="checkbox""
-
+<input type="checkbox"
+name="objective[${index}][]"
 value="{{ $obj }}">
-
 </td>
 
 @endforeach
-
 
 
 <td>
@@ -285,33 +325,35 @@ name="license_no[]">
 
 
 <td>
-
 <input type="number"
 step="0.01"
 name="qty[]">
-
 </td>
 
 
 </tr>
-
-
 `;
 
 
                 $('#pt28-body').append(html);
 
 
-
-                $('.patient-select').select2({
-
+                // select2 เฉพาะตัวใหม่
+                $('#pt28-body tr:last .patient-select').select2({
                     width: '100%'
-
                 });
 
 
             });
 
+
+
+            // โหลดหน้าแรก ให้ชื่อแสดงถูกต้อง
+            $('.patient-select').each(function() {
+
+                $(this).trigger('change');
+
+            });
 
 
         });

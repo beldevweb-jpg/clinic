@@ -17,6 +17,7 @@ use Modules\Document\Models\Document;
 use Modules\Document\Models\Pt28Detail;
 use Illuminate\Support\Facades\File;
 
+
 use Modules\PDF\Http\Controllers\PDFController as PDFGenerator;
 
 class DocumentController extends Controller
@@ -188,7 +189,7 @@ class DocumentController extends Controller
                 );
 
 
-            case 'medical_certificates':
+            case 'MedicalCertificate':
 
                 $document->load([
                     'medicalCertificate.patient',
@@ -208,8 +209,9 @@ class DocumentController extends Controller
                     ->get();
 
 
+            case 'MedicalCertificate':
                 return view(
-                    'document::document.edit-medical-certificate',
+                    'medicalcertificate::MedicalCertificate.edit',
                     compact(
                         'document',
                         'medicalCertificate',
@@ -388,59 +390,92 @@ class DocumentController extends Controller
         DB::beginTransaction();
 
         try {
+
             $document = Document::findOrFail($id);
 
-            // ลบ PDF จาก storage ปกติ
-            if ($document->pdf_path && Storage::exists($document->pdf_path)) {
-                Storage::delete($document->pdf_path);
+
+            if (
+                $document->pdf_path &&
+                Storage::disk('public')->exists($document->pdf_path)
+            ) {
+
+                Storage::disk('public')
+                    ->delete($document->pdf_path);
             }
 
-            // ลบโฟลเดอร์ PT28
-            $pt28Path = public_path('storage/documents/PT28');
+            $pt28 = Pt28::where(
+                'document_no',
+                $document->document_no
+            )->first();
 
-            if (File::exists($pt28Path)) {
-                File::deleteDirectory($pt28Path);
-            }
-
-
-            // หา PT28 จาก document_no
-            $pt28 = Pt28::where('document_no', $document->document_no)->first();
 
             if ($pt28) {
 
-                // ลบรายละเอียด PT28
                 $pt28->details()->delete();
 
-                // ลบ PT28 หลัก
                 $pt28->delete();
             }
 
 
-            // หา PT33 จาก document_no
-            $pt33 = Pt33::where('document_no', $document->document_no)->first();
+            $pt33 = Pt33::where(
+                'document_no',
+                $document->document_no
+            )->first();
+
 
             if ($pt33) {
-
-                // ลบโฟลเดอร์ PT33
-                $pt33Path = public_path('storage/documents/PT33');
-
-                if (File::exists($pt33Path)) {
-                    File::deleteDirectory($pt33Path);
-                }
 
                 $pt33->delete();
             }
 
+            $medicalCertificate = MedicalCertificate::where(
+                'document_no',
+                $document->document_no
+            )->first();
 
-            // ลบ Document
+
+            if ($medicalCertificate) {
+
+
+                // กรณี PDF ของ MedicalCertificate ไม่ตรงกับ Document
+                if (
+                    $medicalCertificate->pdf_path &&
+                    $medicalCertificate->pdf_path != $document->pdf_path &&
+                    Storage::disk('public')
+                    ->exists($medicalCertificate->pdf_path)
+                ) {
+
+                    Storage::disk('public')
+                        ->delete($medicalCertificate->pdf_path);
+                }
+
+
+                $medicalCertificate->delete();
+            }
+
+
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Document
+        |--------------------------------------------------------------------------
+        */
+
             $document->delete();
+
 
 
             DB::commit();
 
+
             return back()
-                ->with('success', 'ลบเอกสารเรียบร้อย');
+                ->with(
+                    'success',
+                    'ลบเอกสารเรียบร้อย'
+                );
         } catch (\Exception $e) {
+
 
             DB::rollBack();
 
@@ -615,21 +650,7 @@ class DocumentController extends Controller
             // หา PT28 เดิม
             $pt28 = Pt28::findOrFail($id);
 
-
-            // update ข้อมูลหลัก
-            $objectives = array_values(array_unique($request->objective));
-
-            $pt28->update([
-                'objective' => json_encode(
-                    $objectives,
-                    JSON_UNESCAPED_UNICODE
-                ),
-            ]);
-
             $pt28->refresh();
-
-            dd($pt28->objective);
-
 
             // ลบรายละเอียดเก่า
             $pt28->details()->delete();
@@ -657,8 +678,6 @@ class DocumentController extends Controller
             $document = Document::where('document_no', $pt28->document_no)
                 ->where('type', 'PT28')
                 ->first();
-
-
             if (
                 $document &&
                 $document->pdf_path &&
@@ -667,15 +686,23 @@ class DocumentController extends Controller
                 Storage::disk('public')->delete($document->pdf_path);
             }
 
+            DB::commit();
 
-            // สร้าง PDF ใหม่
+            
+            // โหลดข้อมูลใหม่ก่อนสร้าง PDF
+            $pt28->load([
+                'details.patient'
+            ]);
+
+            // Generate PDF ครั้งเดียว
             $pdfPath = app(PDFGenerator::class)
                 ->generatePT28($pt28);
-
-
             if (!$pdfPath) {
                 throw new Exception('สร้าง PDF ไม่สำเร็จ');
             }
+            $pt28->update([
+                'pdf_path' => $pdfPath,
+            ]);
 
 
             // update path ใหม่
@@ -698,10 +725,6 @@ class DocumentController extends Controller
                     'created_by' => Auth::id() ?? 1,
                 ]);
             }
-
-
-            DB::commit();
-
 
             return response()->file(
                 storage_path('app/public/' . $pdfPath)

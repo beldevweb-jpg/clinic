@@ -8,5 +8,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     route::get('medical-certificate/create', [MedicalCertificateController::class, 'create'])->name('medical-certificate.create');
     
-    route::get('medical-certificate/store', [MedicalCertificateController::class, 'store'])->name('medical-certificate.store');
+    route::POST('medical-certificate/store', [MedicalCertificateController::class, 'store'])->name('medical-certificate.store');
+
+    route::get('medical-certificate/edit/{id}', [MedicalCertificateController::class, 'edit'])->name('medical-certificate.edit');
+
+    route::PUT('medical-certificate/update/{id}', [MedicalCertificateController::class, 'update'])->name('medical-certificate.update');
 });

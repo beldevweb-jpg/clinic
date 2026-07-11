@@ -64,6 +64,9 @@
                         <option value="PT28" {{ request('type') == 'PT28' ? 'selected' : '' }}>
                             PT28
                         </option>
+                        <option value="MedicalCertificate" {{ request('type') == 'MedicalCertificate' ? 'selected' : '' }}>
+                            MedicalCertificate
+                        </option>
                     </select>
 
                     <select name="status">
@@ -162,12 +165,15 @@
                                 <td>
                                     @if ($item->type == 'PT33')
                                         <span class="badge blue">
-                                            PT33
+                                            ภท.33
+                                        </span>
+                                    @elseif ($item->type == 'PT28')
+                                        <span class="badge purple">
+                                            ภท.28
                                         </span>
                                     @else
                                         <span class="badge purple">
-                                            PT28
-                                        </span>
+                                            ใบรับรองแพทย์
                                     @endif
                                 </td>
                                 <td>

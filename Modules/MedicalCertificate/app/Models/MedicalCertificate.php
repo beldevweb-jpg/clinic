@@ -4,6 +4,8 @@ namespace Modules\MedicalCertificate\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Patient\Models\Patient;
+use Modules\Medics\Models\Medics;
 
 class MedicalCertificate extends Model
 {
@@ -23,7 +25,8 @@ class MedicalCertificate extends Model
     public function patient()
     {
         return $this->belongsTo(
-            Patient::class
+            Patient::class,
+            'patient_id'
         );
     }
 
@@ -31,7 +34,7 @@ class MedicalCertificate extends Model
     public function medic()
     {
         return $this->belongsTo(
-            Medic::class,
+            Medics::class,
             'medics_id'
         );
     }

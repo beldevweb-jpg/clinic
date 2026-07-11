@@ -13,6 +13,7 @@ use Modules\Medics\Models\Medics;
 use Modules\Document\Models\Document;
 use App\Helpers\ThaiHelper;
 use Modules\Document\Models\Pt28;
+use Modules\MedicalCertificate\Models\MedicalCertificate;
 
 
 
@@ -107,6 +108,43 @@ class PDFController extends Controller
             $path,
             $pdfContent
         );
+        return $path;
+    }
+
+    public function generateMedicalCertificate(MedicalCertificate $certificate)
+    {
+        $setting = Setting::first();
+
+        $certificate->load([
+            'patient',
+            'medic'
+        ]);
+
+        $pdf = Pdf::loadView('pdf::medical-certificate', [
+            'certificate' => $certificate,
+            'setting' => $setting,
+        ])
+            ->setPaper('A4', 'portrait')
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'chroot' => public_path(),
+                'defaultFont' => 'thsarabunnew',
+            ]);
+
+        $filename = 'MC-' . $certificate->id . '.pdf';
+
+        $path = 'documents/MedicalCertificate/' . $filename;
+
+        Storage::disk('public')->makeDirectory(
+            'documents/MedicalCertificate'
+        );
+
+        Storage::disk('public')->put(
+            $path,
+            $pdf->output()
+        );
+
         return $path;
     }
 }

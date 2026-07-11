@@ -4,6 +4,7 @@ namespace Modules\Document\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\MedicalCertificate\Models\MedicalCertificate;
 
 class Document extends Model
 {
@@ -57,6 +58,15 @@ class Document extends Model
     {
         return $this->hasOne(
             Pt28::class,
+            'document_no',
+            'document_no'
+        );
+    }
+
+    public function medicalCertificate()
+    {
+        return $this->hasOne(
+            MedicalCertificate::class,
             'document_no',
             'document_no'
         );

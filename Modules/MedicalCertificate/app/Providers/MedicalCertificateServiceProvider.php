@@ -17,6 +17,13 @@ class MedicalCertificateServiceProvider extends ModuleServiceProvider
      */
     protected string $nameLower = 'medicalcertificate';
 
+    public function boot(): void
+    {
+        $this->loadViewsFrom(
+            module_path('MedicalCertificate', 'Resources/views'),
+            'medicalcertificate'
+        );
+    }
     /**
      * Command classes to register.
      *

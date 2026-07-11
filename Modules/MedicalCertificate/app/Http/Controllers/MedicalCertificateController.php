@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 use Modules\Patient\Models\patient;
 use Modules\Setting\Models\setting;
 use Modules\Medics\Models\medics;
+use Modules\PDF\Http\Controllers\PDFController;
+use Modules\MedicalCertificate\Models\MedicalCertificate;
+use Modules\Document\Models\Document;
+use Illuminate\Support\Facades\Auth;
+use DB;
+
+
+
+
 
 class MedicalCertificateController extends Controller
 {
@@ -32,8 +41,68 @@ class MedicalCertificateController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'patient_id' => 'required|exists:patient,id',
+            'medic_id' => 'required|exists:medics,id',
+            'exam_date' => 'required|date',
+            'rest_days' => 'nullable|integer',
+            'diagnosis' => 'nullable|string',
+        ]);
 
+
+        DB::beginTransaction();
+
+        try {
+
+            $certificate = MedicalCertificate::create([
+                'document_no' => 'MC-' . now()->format('YmdHis'),
+                'certificate_date' => $validated['exam_date'],
+                'patient_id' => $validated['patient_id'],
+                'symptom' => $validated['diagnosis'] ?? null,
+                'treatment_recommendation' => null,
+                'rest_days' => $validated['rest_days'] ?? 0,
+                'medics_id' => $validated['medic_id'],
+            ]);
+
+
+            DB::commit();
+
+
+            // Generate PDF เหมือน PT33
+            $pdfPath = app(PDFController::class)
+                ->generateMedicalCertificate(
+                    $certificate
+                );
+
+            // update pdf_path
+            $certificate->update([
+                'pdf_path' => $pdfPath,
+            ]);
+
+            // Save document เหมือน PT33
+            Document::create([
+                'patient_id' => $validated['patient_id'],
+                'document_no' => $certificate->document_no,
+                'type' => 'MedicalCertificate',
+                'status' => 'completed',
+                'document_date' => now(),
+                'pdf_path' => $pdfPath,
+                'created_by' => Auth::id() ?? 1,
+            ]);
+
+
+            return response()->file(
+                storage_path('app/public/' . $pdfPath)
+            );
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            throw $e;
+        }
+    }
     /**
      * Show the specified resource.
      */
@@ -53,7 +122,73 @@ class MedicalCertificateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'patient_id' => 'required|exists:patient,id',
+            'medic_id' => 'required|exists:medics,id',
+            'exam_date' => 'required|date',
+            'rest_days' => 'nullable|integer',
+            'diagnosis' => 'nullable|string',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $certificate = MedicalCertificate::findOrFail($id);
+            // update ใบรับรองแพทย์
+            $certificate->update([
+                'certificate_date' => $validated['exam_date'],
+                'patient_id' => $validated['patient_id'],
+                'symptom' => $validated['diagnosis'] ?? null,
+                'rest_days' => $validated['rest_days'] ?? 0,
+                'medics_id' => $validated['medic_id'],
+            ]);
+
+            DB::commit();
+
+            // ลบ PDF เก่า
+            if ($certificate->pdf_path) {
+
+                Storage::disk('public')
+                    ->delete($certificate->pdf_path);
+            }
+
+            // สร้าง PDF ใหม่
+            $pdfPath = app(PDFController::class)
+                ->generateMedicalCertificate(
+                    $certificate
+                );
+
+            // update path pdf
+            $certificate->update([
+
+                'pdf_path' => $pdfPath,
+
+            ]);
+
+            // update document เดิม
+            Document::where('document_no', $certificate->document_no)
+                ->update([
+
+                    'patient_id' => $validated['patient_id'],
+
+                    'document_date' => now(),
+
+                    'pdf_path' => $pdfPath,
+
+                    'status' => 'completed',
+
+                ]);
+
+
+            return response()->file(
+                storage_path('app/public/' . $pdfPath)
+            );
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
