@@ -18,6 +18,7 @@
 <body>
 
     @yield('content')
+{{-- <img src="{{ asset('templates/PT28.jpg') }}" class="bg"> --}}
 
 </body>
 

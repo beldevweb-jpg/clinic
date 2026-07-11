@@ -227,10 +227,6 @@
                     💾 บันทึกข้อมูล
                 </button>
 
-                <button type="button" class="btn-print" onclick="window.print()">
-                    🖨️ พิมพ์เอกสาร
-                </button>
-
                 <a href="{{ route('pt33.index') }}" class="btn-cancel">
                     ยกเลิก
                 </a>

@@ -15,9 +15,6 @@ Route::middleware(['auth'])->group(function () {
     Route::POST('/documents/pt33/stor', [DocumentController::class, 'pt33_store'])
         ->name('pt33.store');
 
-    Route::get('/documents/pt28', [DocumentController::class, 'pt28'])
-        ->name('pt28.index');
-
     Route::get(
         '/documents/{id}/edit',
         [DocumentController::class, 'edit']
@@ -30,7 +27,20 @@ Route::middleware(['auth'])->group(function () {
     )->name('documents.update');
 
 
-    Route::delete('/documents/{id}',[DocumentController::class, 'destroy'])->name('documents.destroy');
+    Route::delete('/documents/{id}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
-    Route::get('/documents/{id}/view',[DocumentController::class, 'view'])->name('documents.view');
+    Route::get('/documents/{id}/view', [DocumentController::class, 'view'])->name('documents.view');
+
+
+
+    Route::get('/documents/pt28', [DocumentController::class, 'pt28'])
+        ->name('pt28.index');
+
+    Route::POST('/documents/pt28/stor', [DocumentController::class, 'pt28_store'])
+        ->name('pt28.store');
+
+    Route::get(
+        '/documents/pt28/preview/{id}',
+        [DocumentController::class, 'pt28_preview']
+    )->name('pt28.preview');
 });

@@ -1,118 +1,76 @@
 @extends('pdf::components.layouts.master')
 
-
-<link rel="stylesheet" href="{{ asset('css/pt28.css') }}">
 @section('content')
-    <div class="pt28">
+    @php
+        function thaiNumber($number)
+        {
+            return strtr($number, [
+                '0' => '๐',
+                '1' => '๑',
+                '2' => '๒',
+                '3' => '๓',
+                '4' => '๔',
+                '5' => '๕',
+                '6' => '๖',
+                '7' => '๗',
+                '8' => '๘',
+                '9' => '๙',
+            ]);
+        }
+    @endphp
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
 
-        <div class="header-right">
-            แบบ ภ.ท. ๒๘
+        .page {
+            position: relative;
+            width: 210mm;
+            height: 297mm;
+        }
+
+        .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 210mm;
+            height: 297mm;
+            z-index: 0;
+        }
+
+        .text {
+            position: absolute;
+            z-index: 10;
+            font-family: "TH Sarabun New";
+            font-size: 18px;
+        }
+
+        .month {
+            top: 28mm;
+            left: 92mm;
+        }
+
+        .year {
+            top: 28mm;
+            left: 130mm;
+        }
+    </style>
+
+    @foreach ($pages as $page)
+        <div class="page">
+            <img src="{{ asset('templates/PT28.jpg') }}" class="bg">
+
+            <div class="text month">
+                {{ \Carbon\Carbon::now()->locale('th')->translatedFormat('F') }}
+            </div>
+
+            <div class="text year">
+                {{ thaiNumber(\Carbon\Carbon::now()->year + 543) }}
+            </div>
         </div>
 
-        <div class="title">
-            แบบรายงานข้อมูลการนำไปใช้ สมุนไพรควบคุม (กัญชา)
-        </div>
-
-        <div class="sub-title">
-            ประจำเดือน <span class="line"></span> พ.ศ. <span class="line"></span>
-        </div>
-
-        <div class="note">
-            (ผู้ได้รับอนุญาตต้องปฏิบัติตามข้อกำหนดแนบท้ายรายงานนี้)
-        </div>
-        
-        <div class="receiver">
-            เรียน
-            <input type="checkbox"> นายทะเบียนกลาง
-            นายกอง อธิบดีกรมการแพทย์แผนไทยและการแพทย์ทางเลือก
-
-            <br>
-
-            <input type="checkbox"> นายทะเบียนจังหวัด
-            หมายถึง นายแพทย์สาธารณสุขจังหวัด.............................
-        </div>
-
-        <div class="license-info">
-            ชื่อผู้รับใบอนุญาต............................................................
-        </div>
-
-        <div class="license-info">
-            เลขที่ใบอนุญาต...............................................................
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th rowspan="3">ลำดับ</th>
-                    <th rowspan="3">วันเดือนปี</th>
-                    <th rowspan="3">
-                        เลขประจำตัวประชาชน/
-                        เลขหนังสือเดินทาง
-                        (ผู้รับ)
-                    </th>
-                    <th rowspan="3">
-                        ชื่อผู้รับ/
-                        ผู้ซื้อวัตถุควบคุม
-                        (ผู้รับ)
-                    </th>
-                    <th rowspan="3">
-                        วันเดือนปีเกิด
-                        (ผู้รับ)
-                    </th>
-
-                    <th colspan="6">
-                        การนำไปใช้ ณ สถานประกอบการ
-                    </th>
-
-                    <th rowspan="3">
-                        เลขที่ใบอนุญาต
-                        (ผู้ซื้อ)
-                    </th>
-
-                    <th rowspan="3">
-                        ปริมาณ
-                        ช่อดอก
-                        กัญชาแห้ง
-                        (กรัม)
-                    </th>
-                </tr>
-
-                <tr>
-                    <th colspan="6">
-                        วัตถุประสงค์ของการนำไปใช้
-                    </th>
-                </tr>
-
-                <tr>
-                    <th class="vertical">ผู้ป่วย</th>
-                    <th class="vertical">ขาย</th>
-                    <th class="vertical">สำหรับผู้ป่วย</th>
-                    <th class="vertical">สำหรับผู้ประกอบวิชาชีพ</th>
-                    <th class="vertical">ให้ยืม</th>
-                    <th class="vertical">ส่งออก</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @for ($i = 1; $i <= 15; $i++)
-                    <tr>
-                        <td>{{ $i }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                @endfor
-            </tbody>
-        </table>
-
-    </div>
-@endsection
+        @if (!$loop->last)
+            <div style="page-break-after: always;"></div>
+        @endif
+    @endforeach

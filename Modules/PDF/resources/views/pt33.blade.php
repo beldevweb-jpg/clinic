@@ -2,11 +2,6 @@
 
 @section('content')
     <style>
-        @page {
-            size: A4;
-            margin: 12mm 15mm 12mm 15mm;
-        }
-
         @font-face {
             font-family: "TH Sarabun New";
             src: url("{{ resource_path('fonts/THSarabunNew.ttf') }}") format("truetype");

@@ -45,7 +45,7 @@ class DocumentController extends Controller
 
     public function pt33_store(Request $request)
     {
-        // dd($request);
+
         $validated = $request->validate([
             'patient_id'   => 'required|exists:patient,id',
             'medic_id'     => 'required|exists:medics,id',
@@ -92,14 +92,13 @@ class DocumentController extends Controller
             ]);
 
 
+            DB::commit();
             // Generate PDF
             $pdfPath = app(PDFGenerator::class)
                 ->generatePT33(
                     $pt33,
                     $validated['medic_id']
                 );
-
-
             // Save document
             Document::create([
                 'patient_id' => $validated['patient_id'],
@@ -110,11 +109,6 @@ class DocumentController extends Controller
                 'pdf_path' => $pdfPath,
                 'created_by' => Auth::id() ?? 1,
             ]);
-
-
-            DB::commit();
-
-
             return response()->file(
                 storage_path('app/public/' . $pdfPath)
             );
@@ -124,11 +118,6 @@ class DocumentController extends Controller
 
             throw $e;
         }
-    }
-
-    public function pt28()
-    {
-        return view('document::document.pt28');
     }
 
     public function index(Request $request)
@@ -256,5 +245,114 @@ class DocumentController extends Controller
         }
 
         return response()->file($file);
+    }
+
+
+
+    public function pt28()
+    {
+        $patients = patient::get();
+        return view('document::document.pt28', compact('patients'));
+    }
+
+    public function pt28_store(Request $request)
+    {
+        $validated = $request->validate([
+            'date' => 'required|array',
+            'date.*' => 'required|date',
+
+            'patient_id' => 'nullable|array',
+            'patient_id.*' => 'nullable|exists:patient,id',
+
+            'qty' => 'required|array',
+            'qty.*' => 'nullable|numeric|min:0',
+
+            'license_no' => 'nullable|array',
+            'license_no.*' => 'nullable|string|max:255',
+
+            'objective' => 'required|array',
+        ]);
+
+
+        DB::beginTransaction();
+
+        try {
+            // สร้างเอกสาร PT28 หลัก 1 รายการ
+            $documentNo = 'PT28-' . now()->format('YmHis');
+
+            $pt28 = Pt28::create([
+                'document_no' => $documentNo,
+                'issue_date' => now(),
+                'objective' => json_encode(
+                    $request->objective,
+                    JSON_UNESCAPED_UNICODE
+                ),
+            ]);
+
+            // เก็บรายการผู้ซื้อหลายคน
+            foreach ($request->patient_id as $i => $patientId) {
+
+                if (empty($patientId)) {
+                    continue;
+                }
+
+                $pt28->details()->create([
+                    'patient_id' => $patientId,
+                    'issue_date' => $request->date[$i],
+                    'license_no' =>
+                    $request->license_no[$i] ?? null,
+                    'dosage' =>
+                    $request->qty[$i] ?? 0,
+                    'flower_unit' => 'กรัม',
+                ]);
+            }
+
+            DB::commit();
+
+            // // Generate PDF ครั้งเดียว
+            // $pdfPath = app(PDFGenerator::class)
+            //     ->generatePT28($pt28);
+
+            // Document 1 รายการ
+            Document::create([
+                'patient_id' => null,
+                'document_no' => $documentNo,
+                'document_name' => 'แบบ ภ.ท. 28',
+                'type' => 'PT28',
+                'status' => 'completed',
+                'document_date' => now(),
+                'pdf_path' => '',
+                'created_by' => Auth::id() ?? 1,
+            ]);
+
+            return redirect()
+                ->route('pt28.preview', $pt28->id);
+
+            // return response()->file(
+            //     storage_path('app/public/' . $pdfPath)
+            // );
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            throw $e;
+        }
+    }
+
+    public function pt28_preview($id)
+    {
+        $pt28 = Pt28::with([
+            'details.patient'
+        ])->findOrFail($id);
+
+        $setting = Setting::first();
+
+        $pages = $pt28->details->chunk(14);
+
+        return view('pdf::pt28', [
+            'pt28' => $pt28,
+            'pages' => $pages,
+            'setting' => $setting,
+        ]);
     }
 }

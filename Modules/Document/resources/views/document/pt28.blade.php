@@ -1,5 +1,5 @@
 @extends('core::components.layouts.master')
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('css/pt28.css') }}">
 @section('content')
     @php
@@ -42,174 +42,343 @@
         }
     @endphp
     <div class="pt28">
-
-        <div class="header-right">
-            แบบ ภ.ท. ๒๘
-        </div>
-
-        <div class="title">
-            แบบรายงานข้อมูลการนำไปใช้ สมุนไพรควบคุม (กัญชา)
-        </div>
-
-        <div class="sub-title">
-            ประจำเดือน
-            <span class="underline">{{ thaiMonth(now()) }}</span>
-            พ.ศ.
-            <span class="underline">{{ thaiNumber(now()->year + 543) }}</span>
-        </div>
-
-        <div class="note">
-            (ผู้ได้รับอนุญาตต้องปฏิบัติตามข้อกำหนดแนบท้ายรายงานนี้)
-        </div>
-
-        <div class="receiver">
-            เรียน
-
-            <span class="box"></span>
-            นายทะเบียนกลาง
-            &nbsp;&nbsp;&nbsp;
-            หมายถึง อธิบดีกรมการแพทย์แผนไทยและการแพทย์ทางเลือก
-
-            <br>
-
-            <span class="box"></span>
-            นายทะเบียนจังหวัด
-            &nbsp;&nbsp;&nbsp;
-            หมายถึง นายแพทย์สาธารณสุขจังหวัด ......................................
-        </div>
-
-        <div class="license-info">
-            ชื่อผู้รับอนุญาต .....................................................
-            ชื่อร้าน .....................................................
-            อำเภอ .....................................................
-        </div>
-
-        <div class="license-info">
-            เลขที่ใบอนุญาต
-            ...................................................................................................
-        </div>
-
-        <table class="report-table">
-            <thead>
-
-                <tr>
-                    <th rowspan="3" width="4%">ลำดับ</th>
-
-                    <th rowspan="3" width="8%">
-                        วันเดือนปี
-                    </th>
-
-                    <th rowspan="3" width="12%">
-                        เลขประจำตัวประชาชน/
-                        <br>
-                        เลขหนังสือเดินทาง
-                        <br>
-                        (ผู้ซื้อ)
-                    </th>
-
-                    <th rowspan="3" width="14%">
-                        ชื่อผู้ซื้อ/
-                        <br>
-                        ผู้รับอนุญาต
-                        <br>
-                        (ผู้ซื้อ)
-                    </th>
-
-                    <th rowspan="3" width="8%">
-                        วันเดือนปีเกิด
-                        <br>
-                        (ผู้ซื้อ)
-                    </th>
-
-                    <th colspan="6">
-                        การนำไปใช้ ณ สถานประกอบการ
-                    </th>
-
-                    <th rowspan="3" width="12%">
-                        เลขที่ใบอนุญาต
-                        <br>
-                        (ผู้ซื้อ)
-                    </th>
-
-                    <th rowspan="3" width="8%">
-                        ปริมาณช่อดอก
-                        <br>
-                        กัญชาแห้ง
-                        <br>
-                        (กรัม)
-                    </th>
-                </tr>
-
-                <tr>
-                    <th colspan="6">
-                        วัตถุประสงค์ของการนำไปใช้
-                        <br>
-                        (ทำเครื่องหมาย ✓ ในช่องที่ตรงตามวัตถุประสงค์)
-                    </th>
-                </tr>
-
-                <tr>
-                    <th class="vertical">ผู้ป่วย</th>
-                    <th class="vertical">ขาย</th>
-                    <th class="vertical">สำหรับผู้ป่วย</th>
-                    <th class="vertical">สำหรับผู้ประกอบวิชาชีพ</th>
-                    <th class="vertical">ให้ยืม</th>
-                    <th class="vertical">ส่งออก</th>
-                </tr>
-
-            </thead>
-
-            <tbody>
-                @for ($i = 1; $i <= 13; $i++)
-                    <tr>
-                        <td>{{ $i }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>ประจำเดือน
-                        <td></td>
-                        <td></td>
-                    </tr>
-                @endfor
-            </tbody>
-        </table>
-
-        <div class="footer-note">
-
-            <div class="footer-title">
-                ข้อกำหนดแนบท้ายแบบ ภ.ท. ๒๘
+        <form action="{{ route('pt28.store') }}" method="POST">
+            @csrf
+            <div class="header-right">
+                แบบ ภ.ท. ๒๘
             </div>
 
-            <ol>
-                <li>
-                    แนบ ภ.ท. ๒๘ ประจำปี ใช้กับใบอนุญาตทุกประเภท รวมถึงหน่วยงานของรัฐ
-                    ที่ทำการศึกษาวิจัยสมุนไพรควบคุม (กัญชา)
-                </li>
+            <div class="title">
+                แบบรายงานข้อมูลการนำไปใช้ สมุนไพรควบคุม (กัญชา)
+            </div>
 
-                <li>
-                    ให้กรอกข้อมูลและเลขประจำตัวประชาชนของผู้ซื้อ พร้อมแนบเอกสารกำกับทุกครั้ง
-                </li>
+            <div class="sub-title">
+                ประจำเดือน
+                <span class="underline">{{ thaiMonth(now()) }}</span>
+                พ.ศ.
+                <span class="underline">{{ thaiNumber(now()->year + 543) }}</span>
+            </div>
 
-                <li>
-                    กรณีข้อมูลไม่เพียงพอ หรือมีข้อจำกัดของหน่วยงาน สามารถจัดทำเอกสารแนบเพิ่มเติมได้
-                </li>
+            <div class="note">
+                (ผู้ได้รับอนุญาตต้องปฏิบัติตามข้อกำหนดแนบท้ายรายงานนี้)
+            </div>
 
-                <li>
-                    ผู้รับอนุญาตต้องส่งรายงานนี้ภายในวันสุดท้ายของเดือนถัดไป
-                </li>
+            <div class="receiver">
+                เรียน
+                นายทะเบียนกลาง หมายถึง อธิบดีกรมการแพทย์แผนไทยและการแพทย์ทางเลือก
+            </div>
 
-                <li>
-                    ผู้รับอนุญาตต้องเก็บรักษารายงานและเอกสารประกอบไว้ไม่น้อยกว่า ๓ ปี
-                </li>
-            </ol>
+            <div class="license-info">
+                ชื่อผู้รับอนุญาต
+            </div>
 
-        </div>
+            <div class="license-info">
+                เลขที่ใบอนุญาต
+            </div>
+            <button type="button" class="btn-add-row">
+                + เพิ่มรายการ
+            </button>
+            <table class="report-table">
+                <thead>
 
+                    <tr>
+                        <th rowspan="3" width="4%">ลำดับ</th>
+
+                        <th rowspan="3" width="8%">
+                            วันเดือนปี
+                        </th>
+
+                        <th rowspan="3" width="12%">
+                            เลขประจำตัวประชาชน/
+                            <br>
+                            เลขหนังสือเดินทาง
+                            <br>
+                            (ผู้ซื้อ)
+                        </th>
+
+                        <th rowspan="3" width="14%">
+                            <br>
+                            ชื่อผู้ซื้อ/
+                            ผู้รับอนุญาต
+                            <br>
+                            (ผู้ซื้อ)
+                        </th>
+
+                        <th rowspan="3" width="8%">
+                            วันเดือนปีเกิด
+                            <br>
+                            (ผู้ซื้อ)
+                        </th>
+
+                        <th colspan="6">
+                            การนำไปใช้ ณ สถานประกอบการ
+                        </th>
+
+                        <th rowspan="3" width="12%">
+                            เลขที่ใบอนุญาต
+                            <br>
+                            (ผู้ซื้อ)
+                        </th>
+
+                        <th rowspan="3" width="8%">
+                            ปริมาณช่อดอก
+                            <br>
+                            กัญชาแห้ง
+                            <br>
+                            (กรัม)
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th colspan="6">
+                            วัตถุประสงค์ของการนำไปใช้
+                            <br>
+                            (ทำเครื่องหมาย ✓ ในช่องที่ตรงตามวัตถุประสงค์)
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            ใช้เอง
+                            <br>
+                            <input type="checkbox" name="objective[]" value="ใช้เอง">
+                        </th>
+
+                        <th>
+                            ขายต่อ
+                            <br>
+                            <input type="checkbox" name="objective[]" value="ขายต่อ">
+                        </th>
+
+                        <th>
+                            ศึกษาวิจัย
+                            <br>
+                            <input type="checkbox" name="objective[]" value="ศึกษาวิจัย">
+                        </th>
+
+                        <th>
+                            ศึกษาวิจัย (หน่วยงานรัฐ)
+                            <br>
+                            <input type="checkbox" name="objective[]" value="หน่วยงานรัฐ">
+                        </th>
+
+                        <th>
+                            แปรรูป
+                            <br>
+                            <input type="checkbox" name="objective[]" value="ปรรูป">
+                        </th>
+
+                        <th>
+                            ส่งออก
+                            <br>
+                            <input type="checkbox" name="objective[]" value="ส่งออก">
+                        </th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="pt28-body">
+
+                </tbody>
+            </table>
+            <div class="action-submit">
+                <button type="submit" class="btn-save">
+                    💾 บันทึกข้อมูล
+                </button>
+            </div>
+
+        </form>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        jQuery(function($) {
+
+            let rowNumber = 0;
+
+
+            function initSelect2() {
+
+                $('.patient-select:not(.select2-hidden-accessible)').select2({
+                    placeholder: '-- ค้นหาผู้ป่วย --',
+                    allowClear: true,
+                    width: '100%'
+                });
+
+            }
+
+
+
+            function addRow() {
+
+                rowNumber++;
+
+
+                let html = `
+
+<tr>
+
+<td>${rowNumber}</td>
+
+
+<td>
+    <input type="date"
+        name="date[]"
+        value="{{ now()->format('Y-m-d') }}">
+</td>
+
+
+<td>
+    <select name="patient_id[]" class="patient-select">
+
+        <option value="">
+            -- ค้นหาผู้ป่วย --
+        </option>
+
+        @foreach ($patients as $patient)
+
+        <option value="{{ $patient->id }}"
+            data-name="{{ $patient->firstname }} {{ $patient->lastname }}"
+            data-birthdate="{{ \Carbon\Carbon::parse($patient->birthdate)->format('Y-m-d') }}">
+
+            {{ $patient->cid }}
+
+        </option>
+
+        @endforeach
+
+    </select>
+</td>
+
+
+<td>
+    <span class="name-text"></span>
+</td>
+
+
+<td>
+    <span class="birthdate-text"></span>
+</td>
+
+
+<td>
+    <input type="checkbox" name="objective[${rowNumber}][]" value="ใช้เอง">
+</td>
+
+<td>
+    <input type="checkbox" name="objective[${rowNumber}][]" value="ขายต่อ">
+</td>
+
+<td>
+    <input type="checkbox" name="objective[${rowNumber}][]" value="ศึกษาวิจัย">
+</td>
+
+<td>
+    <input type="checkbox" name="objective[${rowNumber}][]" value="หน่วยงานรัฐ">
+</td>
+
+<td>
+    <input type="checkbox" name="objective[${rowNumber}][]" value="แปรรูป">
+</td>
+
+<td>
+    <input type="checkbox" name="objective[${rowNumber}][]" value="ส่งออก">
+</td>
+
+
+<td>
+    <input type="text" name="license_no[]">
+</td>
+
+
+<td>
+    <input type="number" step="0.01" name="qty[]">
+</td>
+
+
+</tr>
+
+`;
+
+                $('#pt28-body').append(html);
+
+                initSelect2();
+
+            }
+
+
+
+            // โหลดหน้าแรก
+            for (let i = 0; i < 2; i++) {
+                addRow();
+            }
+
+
+
+            // ปุ่มเพิ่มรายการ
+            $('.btn-add-row').on('click', function() {
+
+                console.log('กดเพิ่มรายการ');
+
+                addRow();
+
+            });
+
+
+
+            // เลือกผู้ป่วย
+            $(document).on('change', '.patient-select', function() {
+
+
+                let row = $(this).closest('tr');
+
+                let option = this.options[this.selectedIndex];
+
+
+                row.find('.name-text')
+                    .text(option.dataset.name || '');
+
+
+
+                let birthdate = option.dataset.birthdate;
+
+
+
+                if (birthdate) {
+
+
+                    let date = new Date(birthdate);
+
+
+                    let day = String(date.getDate())
+                        .padStart(2, '0');
+
+
+                    let month = String(date.getMonth() + 1)
+                        .padStart(2, '0');
+
+
+                    let year = date.getFullYear() + 543;
+
+
+
+                    row.find('.birthdate-text')
+                        .text(`${day}/${month}/${year}`);
+
+
+                } else {
+
+
+                    row.find('.birthdate-text')
+                        .text('');
+
+                }
+
+
+            });
+
+
+        });
+    </script>
 @endsection

@@ -14,7 +14,6 @@ class Document extends Model
     protected $fillable = [
         'patient_id',
         'document_no',
-        'document_name',
         'type',
         'status',
         'pdf_path',
@@ -49,6 +48,15 @@ class Document extends Model
     {
         return $this->hasOne(
             Pt33::class,
+            'document_no',
+            'document_no'
+        );
+    }
+
+    public function pt28()
+    {
+        return $this->hasOne(
+            Pt28::class,
             'document_no',
             'document_no'
         );
