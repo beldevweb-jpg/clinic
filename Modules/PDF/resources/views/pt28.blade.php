@@ -20,15 +20,11 @@
         $objectives = json_decode($pt28->objective, true) ?? [];
     @endphp
     <style>
-        @page {
-            size: A4 portrait;
-            margin: 0;
-        }
-
         .page {
             position: relative;
             width: 210mm;
-            height: 297mm;
+            min-height: 297mm;
+            page-break-after: always;
         }
 
         .bg {
@@ -41,6 +37,7 @@
         }
 
         .text {
+
             position: absolute;
             z-index: 10;
             font-family: "TH Sarabun New";
@@ -56,11 +53,24 @@
             top: 28mm;
             left: 130mm;
         }
+
+        .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 210mm;
+            height: 297mm;
+            z-index: 0;
+        }
     </style>
 
-    @foreach ($pages as $page)
-        <div class="page">
+    @foreach ($pages as $pageIndex => $page)
+        @if ($pageIndex > 0)
+            <div style="page-break-before: always;"></div>
+        @endif
 
+        <div class="page">
+            <div style="height: 297mm;"></div>
             <img src="{{ asset('templates/PT28.jpg') }}" class="bg">
 
             {{-- หัวเอกสาร --}}
@@ -75,12 +85,13 @@
             {{-- รายการในหน้านี้ --}}
             @foreach ($page as $index => $detail)
                 @php
-                    $top = 118 + $index * 8;
+                    $offset = $pageIndex > 0 ? -87 : 0;
+                    $top = 118 + $offset + $index * 6.3;
                 @endphp
 
                 {{-- ลำดับ --}}
                 <div style="position:absolute; left:14mm; top:{{ $top }}mm;">
-                    {{ $loop->parent->index * 14 + $loop->iteration }}
+                    {{ $pageIndex * 14 + $index + 1 }}
                 </div>
 
                 {{-- วันที่ --}}
@@ -105,54 +116,51 @@
                             (\Carbon\Carbon::parse($detail->patient->birthday)->year + 543)
                         : '' }}
                 </div>
+
+                @if (in_array('ใช้เอง', $objectives))
+                    <div style="position:absolute; left:125mm; top:{{ $top }}mm;">
+                        ✓
+                    </div>
+                @endif
+
+                @if (in_array('ขายต่อ', $objectives))
+                    <div style="position:absolute; left:133mm; top:{{ $top }}mm;">
+                        ✓
+                    </div>
+                @endif
+
+                @if (in_array('ศึกษาวิจัย', $objectives))
+                    <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
+                        ✓
+                    </div>
+                @endif
+
+                @if (in_array('หน่วยงานรัฐ', $objectives))
+                    <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
+                        ✓
+                    </div>
+                @endif
+
+                @if (in_array('แปรรูป', $objectives))
+                    <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
+                        ✓
+                    </div>
+                @endif
+
+                @if (in_array('ส่งออก', $objectives))
+                    <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
+                        ✓
+                    </div>
+                @endif
+
+                <div style="position:absolute; left:150mm; top:{{ $top }}mm;">
+                    {{ $detail->license_no }}
+                </div>
+
+                <div style="position:absolute; left:192mm; top:{{ $top }}mm;">
+                    {{ $detail->dosage }}
+                </div>
             @endforeach
-
-            @if (in_array('ใช้เอง', $objectives))
-                <div style="position:absolute; left:125mm; top:{{ $top }}mm;">
-                    ✓
-                </div>
-            @endif
-
-            @if (in_array('ขายต่อ', $objectives))
-                <div style="position:absolute; left:133mm; top:{{ $top }}mm;">
-                    ✓
-                </div>
-            @endif
-
-            @if (in_array('ศึกษาวิจัย', $objectives))
-                <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
-                    ✓
-                </div>
-            @endif
-
-            @if (in_array('หน่วยงานรัฐ', $objectives))
-                <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
-                    ✓
-                </div>
-            @endif
-
-            @if (in_array('แปรรูป', $objectives))
-                <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
-                    ✓
-                </div>
-            @endif
-
-            @if (in_array('ส่งออก', $objectives))
-                <div style="position:absolute; left:141mm; top:{{ $top }}mm;">
-                    ✓
-                </div>
-            @endif
-
-            <div style="position:absolute; left:41mm; top:{{ $top }}mm;">
-                {{ $detail->license_no }}
-            </div>
-
-            <div style="position:absolute; left:192mm; top:{{ $top }}mm;">
-                {{ $detail->dosage }}
-            </div>
-
         </div>
-        @if (!$loop->last)
-            <div style="page-break-after: always;"></div>
-        @endif
     @endforeach
+@endsection

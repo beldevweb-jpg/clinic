@@ -302,7 +302,6 @@ class DocumentController extends Controller
                     'issue_date' => $request->date[$i],
                     'license_no' => $request->license_no[$i] ?? null,
                     'dosage' =>     $request->qty[$i] ?? 0,
-                    'flower_unit' => 'กรัม',
                 ]);
             }
 
@@ -316,7 +315,6 @@ class DocumentController extends Controller
             Document::create([
                 'patient_id' => null,
                 'document_no' => $documentNo,
-                'document_name' => 'แบบ ภ.ท. 28',
                 'type' => 'PT28',
                 'status' => 'completed',
                 'document_date' => now(),

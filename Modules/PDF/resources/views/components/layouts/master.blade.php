@@ -6,7 +6,8 @@
 
     <style>
         @page {
-            margin: 12mm;
+            size: A4 portrait;
+            margin: 0;
         }
 
         body {
@@ -18,7 +19,7 @@
 <body>
 
     @yield('content')
-{{-- <img src="{{ asset('templates/PT28.jpg') }}" class="bg"> --}}
+    {{-- <img src="{{ asset('templates/PT28.jpg') }}" class="bg"> --}}
 
 </body>
 
