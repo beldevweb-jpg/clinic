@@ -10,5 +10,6 @@
     "AuditLog": true,
     "Dashbord": true,
     "Dashboards": true,
-    "Medics": true
+    "Medics": true,
+    "MedicalCertificate": true
 }

@@ -307,9 +307,9 @@ class DocumentController extends Controller
 
             DB::commit();
 
-            // // Generate PDF ครั้งเดียว
-            // $pdfPath = app(PDFGenerator::class)
-            //     ->generatePT28($pt28);
+            // Generate PDF ครั้งเดียว
+            $pdfPath = app(PDFGenerator::class)
+                ->generatePT28($pt28);
 
             // Document 1 รายการ
             Document::create([
@@ -322,12 +322,12 @@ class DocumentController extends Controller
                 'created_by' => Auth::id() ?? 1,
             ]);
 
-            return redirect()
-                ->route('pt28.preview', $pt28->id);
+            // return redirect()
+            //     ->route('pt28.preview', $pt28->id);
 
-            // return response()->file(
-            //     storage_path('app/public/' . $pdfPath)
-            // );
+            return response()->file(
+                storage_path('app/public/' . $pdfPath)
+            );
         } catch (\Exception $e) {
 
             DB::rollBack();

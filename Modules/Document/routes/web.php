@@ -39,8 +39,5 @@ Route::middleware(['auth'])->group(function () {
     Route::POST('/documents/pt28/stor', [DocumentController::class, 'pt28_store'])
         ->name('pt28.store');
 
-    Route::get(
-        '/documents/pt28/preview/{id}',
-        [DocumentController::class, 'pt28_preview']
-    )->name('pt28.preview');
+        
 });

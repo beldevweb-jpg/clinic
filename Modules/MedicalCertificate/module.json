@@ -1,0 +1,11 @@
+{
+    "name": "MedicalCertificate",
+    "alias": "medicalcertificate",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\MedicalCertificate\\Providers\\MedicalCertificateServiceProvider"
+    ],
+    "files": []
+}

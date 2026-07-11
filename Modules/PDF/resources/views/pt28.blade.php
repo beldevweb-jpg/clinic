@@ -23,8 +23,8 @@
         .page {
             position: relative;
             width: 210mm;
-            min-height: 297mm;
-            page-break-after: always;
+            height: 297mm;
+            overflow: hidden;
         }
 
         .bg {
@@ -33,7 +33,9 @@
             left: 0;
             width: 210mm;
             height: 297mm;
-            z-index: 0;
+            background-image: url("{{ public_path('templates/PT28.jpg') }}");
+            background-size: 210mm 297mm;
+            background-repeat: no-repeat;
         }
 
         .text {
@@ -45,12 +47,12 @@
         }
 
         .month {
-            top: 28mm;
+            top: 26mm;
             left: 92mm;
         }
 
         .year {
-            top: 28mm;
+            top: 26mm;
             left: 130mm;
         }
 
@@ -60,18 +62,16 @@
             left: 0;
             width: 210mm;
             height: 297mm;
+            background-image: url("{{ public_path('templates/PT28.jpg') }}");
+            background-size: 210mm 297mm;
+            background-repeat: no-repeat;
             z-index: 0;
         }
     </style>
 
     @foreach ($pages as $pageIndex => $page)
-        @if ($pageIndex > 0)
-            <div style="page-break-before: always;"></div>
-        @endif
-
         <div class="page">
-            <div style="height: 297mm;"></div>
-            <img src="{{ asset('templates/PT28.jpg') }}" class="bg">
+            <div class="bg"></div>
 
             {{-- หัวเอกสาร --}}
             <div class="text month">
@@ -85,8 +85,9 @@
             {{-- รายการในหน้านี้ --}}
             @foreach ($page as $index => $detail)
                 @php
-                    $offset = $pageIndex > 0 ? -87 : 0;
-                    $top = 118 + $offset + $index * 6.3;
+                    $offset = $pageIndex * -87;
+
+                    $top = 116 + $offset + $index * 6.21;
                 @endphp
 
                 {{-- ลำดับ --}}
@@ -162,5 +163,6 @@
                 </div>
             @endforeach
         </div>
+
     @endforeach
 @endsection
