@@ -14,6 +14,7 @@ use Modules\Setting\Models\setting;
 use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;
 use Modules\Document\Models\Document;
+use Modules\Document\Models\Pt28Detail;
 use Modules\PDF\Http\Controllers\PDFController as PDFGenerator;
 
 class DocumentController extends Controller
@@ -299,10 +300,8 @@ class DocumentController extends Controller
                 $pt28->details()->create([
                     'patient_id' => $patientId,
                     'issue_date' => $request->date[$i],
-                    'license_no' =>
-                    $request->license_no[$i] ?? null,
-                    'dosage' =>
-                    $request->qty[$i] ?? 0,
+                    'license_no' => $request->license_no[$i] ?? null,
+                    'dosage' =>     $request->qty[$i] ?? 0,
                     'flower_unit' => 'กรัม',
                 ]);
             }
@@ -344,6 +343,7 @@ class DocumentController extends Controller
         $pt28 = Pt28::with([
             'details.patient'
         ])->findOrFail($id);
+
 
         $setting = Setting::first();
 
