@@ -11,9 +11,9 @@ Route::get('/dashboard', function () {
     return redirect()->route('dashboards.index');
 })->name('dashboard');
 
-Route::get('/dashboards', function () {
-    return view('dashboards::dashboards.index');
-})->middleware(['role:1'])->name('dashboards.index');
+// Route::get('/dashboards', function () {
+//     return view('dashboards::dashboards.index');
+// })->middleware(['role:1'])->name('dashboards.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

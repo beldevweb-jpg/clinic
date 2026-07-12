@@ -54,7 +54,13 @@
                                 <td>{{ $item->age }}</td>
                                 <td>{{ $item->gender }}</td>
                                 <td>{{ $item->phone }}</td>
-                                <td>#</td>
+                                <td>
+                                    @if ($item->visits->count())
+                                        {{ \Carbon\Carbon::parse($item->visits->first()->created_at)->format('d/m/Y') }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="{{ route('patient.edit', $item->id) }}" class="btn-action btn-edit">แก้ไข</a>
                                     <a href="#" class="btn-action btn-delete">ลบ</a>

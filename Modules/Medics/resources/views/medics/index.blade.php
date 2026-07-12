@@ -71,7 +71,7 @@
                                 </td>
 
                                 <td>
-                                    @if ($medic->status == 1)
+                                    @if ($medic->status == 'active')
                                         <span class="badge badge-success">
                                             ใช้งาน
                                         </span>

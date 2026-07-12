@@ -15,9 +15,16 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $patient = patient::get();
+        $patient = patient::with([
+            'visits' => function ($query) {
+                $query->latest('created_at');
+            }
+        ])->get();
+
         return view('patient::patient.index', compact('patient'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.

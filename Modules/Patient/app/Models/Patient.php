@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Document\Models\pt33;
 use Modules\Document\Models\Document;
+use Modules\Document\Models\Visit;
+
 // use Modules\Patient\Database\Factories\PatientFactory;
 
 class patient extends Model
@@ -44,5 +46,11 @@ class patient extends Model
     public function documents()
     {
         return $this->hasMany(Document::class);
+    }
+
+
+    public function visits()
+    {
+        return $this->hasMany(Visit::class, 'patient_id');
     }
 }
