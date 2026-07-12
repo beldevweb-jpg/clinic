@@ -30,6 +30,8 @@
 
             @csrf
 
+
+
             {{-- ข้อมูลบัตรประชาชน --}}
             <div class="card">
 
@@ -37,16 +39,26 @@
                     📇 ข้อมูลบัตรประชาชน
                 </div>
 
-                <button type="button" class="btn-reader" onclick="readCard()">
-                    🔍 อ่านข้อมูลจากบัตรประชาชน
-                </button>
 
                 <div class="grid">
+
+                    <div class="form-group">
+                        <label>ชื่อภาษาอังกฤษ</label>
+                        <input type="text" id="firstname_en" name="firstname_en" value="{{ old('firstname_en') }}">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>นามสกุลภาษาอังกฤษ</label>
+                        <input type="text" id="lastname_en" name="lastname_en" value="{{ old('lastname_en') }}">
+                    </div>
+
 
                     <div class="form-group">
                         <label>เลขบัตรประชาชน</label>
                         <input type="text" id="cid" name="cid" value="{{ old('cid') }}">
                     </div>
+
 
                     <div class="form-group">
                         <label>สัญชาติ</label>
@@ -82,9 +94,17 @@
                         <label>เพศ</label>
 
                         <select name="gender">
+
                             <option value="">เลือก</option>
-                            <option value="ชาย" {{ old('gender') == 'ชาย' ? 'selected' : '' }}>ชาย</option>
-                            <option value="หญิง" {{ old('gender') == 'หญิง' ? 'selected' : '' }}>หญิง</option>
+
+                            <option value="ชาย" {{ old('gender') == 'ชาย' ? 'selected' : '' }}>
+                                ชาย
+                            </option>
+
+                            <option value="หญิง" {{ old('gender') == 'หญิง' ? 'selected' : '' }}>
+                                หญิง
+                            </option>
+
                         </select>
 
                     </div>
@@ -170,6 +190,11 @@
             </div>
 
             <div class="action">
+                <button type="button" class="btn-reader" onclick="readCard()">
+
+                    🔍 อ่านข้อมูลจากบัตรประชาชน
+
+                </button>
 
                 <button type="submit" class="btn-save">
                     💾 บันทึกข้อมูล
@@ -184,8 +209,12 @@
         </form>
 
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const ekycCheckCardUrl = "{{ url('/ekyc/check-card') }}";
+    </script>
+
     <script src="{{ asset('js/patient.js') }}"></script>
-    <script src="{{ asset('js/patient.js') }}"></script>
+
+
 @endsection

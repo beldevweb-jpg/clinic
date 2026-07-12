@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Patient\Models\patient;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class PatientController extends Controller
 {
@@ -39,13 +40,14 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $request->validate(
             [
                 'cid' => [
                     'required',
                     'string',
                     'max:13',
-                    'unique:patient,cid'
+                    Rule::unique('patient', 'cid')
                 ],
                 'firstname' => 'required|string|max:100',
                 'lastname' => 'required|string|max:100',
@@ -116,6 +118,13 @@ class PatientController extends Controller
                 $patient = patient::create([
                     'hn' => 'HN' . str_pad($nextHN, 6, '0', STR_PAD_LEFT),
                     'cid' => $request->cid,
+                    'firstname_en' => $request->firstname_en,
+                    'lastname_en' => $request->lastname_en,
+
+                    'card_issue_date' => $request->card_issue_date,
+                    'card_expire_date' => $request->card_expire_date,
+
+                    'card_photo' => $request->card_photo,
                     'nationality' => $request->nationality,
                     'prefix' => $request->prefix,
                     'firstname' => $request->firstname,
@@ -145,14 +154,6 @@ class PatientController extends Controller
     }
 
     /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('patient::show');
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
@@ -166,13 +167,15 @@ class PatientController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($id);
         $request->validate(
             [
                 'cid' => [
                     'required',
                     'string',
                     'max:13',
-                    'unique:patient,cid'
+                    Rule::unique('patient', 'cid')
+                        ->ignore($id)
                 ],
                 'firstname' => 'required|string|max:100',
                 'lastname' => 'required|string|max:100',
@@ -213,6 +216,13 @@ class PatientController extends Controller
             $patient->update([
                 'cid' => $request->cid,
                 'nationality' => $request->nationality,
+                'firstname_en' => $request->firstname_en,
+                'lastname_en' => $request->lastname_en,
+
+                'card_issue_date' => $request->card_issue_date,
+                'card_expire_date' => $request->card_expire_date,
+
+                'card_photo' => $request->card_photo,
                 'prefix' => $request->prefix,
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,

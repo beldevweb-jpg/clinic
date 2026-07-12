@@ -25,6 +25,14 @@ class patient extends Model
         'prefix',
         'firstname',
         'lastname',
+
+        // Smart Card
+        'firstname_en',
+        'lastname_en',
+        'card_issue_date',
+        'card_expire_date',
+        'card_photo',
+
         'birthday',
         'age',
         'district',

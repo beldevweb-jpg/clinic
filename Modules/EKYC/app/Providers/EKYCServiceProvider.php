@@ -3,44 +3,55 @@
 namespace Modules\EKYC\Providers;
 
 use Nwidart\Modules\Support\ModuleServiceProvider;
-use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Route;
+use Modules\EKYC\Contracts\SmartCardReaderInterface;
+use Modules\EKYC\Drivers\MockSmartCardReader;
+use Modules\EKYC\Readers\ThaiSmartCardReader;
 
 class EKYCServiceProvider extends ModuleServiceProvider
 {
-    /**
-     * The name of the module.
-     */
+
     protected string $name = 'EKYC';
 
-    /**
-     * The lowercase version of the module name.
-     */
     protected string $nameLower = 'ekyc';
 
-    /**
-     * Command classes to register.
-     *
-     * @var string[]
-     */
-    // protected array $commands = [];
 
-    /**
-     * Provider classes to register.
-     *
-     * @var string[]
-     */
+
+    public function register(): void
+    {
+        $this->app->bind(
+            SmartCardReaderInterface::class,
+            function () {
+
+                return match (env('SMARTCARD_DRIVER')) {
+
+                    'thai' => new ThaiSmartCardReader(),
+
+                    default => new MockSmartCardReader(),
+                };
+            }
+        );
+    }
+
+
+
+    public function boot(): void
+    {
+        $this->registerRoutes();
+    }
+
+
+
+    protected function registerRoutes(): void
+    {
+        Route::middleware('web')
+            ->group(module_path('EKYC', 'routes/web.php'));
+    }
+
+
+
     protected array $providers = [
         EventServiceProvider::class,
         RouteServiceProvider::class,
     ];
-
-    /**
-     * Define module schedules.
-     * 
-     * @param $schedule
-     */
-    // protected function configureSchedules(Schedule $schedule): void
-    // {
-    //     $schedule->command('inspire')->hourly();
-    // }
 }
