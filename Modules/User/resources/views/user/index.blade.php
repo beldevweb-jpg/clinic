@@ -56,9 +56,23 @@
                                 </td>
 
                                 <td>
-                                    <a href="#" class="btn-action btn-view">ดู</a>
-                                    <a href="#" class="btn-action btn-edit">แก้ไข</a>
-                                    <a href="#" class="btn-action btn-delete">ลบ</a>
+                                    <a href="{{ route('user.edit', $user->id) }}" class="btn-action btn-edit">
+                                        แก้ไข
+                                    </a>
+
+
+                                    <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                        style="display:inline;">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="btn-action btn-delete"
+                                            onclick="return confirm('ต้องการลบผู้ใช้งานนี้หรือไม่?')">
+                                            ลบ
+                                        </button>
+
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
