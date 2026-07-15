@@ -5,20 +5,26 @@ namespace Modules\Document\Models;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Medics\Models\medics;
 use Modules\Patient\Models\patient;
+use Modules\Branchs\Models\Branchs;
+use Modules\AuditLog\Models\AuditLog;
 
-class Visit extends Model
+class Visits extends Model
 {
     protected $fillable = [
+        'branch_id',
         'patient_id',
-        'visit_no',
-        'visit_date',
         'medic_id',
-        'symptom',
-        'diagnosis',
+        'visit_date',
         'note',
-        'created_by',
     ];
 
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
+        );
+    }
 
     public function patient()
     {
@@ -31,9 +37,8 @@ class Visit extends Model
         return $this->belongsTo(Medics::class, 'medic_id');
     }
 
-
-    public function creator()
+    public function branch()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(Branchs::class, 'branch_id');
     }
 }

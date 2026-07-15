@@ -15,20 +15,55 @@ return new class extends Migration
 
             $table->id();
 
+
+            /**
+             * คนที่ทำรายการ
+             */
             $table->foreignId('user_id')
+                ->nullable()
                 ->constrained('user')
-                ->cascadeOnDelete();
+                ->nullOnDelete();
 
 
+            /**
+             * CREATE UPDATE DELETE PRINT
+             */
             $table->string('action');
 
-            $table->string('table_name');
 
-            $table->unsignedBigInteger('record_id')
+            /**
+             * Target Model
+             * เช่น
+             * Modules\Patient\Models\patient
+             * Modules\Document\Models\Document
+             */
+            $table->string('auditable_type');
+
+
+            /**
+             * ID ของ Model นั้น
+             */
+            $table->unsignedBigInteger('auditable_id');
+
+
+            $table->text('description')
+                ->nullable();
+
+
+            $table->ipAddress('ip_address')
                 ->nullable();
 
 
             $table->timestamps();
+
+
+            /**
+             * เพิ่ม index ให้ค้นหาเร็ว
+             */
+            $table->index([
+                'auditable_type',
+                'auditable_id'
+            ]);
         });
     }
 

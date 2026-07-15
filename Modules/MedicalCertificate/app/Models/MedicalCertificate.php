@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;
+use Modules\AuditLog\Models\AuditLog;
 
 class MedicalCertificate extends Model
 {
@@ -21,6 +22,15 @@ class MedicalCertificate extends Model
         'medics_id',
     ];
 
+
+
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
+        );
+    }
 
     public function patient()
     {

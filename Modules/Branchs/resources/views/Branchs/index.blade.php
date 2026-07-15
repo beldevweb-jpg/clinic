@@ -102,7 +102,7 @@
                             <th>ชื่อสาขา</th>
                             <th>ที่อยู่</th>
                             <th>เลขใบอนุญาต</th>
-                            <th>จัดการ</th>
+                            <th>สถานะ</th>
                             <th>จัดการ</th>
                         </tr>
                     </thead>
@@ -131,7 +131,7 @@
                                 </td>
 
                                 <td>
-                                    @if ($branch->status == 'active')
+                                    @if ($branch->active == '1')
                                         <span class="badge badge-success">
                                             ใช้งาน
                                         </span>

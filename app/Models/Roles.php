@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\AuditLog\Models\AuditLog;
 
 class Roles extends Model
 {
@@ -21,6 +22,16 @@ class Roles extends Model
             'role_user',
             'role_id',
             'user_id'
+        );
+    }
+
+
+
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
         );
     }
 }

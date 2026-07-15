@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Patient\Models\patient;
 use Modules\Medics\Models\medics;
+use Modules\Document\Models\Visits;
+use Modules\AuditLog\Models\AuditLog;
+
 // use Modules\Document\Database\Factories\Pt33Factory;
 
 class pt33 extends Model
@@ -39,6 +42,14 @@ class pt33 extends Model
     ];
     protected $table = 'pt33';
 
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
+        );
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
@@ -52,7 +63,6 @@ class pt33 extends Model
 
     public function visit()
     {
-        return $this->belongsTo(Visit::class);
+        return $this->belongsTo(Visits::class);
     }
-    
 }

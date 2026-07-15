@@ -11,5 +11,6 @@
     "Dashboards": true,
     "Medics": true,
     "MedicalCertificate": true,
-    "Branchs": true
+    "Branchs": true,
+    "Visits": true
 }

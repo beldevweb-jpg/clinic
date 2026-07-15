@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('visits', function (Blueprint $table) {
 
             $table->id();
-            $table->foreignId('branch_id')
+            $table->foreignId('branchs_id')
                 ->constrained('branches')
                 ->cascadeOnDelete();
 

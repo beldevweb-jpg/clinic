@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Roles;
 use App\Models\Branch;
+use Modules\AuditLog\Models\AuditLog;
+
 
 class User extends Authenticatable
 {
@@ -64,6 +66,14 @@ class User extends Authenticatable
         return $this->belongsTo(
             Branch::class,
             'branch_id'
+        );
+    }
+
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
         );
     }
 }

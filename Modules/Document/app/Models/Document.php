@@ -5,6 +5,7 @@ namespace Modules\Document\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\MedicalCertificate\Models\MedicalCertificate;
+use Modules\AuditLog\Models\AuditLog;
 
 class Document extends Model
 {
@@ -22,6 +23,13 @@ class Document extends Model
         'created_by',
     ];
 
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
+        );
+    }
 
     protected $casts = [
         'document_date' => 'date',

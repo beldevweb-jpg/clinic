@@ -140,7 +140,7 @@ class DocumentController extends Controller
             case 'PT33':
 
                 $document->load([
-                    'pt33.visit.medic',
+                    'pt33.visits.medic',
                     'patient'
                 ]);
 

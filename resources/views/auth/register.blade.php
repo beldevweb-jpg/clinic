@@ -152,17 +152,30 @@
             </div>
             @if (auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager')))
                 <div class="form-group">
+
                     <label>บทบาทผู้ใช้</label>
 
-                    <select name="role_id" class="form-control">
+                    <select name="role" class="form-control">
 
-                        <option value="1">👑 Admin</option>
-                        <option value="2">👤 Employee</option>
-                        <option value="3">🧑‍💼 Manager</option>
+                        <option value="admin">
+                            👑 Admin
+                        </option>
+
+                        <option value="manager">
+                            🧑‍💼 Manager
+                        </option>
+
+                        <option value="doctor">
+                            👨‍⚕️ Doctor
+                        </option>
+
+                        <option value="staff">
+                            👤 Staff
+                        </option>
 
                     </select>
 
-                </div>
+                </div>  
             @endif
 
             <button class="btn-submit">

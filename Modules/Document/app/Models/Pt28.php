@@ -5,6 +5,7 @@ namespace Modules\Document\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Document\Database\Factories\Pt28Factory;
+use Modules\AuditLog\Models\AuditLog;
 
 class Pt28 extends Model
 {
@@ -23,6 +24,16 @@ class Pt28 extends Model
         'objective',
         'pdf_path',
     ];
+
+
+
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
+        );
+    }
 
     public function details()
     {

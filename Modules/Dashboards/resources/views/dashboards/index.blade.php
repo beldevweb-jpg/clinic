@@ -4,58 +4,180 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
     <div class="dashboard">
-        <div class="panel">
-            <form method="GET" action="{{ route('dashboards.index') }}" class="date-search">
-                <div class="search-group">
-                    <label>
-                        <i class="fas fa-calendar"></i>
-                        เลือกวันที่เข้าใช้บริการ
-                    </label>
-                    <input type="date" name="date" value="{{ $searchDate }}" class="date-input">
+
+        {{-- Header --}}
+        <div class="dashboard-header">
+            <div>
+                <h2>
+                    <i class="fas fa-hospital"></i>
+                    ระบบจัดการคลินิก
+                </h2>
+                <p>
+                    สรุปข้อมูลประจำวันที่
+                    {{ \Carbon\Carbon::parse($searchDate)->locale('th')->translatedFormat('d F Y') }}
+                </p>
+            </div>
+            <form method="GET" action="{{ route('dashboards.index') }}">
+                <div class="date-box">
+                    <input type="date" name="date" value="{{ $searchDate }}">
+                    <button>
+                        <i class="fas fa-search"></i>
+                        ค้นหา
+                    </button>
                 </div>
-                <button type="submit" class="search-btn">
-                    <i class="fas fa-search"></i>
-                    ค้นหา
-                </button>
             </form>
         </div>
 
+        {{-- Cards --}}
         <div class="cards">
-
-
-            <div class="dashboard-card patient">
+            <div class="stat-card blue">
+                <div class="icon">
+                    <i class="fas fa-user-injured"></i>
+                </div>
                 <div>
-                    <h5>จำนวนผู้ป่วย</h5>
+                    <span>ผู้ป่วยทั้งหมด</span>
                     <h2>{{ $patients }}</h2>
                 </div>
             </div>
-
-
-            <div class="dashboard-card medic">
+            <div class="stat-card green">
+                <div class="icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
                 <div>
-                    <h5>จำนวนแพทย์</h5>
+                    <span>แพทย์</span>
                     <h2>{{ $medics }}</h2>
                 </div>
             </div>
 
-
-            <div class="dashboard-card document">
+            <div class="stat-card purple">
+                <div class="icon">
+                    <i class="fas fa-file-medical"></i>
+                </div>
                 <div>
-                    <h5>จำนวนเอกสาร</h5>
+                    <span>เอกสาร</span>
                     <h2>{{ $documents }}</h2>
                 </div>
             </div>
 
-
-            <div class="dashboard-card visit">
+            <div class="stat-card red">
+                <div class="icon">
+                    <i class="fas fa-notes-medical"></i>
+                </div>
                 <div>
-                    <h5>
-                        เข้าใช้บริการวันที่
-                        {{ \Carbon\Carbon::parse($searchDate)->format('d/m/Y') }}
-                    </h5>
-
+                    <span>เข้าใช้บริการวันนี้</span>
                     <h2>{{ $visits }}</h2>
                 </div>
+            </div>
+        </div>
+
+        {{-- Branch --}}
+        <div class="branch-card">
+            <div class="title">
+                <i class="fas fa-building"></i>
+                <h3>
+                    ยอดเข้าใช้บริการแต่ละสาขา
+                </h3>
+            </div>
+            <div class="branch-grid">
+                @foreach ($branchVisits as $branch)
+                    <div class="branch-item">
+                        <div>
+                            <h4>
+                                {{ $branch->name }}
+                            </h4>
+                            <p>
+                                {{ $branch->address }}
+                            </p>
+                        </div>
+                        <strong>
+                            {{ $branch->total_visits }}
+                            <small>คน</small>
+                        </strong>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <div class="visit-panel">
+
+
+            <div class="visit-header">
+
+                <div>
+                    <h3>
+                        <i class="fas fa-notes-medical"></i>
+                        รายการเข้าใช้บริการ
+                    </h3>
+
+                    <p>
+                        วันที่
+                        {{ \Carbon\Carbon::parse($searchDate)->locale('th')->translatedFormat('d F Y') }}
+                    </p>
+
+                </div>
+
+
+                <a href="#" class="view-btn">
+                    ดูทั้งหมด
+                </a>
+
+            </div>
+
+            <div class="visit-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>HN</th>
+                            <th>ผู้ป่วย</th>
+                            <th>แพทย์</th>
+                            <th>สาขา</th>
+                            <th>เวลา</th>
+                            <th>สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($latestVisits as $visit)
+                            <tr>
+                                <td>
+                                    {{ $visit->patient?->hn ?? '-' }} </td>
+
+                                <td>
+                                    <div class="patient-info">
+                                        <div class="avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <span>
+                                            {{ $visit->patient->firstname }}
+                                            {{ $visit->patient->lastname }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ $visit->medic?->firstname }}
+                                    {{ $visit->medic?->lastname }}
+                                </td>
+                                <td>
+                                    {{ $visit->branch?->name ?? '-' }}
+                                </td>
+
+                                <td>
+                                    {{ \Carbon\Carbon::parse($visit->visit_date)->format('H:i') }}
+                                </td>
+
+                                <td>
+                                    <span class="status success">
+                                        เข้ารับบริการ
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="empty">
+                                    ไม่มีข้อมูลเข้าใช้บริการ
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

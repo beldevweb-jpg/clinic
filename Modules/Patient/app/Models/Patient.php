@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Document\Models\pt33;
 use Modules\Document\Models\Document;
-use Modules\Document\Models\Visit;
+use Modules\Document\Models\Visits;
+use Modules\AuditLog\Models\AuditLog;
 
 // use Modules\Patient\Database\Factories\PatientFactory;
 
@@ -59,6 +60,16 @@ class patient extends Model
 
     public function visits()
     {
-        return $this->hasMany(Visit::class, 'patient_id');
+        return $this->hasMany(Visits::class, 'patient_id');
+    }
+
+
+
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
+        );
     }
 }

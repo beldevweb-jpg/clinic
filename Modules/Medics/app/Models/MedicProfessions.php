@@ -3,6 +3,8 @@
 namespace Modules\Medics\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\AuditLog\Models\AuditLog;
+
 
 class MedicProfessions extends Model
 {
@@ -13,6 +15,13 @@ class MedicProfessions extends Model
         'profession_id',
     ];
 
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
+        );
+    }
 
     public function profession()
     {

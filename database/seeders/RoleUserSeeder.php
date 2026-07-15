@@ -12,6 +12,7 @@ class RoleUserSeeder extends Seeder
     public function run(): void
     {
 
+        // สร้าง Role
         $roles = [
             [
                 'name' => 'Admin',
@@ -40,10 +41,10 @@ class RoleUserSeeder extends Seeder
                 ],
                 $role
             );
-
         }
 
 
+        // สร้าง Admin User
         $admin = User::firstOrCreate(
             [
                 'username' => 'admin'
@@ -51,18 +52,16 @@ class RoleUserSeeder extends Seeder
             [
                 'name' => 'System Admin',
                 'password' => Hash::make('admin112233'),
-                'branch_id' => null,
                 'active' => true,
             ]
         );
 
 
-        $adminRole = Roles::where('slug','admin')->first();
-
+        // Assign Role Admin
+        $adminRole = Roles::where('slug', 'admin')->first();
 
         $admin->roles()->sync([
             $adminRole->id
         ]);
-
     }
 }

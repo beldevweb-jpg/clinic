@@ -5,6 +5,7 @@ namespace Modules\Patient\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Patient\Database\Factories\HnFactory;
+use Modules\AuditLog\Models\AuditLog;
 
 class hn_running extends Model
 {
@@ -26,4 +27,14 @@ class hn_running extends Model
     // {
     //     // return HnFactory::new();
     // }
+
+
+
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
+        );
+    }
 }
