@@ -150,32 +150,33 @@
                 <input type="password" name="password_confirmation" class="form-control" placeholder="********"
                     required>
             </div>
+            @if (auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager')))
+                <div class="form-group">
+                    <label>บทบาทผู้ใช้</label>
 
-            <div class="form-group">
-                <label>บทบาทผู้ใช้</label>
+                    <select name="role_id" class="form-control">
 
-                <select name="role" class="form-control" required>
-                    <option value="">-- เลือกบทบาท --</option>
-                    <option value="1" {{ old('role') == '1' ? 'selected' : '' }}>👑 Admin</option>
-                    <option value="2" {{ old('role') == '2' ? 'selected' : '' }}>👤 Employee</option>
-                    <option value="3" {{ old('role') == '3' ? 'selected' : '' }}>🧑‍💼 Manager</option>
-                </select>
-            </div>
+                        <option value="1">👑 Admin</option>
+                        <option value="2">👤 Employee</option>
+                        <option value="3">🧑‍💼 Manager</option>
+
+                    </select>
+
+                </div>
+            @endif
 
             <button class="btn-submit">
                 สมัครสมาชิก
             </button>
 
-        </form>
-        @if (!auth()->check())
-            <div class="login-link">
-                มีบัญชีแล้ว?
-                <a href="{{ route('login') }}">
-                    เข้าสู่ระบบ
-                </a>
-            </div>
-        @endif
-
+            @guest
+                <div class="login-link">
+                    มีบัญชีแล้ว?
+                    <a href="{{ route('login') }}">
+                        เข้าสู่ระบบ
+                    </a>
+                </div>
+            @endguest
     </div>
 
 </div>

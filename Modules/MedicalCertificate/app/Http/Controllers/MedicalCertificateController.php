@@ -5,7 +5,7 @@ namespace Modules\MedicalCertificate\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Patient\Models\patient;
-use Modules\Setting\Models\setting;
+use Modules\branches\Models\branches;
 use Modules\Medics\Models\medics;
 use Modules\PDF\Http\Controllers\PDFController;
 use Modules\MedicalCertificate\Models\MedicalCertificate;

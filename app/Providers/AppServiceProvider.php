@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use Modules\Setting\Models\Setting;
+use Modules\branches\Models\branches;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,8 +15,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        View::composer('core::components.layouts.top', function ($view) {
-            $view->with('setting', Setting::first());
-        });
+        // View::composer('core::components.layouts.top', function ($view) {
+        //     $view->with('setting', Setting::first());
+        // });
     }
 }

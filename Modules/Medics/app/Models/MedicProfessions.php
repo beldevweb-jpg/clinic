@@ -3,8 +3,6 @@
 namespace Modules\Medics\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Medics\Database\Factories\MedicProfessionsFactory;
 
 class MedicProfessions extends Model
 {
@@ -12,12 +10,24 @@ class MedicProfessions extends Model
 
     protected $fillable = [
         'medic_id',
-        'professions_id',
+        'profession_id',
     ];
 
 
     public function profession()
     {
-        return $this->belongsTo(Professions::class, 'professions_id');
+        return $this->belongsTo(
+            Professions::class,
+            'profession_id'
+        );
+    }
+
+
+    public function medic()
+    {
+        return $this->belongsTo(
+            medics::class,
+            'medic_id'
+        );
     }
 }

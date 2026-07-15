@@ -2,22 +2,23 @@
 
 <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/pt33.css') }}">
+<link rel="stylesheet" href="{{ asset('css/error.css') }}">
 
 
 @section('content')
     <div class="form-container">
-        {{-- แจ้งเตือน --}}
         @if (session('success'))
-            <div class="alert success">
-                {{ session('success') }}
-            </div>
-        @endif
+            <div class="notify notify-success">
+                <div class="notify-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
 
-        @if ($errors->any())
-            <div class="alert error">
-                @foreach ($errors->all() as $error)
-                    <div>• {{ $error }}</div>
-                @endforeach
+                <div class="notify-content">
+                    <h6>ดำเนินการสำเร็จ</h6>
+                    <p>{{ session('success') }}</p>
+                </div>
+
+                <button class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
         <form action="{{ route('pt33.store') }}" method="POST" id="pt33Form">

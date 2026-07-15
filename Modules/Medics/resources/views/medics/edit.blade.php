@@ -1,6 +1,7 @@
 @extends('core::components.layouts.master')
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/medic.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/error.css') }}">
 @endpush
 @section('content')
     <div class="medic-container">
@@ -16,16 +17,17 @@
                     <div class="medic-grid">
                         {{-- แจ้งเตือน --}}
                         @if (session('success'))
-                            <div class="alert success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
+                            <div class="notify notify-success">
+                                <div class="notify-icon">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                </div>
 
-                        @if ($errors->any())
-                            <div class="alert error">
-                                @foreach ($errors->all() as $error)
-                                    <div>• {{ $error }}</div>
-                                @endforeach
+                                <div class="notify-content">
+                                    <h6>ดำเนินการสำเร็จ</h6>
+                                    <p>{{ session('success') }}</p>
+                                </div>
+
+                                <button class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         @endif
                         <div class="medic-group medic-full">
@@ -37,7 +39,7 @@
                                     <label class="profession-item">
 
                                         <input type="checkbox" name="profession_ids[]" value="{{ $profession->id }}"
-                                            @if ($medic->professions->contains('professions_id', $profession->id)) checked @endif>
+                                            @if ($medic->professions->contains('profession_id', $profession->id)) checked @endif>
 
                                         <span>
                                             {{ $profession->name }}

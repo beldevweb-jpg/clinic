@@ -3,55 +3,50 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Roles;
 use App\Models\User;
+use App\Models\Roles;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
-     */
-    public function store(Request $request): RedirectResponse
+
+    public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['nullable', 'string', 'max:255', 'required_without:email'],
-            'email' => ['nullable', 'string', 'email', 'max:255', 'required_without:username'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'name' => 'required',
+            'username' => [
+                'required',
+                Rule::unique('user', 'username'),
+            ],
+            'password' => 'required|min:6',
+        ], [
+            'username.unique' => 'Username นี้มีอยู่ในระบบแล้ว กรุณาใช้ Username อื่น',
+            'username.required' => 'กรุณากรอก Username',
         ]);
 
-        $role = Roles::query()->firstOrCreate(['name' => 'User']);
-        $username = $request->username ?? $request->email;
 
         $user = User::create([
             'name' => $request->name,
-            'username' => $username,
-            'password' => Hash::make($request->password),
-            'role_id' => $role->id,
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+            'active' => 1,
         ]);
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('dashboard', absolute: false));
+        $user->roles()->attach(1);
+        return redirect()
+            ->route('dashboards.index')
+            ->with('success', 'เพิ่มผู้ใช้งานสำเร็จ');
     }
 }

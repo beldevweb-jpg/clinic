@@ -4,7 +4,7 @@
         🌿
         <div>
             <strong>e-KYE Smart Card Reader</strong>
-            <small>{{ $setting->clinic ?? '-' }}</small>
+            <small>{{ $branches->name ?? '-' }}</small>
         </div>
     </div>
 
@@ -28,6 +28,11 @@
         <a href="{{ route('documents.index') }}" class="{{ request()->routeIs('documents.index') ? 'active' : '' }}">
             เอกสาร
         </a>
+        @if (auth()->user()->hasRole('admin'))
+            <a href="{{ route('branchs.index') }}" class="{{ request()->routeIs('branchs.index') ? 'active' : '' }}">
+                จัดการสาขา
+            </a>
+        @endif
     </nav>
 
     <div class="profile">
@@ -53,7 +58,7 @@
             <a href="{{ route('profile.edit') }}">
                 👤 โปรไฟล์
             </a>
-            <a href="{{ route('setting.index') }}">⚙ ตั้งค่า</a>
+            {{-- <a href="{{ route('setting.index') }}">⚙ ตั้งค่า</a> --}}
             <hr>
 
             <form method="POST" action="{{ route('logout') }}">

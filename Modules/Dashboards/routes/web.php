@@ -8,8 +8,7 @@ Route::get('/dashboard', function () {
     return redirect()->route('dashboards.index');
 })->name('dashboard');
 
-
-Route::middleware(['auth', 'role:1'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboards', [
         DashboardsController::class,

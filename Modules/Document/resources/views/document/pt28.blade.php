@@ -1,6 +1,8 @@
 @extends('core::components.layouts.master')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="{{ asset('css/pt28.css') }}">
+<link rel="stylesheet" href="{{ asset('css/error.css') }}">
+
 @section('content')
     @php
         use Carbon\Carbon;
@@ -61,18 +63,18 @@
                 + เพิ่มรายการ
             </button>
             <table class="report-table">
-                {{-- แจ้งเตือน --}}
                 @if (session('success'))
-                    <div class="alert success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                    <div class="notify notify-success">
+                        <div class="notify-icon">
+                            <i class="bi bi-check-circle-fill"></i>
+                        </div>
 
-                @if ($errors->any())
-                    <div class="alert error">
-                        @foreach ($errors->all() as $error)
-                            <div>• {{ $error }}</div>
-                        @endforeach
+                        <div class="notify-content">
+                            <h6>ดำเนินการสำเร็จ</h6>
+                            <p>{{ session('success') }}</p>
+                        </div>
+
+                        <button class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 @endif
                 <thead>

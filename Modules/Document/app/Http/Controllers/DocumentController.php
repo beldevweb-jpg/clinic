@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Document\Models\pt33;
 use Modules\Document\Models\pt28;
-use Modules\Setting\Models\setting;
+use Modules\branches\Models\branches;
 use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;
 use Modules\Document\Models\Document;
@@ -32,7 +32,7 @@ class DocumentController extends Controller
 
         $patients = Patient::orderBy('firstname')->get();
 
-        $setting = Setting::first();
+        $branches = branches::first();
 
         $medics = Medics::with('professions.profession')
             ->where('status', 1)
@@ -42,7 +42,7 @@ class DocumentController extends Controller
         return view('document::document.pt33', compact(
             'pt33',
             'patients',
-            'setting',
+            'branches',
             'medics'
         ));
     }
@@ -148,7 +148,7 @@ class DocumentController extends Controller
 
                 $patients = Patient::orderBy('firstname')->get();
 
-                $setting = Setting::first();
+                $branches = branches::first();
 
                 $medics = Medics::with('professions.profession')
                     ->where('status', 1)
@@ -162,7 +162,7 @@ class DocumentController extends Controller
                         'document',
                         'pt33',
                         'patients',
-                        'setting',
+                        'branches',
                         'medics'
                     )
                 );
@@ -201,7 +201,7 @@ class DocumentController extends Controller
 
                 $patients = Patient::orderBy('firstname')->get();
 
-                $setting = Setting::first();
+                $branches = branches::first();
 
                 $medics = Medics::with('professions.profession')
                     ->where('status', 1)
@@ -215,7 +215,7 @@ class DocumentController extends Controller
                         'document',
                         'medicalCertificate',
                         'patients',
-                        'setting',
+                        'branches',
                         'medics'
                     )
                 );
@@ -743,14 +743,14 @@ class DocumentController extends Controller
         ])->findOrFail($id);
 
 
-        $setting = Setting::first();
+        $branches = branches::first();
 
         $pages = $pt28->details->chunk(14);
 
         return view('pdf::pt28', [
             'pt28' => $pt28,
             'pages' => $pages,
-            'setting' => $setting,
+            'branches' => $branches,
         ]);
     }
 }

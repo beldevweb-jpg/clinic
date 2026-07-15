@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Modules\Document\Models\Pt33;
-use Modules\Setting\Models\Setting;
+use Modules\branches\Models\branches;
 use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;
 use Modules\Document\Models\Document;
@@ -28,7 +28,7 @@ class PDFController extends Controller
     }
     public function generatePT33(Pt33 $pt33, $medicId)
     {
-        $setting = Setting::first();
+        $branches = branches::first();
 
         $medic = Medics::with('professions.profession')
             ->findOrFail($medicId);
@@ -43,7 +43,7 @@ class PDFController extends Controller
         $pdf = Pdf::loadView('pdf::pt33', [
             'pt33' => $pt33,
             'patient' => $pt33->patient,
-            'setting' => $setting,
+            'branches' => $branches,
             'medic' => $medic,
         ])
             ->setPaper('a4')
@@ -74,7 +74,7 @@ class PDFController extends Controller
 
     public function generatePT28(Pt28 $pt28)
     {
-        $setting = Setting::first();
+        $branches = branches::first();
 
         $pt28->load([
             'details.patient'
@@ -85,7 +85,7 @@ class PDFController extends Controller
         $pdf = Pdf::loadView('pdf::pt28', [
             'pt28' => $pt28,
             'pages' => $pages,
-            'setting' => $setting,
+            'branches' => $branches,
         ])
             ->setPaper('a4')
             ->setOptions([
@@ -113,7 +113,7 @@ class PDFController extends Controller
 
     public function generateMedicalCertificate(MedicalCertificate $certificate)
     {
-        $setting = Setting::first();
+        $branches = branches::first();
 
         $certificate->load([
             'patient',
@@ -122,7 +122,7 @@ class PDFController extends Controller
 
         $pdf = Pdf::loadView('pdf::medical-certificate', [
             'certificate' => $certificate,
-            'setting' => $setting,
+            'branches' => $branches,
         ])
             ->setPaper('A4', 'portrait')
             ->setOptions([

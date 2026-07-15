@@ -40,7 +40,7 @@ test('email verification status is unchanged when the email address is unchanged
         ->actingAs($user)
         ->patch('/profile', [
             'name' => 'Test User',
-            'email' => $user->email,
+            'username' => $user->username,
         ]);
 
     $response

@@ -1,5 +1,7 @@
 @extends('core::components.layouts.master')
 <link rel="stylesheet" href="{{ asset('css/table.css') }}">
+<link rel="stylesheet" href="{{ asset('css/error.css') }}">
+
 @section('content')
     <div class="container" style="max-width:1500px;margin:auto">
         <div class="card-custom">
@@ -9,21 +11,20 @@
                 <span>จำนวน {{ $users->count() }} คน</span>
             </div>
 
-            {{-- แจ้งเตือน --}}
             @if (session('success'))
-                <div class="alert success">
-                    {{ session('success') }}
+                <div class="notify notify-success">
+                    <div class="notify-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+
+                    <div class="notify-content">
+                        <h6>ดำเนินการสำเร็จ</h6>
+                        <p>{{ session('success') }}</p>
+                    </div>
+
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
-
-            @if ($errors->any())
-                <div class="alert error">
-                    @foreach ($errors->all() as $error)
-                        <div>• {{ $error }}</div>
-                    @endforeach
-                </div>
-            @endif
-
             <div class="table-container">
                 <div style="display:flex; justify-content:flex-end; margin-bottom:10px;">
                     <a href="{{ route('register') }}" style="font-weight:bold;text-decoration:none;">

@@ -3,6 +3,7 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link rel="stylesheet" href="{{ asset('css/error.css') }}">
 
 <link rel="stylesheet" href="{{ asset('css/pt33_edit.css') }}">
 @section('content')
@@ -11,16 +12,17 @@
         <div class="paper">
             {{-- แจ้งเตือน --}}
             @if (session('success'))
-                <div class="alert success">
-                    {{ session('success') }}
-                </div>
-            @endif
+                <div class="notify notify-success">
+                    <div class="notify-icon">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
 
-            @if ($errors->any())
-                <div class="alert error">
-                    @foreach ($errors->all() as $error)
-                        <div>• {{ $error }}</div>
-                    @endforeach
+                    <div class="notify-content">
+                        <h6>ดำเนินการสำเร็จ</h6>
+                        <p>{{ session('success') }}</p>
+                    </div>
+
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
             <div class="header">

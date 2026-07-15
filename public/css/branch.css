@@ -1,0 +1,92 @@
+:root {
+    --primary-color: #0d6efd;
+    --transition-speed: 0.2s;
+}
+
+/* ตั้งค่าพื้นฐานป้องกันการคำนวณขนาดกล่องเพี้ยน */
+.branch-card,
+.branch-card * {
+    box-sizing: border-box;
+}
+
+/* ตัวการ์ดหลัก */
+.branch-card {
+    max-width: 700px;
+    width: 100%;
+    border-radius: 16px !important;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+/* ไอคอน */
+.branch-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+/* ส่วนช่องรับข้อมูล: ปรับความกว้าง 100% เสมอเพื่อให้พอดีกับ Grid ของ Bootstrap */
+.custom-input {
+    width: 100% !important;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.95rem;
+    color: #212529;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.custom-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+}
+
+.custom-input.is-invalid:focus {
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.15) !important;
+}
+
+.form-label {
+    font-size: 0.875rem;
+    color: #495057;
+    margin-bottom: 0.4rem;
+}
+
+textarea.custom-input {
+    min-height: 100px;
+    resize: none;
+}
+
+.custom-switch {
+    cursor: pointer;
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+.btn {
+    border-radius: 8px;
+    transition: all var(--transition-speed) ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25) !important;
+}
+
+.btn-light:hover {
+    background-color: #f1f3f5;
+}
+
+/* การแสดงผลบนสมาร์ตโฟน (ชิดขอบจออย่างสวยงาม ไม่ล้นจอ) */
+@media (max-width: 768px) {
+    .branch-card {
+        border-radius: 0px !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        border: none;
+    }
+    .card-body {
+        padding: 1.5rem !important;
+    }
+}

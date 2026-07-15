@@ -6,10 +6,10 @@
     "Document": true,
     "PDF": true,
     "Report": true,
-    "Setting": true,
     "AuditLog": true,
     "Dashbord": true,
     "Dashboards": true,
     "Medics": true,
-    "MedicalCertificate": true
+    "MedicalCertificate": true,
+    "Branchs": true
 }
