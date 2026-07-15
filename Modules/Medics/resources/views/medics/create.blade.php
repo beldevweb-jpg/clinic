@@ -47,11 +47,14 @@
                                 <option value="">
                                     เลือก
                                 </option>
-                                <option value="นพ.">
-                                    นพ.
+                                <option value="นาย">
+                                    นาย
                                 </option>
-                                <option value="พญ.">
-                                    พญ.
+                                <option value="นาง">
+                                    นาง
+                                </option>
+                                <option value="นางสาว">
+                                    นางสาว
                                 </option>
                             </select>
                         </div>

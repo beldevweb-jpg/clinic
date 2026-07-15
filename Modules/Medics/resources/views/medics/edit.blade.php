@@ -59,12 +59,16 @@
                                     เลือก
                                 </option>
 
-                                <option value="นพ." {{ $medic->prefix == 'นพ.' ? 'selected' : '' }}>
-                                    นพ.
+                                <option value="นาย" {{ $medic->prefix == 'นาย' ? 'selected' : '' }}>
+                                    นาย
                                 </option>
 
-                                <option value="พญ." {{ $medic->prefix == 'พญ.' ? 'selected' : '' }}>
-                                    พญ.
+                                <option value="นาง" {{ $medic->prefix == 'นาง' ? 'selected' : '' }}>
+                                    นาง
+                                </option>
+
+                                <option value="นางสาว" {{ $medic->prefix == 'นางสาว' ? 'selected' : '' }}>
+                                    นางสาว
                                 </option>
 
                             </select>
