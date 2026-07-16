@@ -2,55 +2,128 @@
 
 namespace Modules\AuditLog\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Modules\AuditLog\Models\AuditLog;
+use Modules\Branchs\Models\Branchs;
+
 
 class AuditLogController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+
+    public function index(Request $request)
     {
-        return view('auditlog::index');
+
+        $logs = AuditLog::with([
+            'user',
+            'branch'
+        ])
+
+            ->when($request->search, function ($q) use ($request) {
+
+                $search = $request->search;
+
+
+                $q->where(function ($query) use ($search) {
+
+                    $query->where(
+                        'description',
+                        'like',
+                        "%{$search}%"
+                    )
+
+                        ->orWhere(
+                            'ip_address',
+                            'like',
+                            "%{$search}%"
+                        )
+
+                        ->orWhere(
+                            'auditable_id',
+                            $search
+                        );
+                });
+            })
+
+
+            ->when($request->action, function ($q) use ($request) {
+
+                $q->where(
+                    'action',
+                    $request->action
+                );
+            })
+
+
+            ->when($request->branch_id, function ($q) use ($request) {
+
+                $q->where(
+                    'branch_id',
+                    $request->branch_id
+                );
+            })
+
+
+            ->when($request->start_date, function ($q) use ($request) {
+
+                $q->whereDate(
+                    'created_at',
+                    '>=',
+                    $request->start_date
+                );
+            })
+
+
+            ->when($request->end_date, function ($q) use ($request) {
+
+                $q->whereDate(
+                    'created_at',
+                    '<=',
+                    $request->end_date
+                );
+            })
+
+
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+
+
+        $branches = Branchs::where(
+            'active',
+            1
+        )->get();
+
+
+
+        return view(
+            'auditlog::index',
+            compact(
+                'logs',
+                'branches'
+            )
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('auditlog::create');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
 
-    /**
-     * Show the specified resource.
-     */
+
     public function show($id)
     {
-        return view('auditlog::show');
+
+        $log = AuditLog::with([
+            'user',
+            'branch'
+        ])
+            ->findOrFail($id);
+
+
+
+        return view(
+            'auditlog::show',
+            compact('log')
+        );
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('auditlog::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }

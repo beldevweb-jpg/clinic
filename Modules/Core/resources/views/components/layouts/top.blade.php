@@ -4,7 +4,9 @@
         🌿
         <div>
             <strong>e-KYE Smart Card Reader</strong>
-            <small>{{ $branches->name ?? '-' }}</small>
+            <small>
+                {{ auth()->user()->branch?->name ?? '-' }}
+            </small>
         </div>
     </div>
 
@@ -31,6 +33,10 @@
         @if (auth()->user()->hasRole('admin'))
             <a href="{{ route('branchs.index') }}" class="{{ request()->routeIs('branchs.index') ? 'active' : '' }}">
                 จัดการสาขา
+            </a>
+
+            <a href="{{ route('audit.index') }}" class="{{ request()->routeIs('audit.index') ? 'active' : '' }}">
+                ประวัติการใช้งาน
             </a>
         @endif
     </nav>

@@ -38,6 +38,7 @@
                             <th>#</th>
                             <th>ชื่อ</th>
                             <th>Username</th>
+                            <th>สาขา</th>
                             <th>สถานะ</th>
                             <th>จัดการ</th>
                         </tr>
@@ -46,35 +47,71 @@
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->username }}</td>
 
                                 <td>
-                                    <span class="badge badge-success">
-                                        ใช้งาน
-                                    </span>
+                                    {{ $loop->iteration }}
+                                </td>
+
+
+                                <td>
+                                    {{ $user->name }}
+                                </td>
+
+
+                                <td>
+                                    {{ $user->branch?->name ?? 'ทุกสาขา' }}
                                 </td>
 
                                 <td>
+                                    {{ $user->username }}
+                                </td>
+
+
+                                <td>
+
+                                    @if ($user->active)
+                                        <span class="badge badge-success">
+                                            ใช้งาน
+                                        </span>
+                                    @else
+                                        <span class="badge badge-danger">
+                                            ปิดใช้งาน
+                                        </span>
+                                    @endif
+
+                                </td>
+
+
+                                <td>
+
                                     <a href="{{ route('user.edit', $user->id) }}" class="btn-action btn-edit">
                                         แก้ไข
                                     </a>
 
 
-                                    <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                                        style="display:inline;">
+                                    @if ($user->active)
+                                        <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                            style="display:inline;">
 
-                                        @csrf
-                                        @method('DELETE')
+                                            @csrf
+                                            @method('DELETE')
 
-                                        <button type="submit" class="btn-action btn-delete"
-                                            onclick="return confirm('ต้องการลบผู้ใช้งานนี้หรือไม่?')">
-                                            ลบ
-                                        </button>
+                                            <button type="submit" class="btn-action btn-delete"
+                                                onclick="return confirm('ต้องการปิดการใช้งานผู้ใช้นี้หรือไม่?')">
 
-                                    </form>
+                                                ปิดใช้งาน
+
+                                            </button>
+
+                                        </form>
+                                    @else
+                                        <span class="btn-action">
+                                            ปิดแล้ว
+                                        </span>
+                                    @endif
+
                                 </td>
+
                             </tr>
                         @endforeach
                     </tbody>

@@ -37,14 +37,60 @@ class MedicsController extends Controller
     {
 
         $request->validate([
-            'profession_ids'   => 'required|array|min:1',
-            'profession_ids.*' => 'required',
-            'prefix'           => 'required|string',
-            'firstname'        => 'required|string|max:255',
-            'lastname'         => 'required|string|max:255',
-            'license'          => 'required|string|max:100|unique:medics,license',
-            'signature'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'status'           => 'required|boolean',
+
+            'profession_ids' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+
+            'profession_ids.*' => [
+                'required',
+                'exists:professions,id',
+            ],
+
+
+            'prefix' => [
+                'required',
+                'string',
+            ],
+
+
+            'firstname' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+
+            'lastname' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+
+            'license' => [
+                'required',
+                'string',
+                'max:100',
+                'unique:medics,license',
+            ],
+
+
+            'signature' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png',
+                'max:2048',
+            ],
+
+
+            'status' => [
+                'required',
+                'boolean',
+            ],
+
         ], [
 
             'profession_ids.required' => 'กรุณาเลือกวิชาชีพอย่างน้อย 1 รายการ',
@@ -52,44 +98,51 @@ class MedicsController extends Controller
             'profession_ids.min'      => 'กรุณาเลือกวิชาชีพอย่างน้อย 1 รายการ',
 
             'profession_ids.*.required' => 'กรุณาเลือกวิชาชีพ',
+            'profession_ids.*.exists'   => 'ไม่พบข้อมูลวิชาชีพนี้',
+
 
             'prefix.required' => 'กรุณาเลือกคำนำหน้า',
             'prefix.string'   => 'คำนำหน้าต้องเป็นข้อความ',
+
 
             'firstname.required' => 'กรุณากรอกชื่อ',
             'firstname.string'   => 'ชื่อต้องเป็นข้อความ',
             'firstname.max'      => 'ชื่อยาวเกิน 255 ตัวอักษร',
 
+
             'lastname.required' => 'กรุณากรอกนามสกุล',
             'lastname.string'   => 'นามสกุลต้องเป็นข้อความ',
             'lastname.max'      => 'นามสกุลยาวเกิน 255 ตัวอักษร',
+
 
             'license.required' => 'กรุณากรอกเลขใบอนุญาต',
             'license.string'   => 'เลขใบอนุญาตต้องเป็นข้อความ',
             'license.max'      => 'เลขใบอนุญาตยาวเกิน 100 ตัวอักษร',
             'license.unique'   => 'เลขใบอนุญาตนี้มีอยู่ในระบบแล้ว',
 
+
             'signature.image' => 'ไฟล์ลายเซ็นต้องเป็นรูปภาพเท่านั้น',
             'signature.mimes' => 'รองรับเฉพาะไฟล์ JPG, JPEG และ PNG',
             'signature.max'   => 'ขนาดไฟล์ลายเซ็นต้องไม่เกิน 2 MB',
 
+
             'status.required' => 'กรุณาเลือกสถานะ',
             'status.boolean'  => 'สถานะไม่ถูกต้อง',
+
         ]);
 
         try {
 
-            DB::transaction(function () use ($request) {
+            $medic = DB::transaction(function () use ($request) {
 
                 $signature = null;
 
                 if ($request->hasFile('signature') && $request->file('signature')->isValid()) {
 
-                    $signature = $request->file('signature')->store(
-                        'medics/signatures',
-                        'public'
-                    );
+                    $signature = $request->file('signature')
+                        ->store('medics/signatures', 'public');
                 }
+
 
                 $medic = Medics::create([
                     'prefix'    => $request->prefix,
@@ -101,6 +154,7 @@ class MedicsController extends Controller
                     'status'    => $request->status,
                 ]);
 
+
                 foreach ($request->profession_ids as $professionId) {
 
                     MedicProfessions::create([
@@ -108,6 +162,9 @@ class MedicsController extends Controller
                         'profession_id' => $professionId,
                     ]);
                 }
+
+
+                return $medic;
             });
 
             return redirect()

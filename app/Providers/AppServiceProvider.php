@@ -3,20 +3,73 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
-use Modules\branches\Models\branches;
+
+use Modules\AuditLog\Observers\AuditObserver;
+
+
+// Models ที่ต้องเก็บ Audit
+use Modules\Patient\Models\patient;
+use Modules\Document\Models\Document;
+use Modules\Document\Models\pt33;
+use Modules\Document\Models\Pt28;
+use Modules\Document\Models\Visits;
+
+use Modules\MedicalCertificate\Models\MedicalCertificate;
+
+use Modules\Medics\Models\medics;
+
+use Modules\Branchs\Models\Branchs;
+
 
 class AppServiceProvider extends ServiceProvider
 {
+
     public function register(): void
     {
         //
     }
 
+
     public function boot(): void
     {
-        // View::composer('core::components.layouts.top', function ($view) {
-        //     $view->with('setting', Setting::first());
-        // });
+
+        patient::observe(
+            AuditObserver::class
+        );
+
+
+        Document::observe(
+            AuditObserver::class
+        );
+
+
+        pt33::observe(
+            AuditObserver::class
+        );
+
+
+        Pt28::observe(
+            AuditObserver::class
+        );
+
+
+        Visits::observe(
+            AuditObserver::class
+        );
+
+
+        MedicalCertificate::observe(
+            AuditObserver::class
+        );
+
+
+        medics::observe(
+            AuditObserver::class
+        );
+
+
+        Branchs::observe(
+            AuditObserver::class
+        );
     }
 }

@@ -3,25 +3,28 @@
 namespace Modules\Medics\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\AuditLog\Models\AuditLog;
-
+use Modules\Medics\Models\Professions;
 
 class MedicProfessions extends Model
 {
+
     protected $table = 'medic_professions';
+
 
     protected $fillable = [
         'medic_id',
         'profession_id',
     ];
 
-    public function auditLogs()
+
+    public function medic()
     {
-        return $this->morphMany(
-            AuditLog::class,
-            'auditable'
+        return $this->belongsTo(
+            Medics::class,
+            'medic_id'
         );
     }
+
 
     public function profession()
     {
@@ -31,12 +34,5 @@ class MedicProfessions extends Model
         );
     }
 
-
-    public function medic()
-    {
-        return $this->belongsTo(
-            medics::class,
-            'medic_id'
-        );
-    }
+    
 }

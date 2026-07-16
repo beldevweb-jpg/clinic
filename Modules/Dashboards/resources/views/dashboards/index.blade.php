@@ -69,34 +69,35 @@
                 </div>
             </div>
         </div>
-
-        {{-- Branch --}}
-        <div class="branch-card">
-            <div class="title">
-                <i class="fas fa-building"></i>
-                <h3>
-                    ยอดเข้าใช้บริการแต่ละสาขา
-                </h3>
-            </div>
-            <div class="branch-grid">
-                @foreach ($branchVisits as $branch)
-                    <div class="branch-item">
-                        <div>
-                            <h4>
-                                {{ $branch->name }}
-                            </h4>
-                            <p>
-                                {{ $branch->address }}
-                            </p>
+        @if (auth()->user()->hasRole('admin'))
+            {{-- Branch --}}
+            <div class="branch-card">
+                <div class="title">
+                    <i class="fas fa-building"></i>
+                    <h3>
+                        ยอดเข้าใช้บริการแต่ละสาขา
+                    </h3>
+                </div>
+                <div class="branch-grid">
+                    @foreach ($branchVisits as $branch)
+                        <div class="branch-item">
+                            <div>
+                                <h4>
+                                    {{ $branch->name }}
+                                </h4>
+                                <p>
+                                    {{ $branch->address }}
+                                </p>
+                            </div>
+                            <strong>
+                                {{ $branch->total_visits }}
+                                <small>คน</small>
+                            </strong>
                         </div>
-                        <strong>
-                            {{ $branch->total_visits }}
-                            <small>คน</small>
-                        </strong>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
-        </div>
+        @endif
         <div class="visit-panel">
 
 
@@ -116,7 +117,7 @@
                 </div>
 
 
-                <a href="#" class="view-btn">
+                <a href="{{ route('visitsList') }}" class="view-btn">
                     ดูทั้งหมด
                 </a>
 

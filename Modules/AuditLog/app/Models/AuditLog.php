@@ -5,6 +5,7 @@ namespace Modules\AuditLog\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
+use Modules\Branchs\Models\Branchs;
 
 class AuditLog extends Model
 {
@@ -15,12 +16,21 @@ class AuditLog extends Model
 
 
     protected $fillable = [
+
         'user_id',
+        'branch_id',
+
         'action',
-        'table_name',
-        'record_id',
+
+        'auditable_type',
+        'auditable_id',
+
         'description',
         'ip_address',
+
+        'old_values',
+        'new_values',
+
     ];
 
 
@@ -30,22 +40,38 @@ class AuditLog extends Model
     public function user()
     {
         return $this->belongsTo(
-            User::class,
+            \App\Models\User::class,
             'user_id'
+        );
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo(
+            \Modules\Branchs\Models\Branchs::class,
+            'branch_id'
         );
     }
 
 
     /**
      * ข้อมูลที่ถูกกระทำ
-     * เช่น Patient, Document, PT33
+     *
+     * Patient
+     * Document
+     * PT33
+     * PT28
+     * Medics
      */
-    public function record()
+    public function auditable()
     {
-        return $this->morphTo(
-            null,
-            'table_name',
-            'record_id'
-        );
+        return $this->morphTo();
     }
+
+    protected $casts = [
+        'old_values' => 'array',
+        'new_values' => 'array',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }

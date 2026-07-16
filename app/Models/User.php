@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Roles;
-use App\Models\Branch;
+use Modules\Branchs\Models\Branchs;
 use Modules\AuditLog\Models\AuditLog;
 
 
@@ -64,16 +64,16 @@ class User extends Authenticatable
     public function branch()
     {
         return $this->belongsTo(
-            Branch::class,
+            Branchs::class,
             'branch_id'
         );
     }
 
     public function auditLogs()
     {
-        return $this->morphMany(
+        return $this->hasMany(
             AuditLog::class,
-            'auditable'
+            'user_id'
         );
     }
 }

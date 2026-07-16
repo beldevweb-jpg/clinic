@@ -46,11 +46,12 @@ class LoginRequest extends FormRequest
         $loginValue = $this->input('username', $this->input('email'));
         $user = \App\Models\User::where('username', $loginValue)->first();
 
-        if ($user && $user->status === 'inactive') {
+        if ($user && !$user->active) {
+
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'username' => trans('auth.failed'),
+                'username' => 'บัญชีนี้ถูกปิดการใช้งาน',
             ]);
         }
 

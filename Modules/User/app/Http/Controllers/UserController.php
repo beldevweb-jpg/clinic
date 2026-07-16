@@ -7,6 +7,9 @@ use App\Models\User;
 use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Modules\Branchs\Models\Branchs;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -15,8 +18,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
-        // dd($user);
+        $users = User::with([
+            'roles',
+            'branch'
+        ])->get();
+
+
         return view('User::user.index', compact('users'));
     }
 
@@ -46,11 +53,19 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $User = User::findOrFail($id);
+        $user = User::with('roles')->findOrFail($id);
 
-        return view('User::User.edit', compact('User'));
+        $branches = Branchs::where('active', 1)->get();
+
+        $roles = Roles::all();
+
+
+        return view('User::User.edit', compact(
+            'user',
+            'branches',
+            'roles'
+        ));
     }
-
     /**
      * Update the specified resource in storage.
      */
@@ -58,18 +73,49 @@ class UserController extends Controller
     {
         $User = User::findOrFail($id);
 
-
         $request->validate([
             'name' => 'required',
-            'Username' => 'required',
+
+            'username' => [
+                'required',
+                Rule::unique('user', 'username')
+                    ->ignore($User->id),
+            ],
+
+            'password' => [
+                'nullable',
+                'min:6',
+                'confirmed',
+            ],
+
+            'branch_id' => [
+                'nullable',
+                'exists:branches,id',
+            ],
+
+            'active' => [
+                'required',
+                'boolean',
+            ],
+
+            'role' => [
+                'required',
+                'exists:roles,id',
+            ],
+
         ]);
 
 
         $User->name = $request->name;
-        $User->Username = $request->Username;
+
+        $User->username = $request->username;
+
+        $User->branch_id = $request->branch_id;
+
+        $User->active = $request->active;
 
 
-        // ถ้ามีการกรอกรหัสผ่านใหม่ ให้ Hash ก่อนบันทึก
+        // ถ้ามีการเปลี่ยนรหัสผ่าน
         if ($request->filled('password')) {
 
             $User->password = Hash::make($request->password);
@@ -79,24 +125,37 @@ class UserController extends Controller
         $User->save();
 
 
+        // Update Role
+        $User->roles()->sync([
+            $request->role
+        ]);
+
+
         return redirect()
-            ->route('User.index')
+            ->route('user.index')
             ->with('success', 'แก้ไขผู้ใช้งานเรียบร้อยแล้ว');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(user $user)
+    public function destroy(User $user)
     {
-        if ($user->roles === 'admin') {
-            return back()->withErrors([
-                'ไม่สามารถลบผู้ดูแลระบบได้'
-            ]);
+        // ห้ามปิด Admin
+        if ($user->hasRole('admin')) {
+
+            return back()
+                ->with('error', 'ไม่สามารถปิดการใช้งาน Admin ได้');
         }
 
-        $user->delete();
 
-        return back()->with('success', 'ลบผู้ใช้งานเรียบร้อยแล้ว');
+        // ปิดใช้งานแทนการลบ
+        $user->update([
+            'active' => 0
+        ]);
+
+
+        return back()
+            ->with('success', 'ปิดการใช้งานผู้ใช้งานเรียบร้อยแล้ว');
     }
 }

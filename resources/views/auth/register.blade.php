@@ -157,27 +157,51 @@
 
                     <select name="role" class="form-control">
 
-                        <option value="admin">
+                        <option value="1">
                             👑 Admin
                         </option>
 
-                        <option value="manager">
+                        <option value="2">
                             🧑‍💼 Manager
                         </option>
 
-                        <option value="doctor">
+                        <option value="3">
                             👨‍⚕️ Doctor
                         </option>
 
-                        <option value="staff">
+                        <option value="4">
                             👤 Staff
                         </option>
 
                     </select>
 
-                </div>  
+                </div>
             @endif
+            @if (auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager')))
 
+                <div class="form-group">
+
+                    <label>สาขา</label>
+
+                    <select name="branch_id" class="form-control">
+
+                        <option value="">
+                            -- ไม่ระบุสาขา --
+                        </option>
+
+                        @foreach ($branches as $branch)
+                            <option value="{{ $branch->id }}" {{ old('branch_id') == $branch->id ? 'selected' : '' }}>
+
+                                {{ $branch->name }}
+
+                            </option>
+                        @endforeach
+
+                    </select>
+
+                </div>
+
+            @endif
             <button class="btn-submit">
                 สมัครสมาชิก
             </button>
@@ -190,6 +214,7 @@
                     </a>
                 </div>
             @endguest
+        </form>
     </div>
 
 </div>

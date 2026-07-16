@@ -15,34 +15,27 @@ return new class extends Migration
 
             $table->id();
 
-
-            /**
-             * คนที่ทำรายการ
-             */
+            // คนทำรายการ
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('user')
                 ->nullOnDelete();
 
 
-            /**
-             * CREATE UPDATE DELETE PRINT
-             */
+            // สาขา
+            $table->foreignId('branch_id')
+                ->nullable()
+                ->constrained('branches')
+                ->nullOnDelete();
+
+
+            // Action เช่น CREATE UPDATE DELETE LOGIN
             $table->string('action');
 
 
-            /**
-             * Target Model
-             * เช่น
-             * Modules\Patient\Models\patient
-             * Modules\Document\Models\Document
-             */
+            // Model ที่ถูกกระทำ
             $table->string('auditable_type');
 
-
-            /**
-             * ID ของ Model นั้น
-             */
             $table->unsignedBigInteger('auditable_id');
 
 
@@ -54,16 +47,28 @@ return new class extends Migration
                 ->nullable();
 
 
+            // ข้อมูลก่อนแก้
+            $table->json('old_values')
+                ->nullable();
+
+
+            // ข้อมูลหลังแก้
+            $table->json('new_values')
+                ->nullable();
+
+
             $table->timestamps();
 
 
-            /**
-             * เพิ่ม index ให้ค้นหาเร็ว
-             */
             $table->index([
                 'auditable_type',
                 'auditable_id'
             ]);
+
+
+            $table->index('user_id');
+
+            $table->index('branch_id');
         });
     }
 

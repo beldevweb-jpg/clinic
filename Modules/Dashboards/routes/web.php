@@ -14,4 +14,6 @@ Route::middleware(['auth'])->group(function () {
         DashboardsController::class,
         'index'
     ])->name('dashboards.index');
+
+    Route::get('/visits/visitsList',[DashboardsController::class,'visitsList'])->name('visitsList');
 });

@@ -73,7 +73,77 @@
                         <input type="password" name="password_confirmation" placeholder="กรอกรหัสผ่านอีกครั้ง"
                             autocomplete="new-password">
                     </div>
+                    <div class="user-form-group">
 
+                        <label>
+                            🏢 สาขา
+                        </label>
+
+
+                        <select name="branch_id">
+
+                            <option value="">
+                                ทุกสาขา (Admin)
+                            </option>
+
+
+                            @foreach ($branches as $branch)
+                                <option value="{{ $branch->id }}"
+                                    {{ old('branch_id', $user->branch_id) == $branch->id ? 'selected' : '' }}>
+
+                                    {{ $branch->name }}
+
+                                </option>
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+                    <div class="user-form-group">
+
+                        <label>
+                            👑 บทบาท
+                        </label>
+
+
+                        <select name="role">
+
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}"
+                                    {{ $user->roles->first()?->id == $role->id ? 'selected' : '' }}>
+
+                                    {{ ucfirst($role->name) }}
+
+                                </option>
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+                    <div class="user-form-group">
+
+                        <label>
+                            ⚡ สถานะ
+                        </label>
+
+
+                        <select name="active">
+
+                            <option value="1" {{ $user->active ? 'selected' : '' }}>
+                                ใช้งาน
+                            </option>
+
+
+                            <option value="0" {{ !$user->active ? 'selected' : '' }}>
+                                ปิดใช้งาน
+                            </option>
+
+
+                        </select>
+
+                    </div>
 
                 </div>
 

@@ -13,12 +13,15 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Modules\Branchs\Models\Branchs;
 
 class RegisteredUserController extends Controller
 {
     public function create(): View
     {
-        return view('auth.register');
+        $branches = Branchs::where('active', 1)->get();
+
+        return view('auth.register', compact('branches'));
     }
 
 
@@ -26,11 +29,19 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required',
+
             'username' => [
                 'required',
                 Rule::unique('user', 'username'),
             ],
+
             'password' => 'required|min:6',
+
+            'branch_id' => [
+                'nullable',
+                'exists:branches,id'
+            ],
+
         ], [
             'username.unique' => 'Username นี้มีอยู่ในระบบแล้ว กรุณาใช้ Username อื่น',
             'username.required' => 'กรุณากรอก Username',
@@ -39,12 +50,22 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+
             'username' => $request->username,
+
             'password' => bcrypt($request->password),
+
+            'branch_id' => $request->branch_id,
+
             'active' => 1,
         ]);
 
-        $user->roles()->attach(1);
+
+        $user->roles()->attach(
+            $request->role ?? 4
+        );
+
+
         return redirect()
             ->route('dashboards.index')
             ->with('success', 'เพิ่มผู้ใช้งานสำเร็จ');
