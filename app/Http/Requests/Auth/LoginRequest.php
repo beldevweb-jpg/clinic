@@ -28,9 +28,20 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['nullable', 'string', 'required_without:email'],
-            'email' => ['nullable', 'string', 'required_without:username'],
-            'password' => ['required', 'string'],
+            'username' => [
+                'required',
+                'string'
+            ],
+
+            'password' => [
+                'required',
+                'string'
+            ],
+
+            'branch_id' => [
+                'nullable',
+                'exists:branches,id'
+            ],
         ];
     }
 
@@ -44,8 +55,14 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $loginValue = $this->input('username', $this->input('email'));
-        $user = \App\Models\User::where('username', $loginValue)->first();
+        $user = \App\Models\User::where('username', $loginValue)
+            ->where(function ($query) {
 
+                // admin ไม่มีสาขา
+                $query->whereNull('branch_id')
+                    ->orWhere('branch_id', $this->branch_id);
+            })
+            ->first();
         if ($user && !$user->active) {
 
             RateLimiter::hit($this->throttleKey());
@@ -55,8 +72,8 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        if (! Auth::attempt([
-            'username' => $loginValue,
+        if (!$user || !Auth::attempt([
+            'username' => $user->username,
             'password' => $this->password,
         ], $this->boolean('remember'))) {
 

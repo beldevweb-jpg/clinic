@@ -153,25 +153,60 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
+
             <div class="form-group">
+
+                <label>สาขา</label>
+
+                <select name="branch_id" class="form-control" required>
+
+                    <option value="">เลือกสาขา</option>
+
+                    @foreach ($branchs as $branch)
+                        <option value="{{ $branch->id }}" {{ old('branch_id') == $branch->id ? 'selected' : '' }}>
+                            {{ $branch->name }}
+                        </option>
+                    @endforeach
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
                 <label>ชื่อผู้ใช้</label>
+
                 <input type="text" name="username" class="form-control" value="{{ old('username') }}"
                     placeholder="กรอกชื่อผู้ใช้" required autofocus>
+
             </div>
+
 
             <div class="form-group">
+
                 <label>รหัสผ่าน</label>
+
                 <input type="password" name="password" class="form-control" placeholder="กรอกรหัสผ่าน" required>
+
             </div>
 
+
             <label class="remember">
+
                 <input type="checkbox" name="remember">
+
                 จดจำการเข้าสู่ระบบ
+
             </label>
 
+
             <button type="submit" class="btn-login">
+
                 🔐 เข้าสู่ระบบ
+
             </button>
+
 
         </form>
 

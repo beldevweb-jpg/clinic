@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\User\Http\Controllers\UserController;
 
 
-Route::middleware(['auth'])->group(function () {
-
+Route::middleware(['auth', 'role:admin,manager'])->group(function () {
     Route::get(
         'user',
         [UserController::class, 'index']

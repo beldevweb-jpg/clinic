@@ -14,18 +14,19 @@
         <a href="{{ route('dashboards.index') }}" class="{{ request()->routeIs('dashboards.index') ? 'active' : '' }}">
             หน้าแรก
         </a>
-
-        <a href="{{ route('user.index') }}" class="{{ request()->routeIs('user.index') ? 'active' : '' }}">
-            ผู้ใช้งาน
-        </a>
-
+        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager'))
+            <a href="{{ route('user.index') }}" @class(['active' => request()->routeIs('user.index')])>
+                ผู้ใช้งาน
+            </a>
+        @endif
         <a href="{{ route('patient.index') }}" class="{{ request()->routeIs('patient.index') ? 'active' : '' }}">
             ผู้ป่วย
         </a>
-
-        <a href="{{ route('medics.index') }}" class="{{ request()->routeIs('medics.index') ? 'active' : '' }}">
-            แพทย์
-        </a>
+        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager'))
+            <a href="{{ route('medics.index') }}" class="{{ request()->routeIs('medics.index') ? 'active' : '' }}">
+                แพทย์
+            </a>
+        @endif
 
         <a href="{{ route('documents.index') }}" class="{{ request()->routeIs('documents.index') ? 'active' : '' }}">
             เอกสาร

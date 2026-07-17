@@ -44,24 +44,65 @@ class RoleUserSeeder extends Seeder
         }
 
 
-        // สร้าง Admin User
-        $admin = User::firstOrCreate(
+
+        // Admin (เห็นทุกสาขา)
+        $admin = User::updateOrCreate(
             [
                 'username' => 'admin'
             ],
             [
                 'name' => 'System Admin',
                 'password' => Hash::make('admin112233'),
+                'branch_id' => null,
                 'active' => true,
             ]
         );
 
 
-        // Assign Role Admin
-        $adminRole = Roles::where('slug', 'admin')->first();
-
         $admin->roles()->sync([
-            $adminRole->id
+            Roles::where('slug', 'admin')->first()->id
+        ]);
+
+
+
+
+        // Manager
+        $manager = User::updateOrCreate(
+            [
+                'username' => 'manager112233'
+            ],
+            [
+                'name' => 'Manager',
+                'password' => Hash::make('manager112233'),
+                'branch_id' => 1,
+                'active' => true,
+            ]
+        );
+
+
+        $manager->roles()->sync([
+            Roles::where('slug', 'manager')->first()->id
+        ]);
+
+
+
+
+        // Staff
+        $staff = User::updateOrCreate(
+            [
+                'username' => 'staff112233'
+            ],
+            [
+                'name' => 'Staff',
+                'password' => Hash::make('staff112233'),
+                'branch_id' => 1,
+                'active' => true,
+            ]
+        );
+
+
+        $staff->roles()->sync([
+            Roles::where('slug', 'staff')->first()->id
         ]);
     }
 }

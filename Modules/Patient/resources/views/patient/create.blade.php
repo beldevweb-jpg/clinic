@@ -28,6 +28,16 @@
             </div>
         @endif
 
+        @if ($errors->any())
+            <div>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form id="patientForm" method="POST" action="{{ route('patient.store') }}">
 
             @csrf

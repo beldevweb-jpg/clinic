@@ -40,61 +40,85 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        $request->validate(
-            [
-                'cid' => [
-                    'required',
-                    'string',
-                    'max:13',
-                    Rule::unique('patient', 'cid')
-                ],
-                'firstname' => 'required|string|max:100',
-                'lastname' => 'required|string|max:100',
-                'birthday' => 'required|date',
-                'phone' => 'nullable|string|max:20',
-                'prefix' => 'required',
-                'age' => 'required|numeric',
-                'address' => 'required|string|max:100',
-                'province' => 'required|string|max:100',
-                'district' => 'required|string|max:100',
-                'subdistrict' => 'required|string|max:100',
-                'zipcode' => 'required|string|max:100',
-                'nationality' => 'required',
-                'gender' => 'required|in:ชาย,หญิง',
-            ],
-            [
-                'cid.required' => 'กรุณากรอกเลขบัตรประชาชน',
-                'cid.unique' => 'เลขบัตรประชาชนนี้มีในระบบแล้ว',
-                'firstname.required' => 'กรุณากรอกชื่อ',
-                'lastname.required' => 'กรุณากรอกนามสกุล',
-                'nationality.required' => 'กรุณากรอกสัญชาติ',
-                'birthday.required' => 'กรุณากรอกวันเดือนปีเกิด',
-                'prefix.required' => 'กรุณาเลือกคำนำหน้าชื่อ',
-                'address.required' => 'กรุณากรอกที่อยู่',
-                'province.required' => 'กรุณากรอกจังหวัด',
-                'district.required' => 'กรุณากรอกอำเภอ',
-                'subdistrict.required' => 'กรุณากรอกตำบล',
-                'zipcode.required' => 'กรุณากรอกรหัสไปรษณีย์',
-                'gender.required' => 'กรุณาเลือกเพศ',
-                'gender.in' => 'ข้อมูลเพศไม่ถูกต้อง',
-            ]
-        );
 
+        $request->validate([
+            'cid' => [
+                'required',
+                'digits:13',
+                Rule::unique('patient', 'cid'),
+            ],
+
+            'firstname_en' => 'required|string|max:100',
+            'nationality' => 'required|string|max:100',
+
+            'prefix' => 'required|string',
+            'firstname' => 'required|string|max:100',
+            'lastname' => 'required|string|max:100',
+
+            'birthday' => 'required|date',
+            'age' => 'required|integer|min:0',
+
+            'address' => 'required|string|max:255',
+            'province' => 'required|string|max:100',
+            'district' => 'required|string|max:100',
+            'subdistrict' => 'required|string|max:100',
+
+
+            'phone' => 'nullable|string|max:20',
+
+            'gender' => 'required|in:ชาย,หญิง',
+        ], [
+            'cid.required' => 'กรุณากรอกเลขบัตรประชาชน',
+            'cid.digits' => 'เลขบัตรประชาชนต้องมี 13 หลัก',
+            'cid.unique' => 'เลขบัตรประชาชนนี้มีในระบบแล้ว',
+
+            'firstname.required' => 'กรุณากรอกชื่อ',
+            'lastname.required' => 'กรุณากรอกนามสกุล',
+
+            'firstname_en.max' => 'ชื่อภาษาอังกฤษยาวเกินไป',
+            'lastname_en.max' => 'นามสกุลภาษาอังกฤษยาวเกินไป',
+
+            'nationality.required' => 'กรุณากรอกสัญชาติ',
+
+            'prefix.required' => 'กรุณาเลือกคำนำหน้า',
+
+            'birthday.required' => 'กรุณาเลือกวันเกิด',
+            'birthday.date' => 'รูปแบบวันเกิดไม่ถูกต้อง',
+
+            'age.required' => 'กรุณากรอกอายุ',
+            'age.integer' => 'อายุต้องเป็นตัวเลข',
+
+            'address.required' => 'กรุณากรอกที่อยู่',
+            'province.required' => 'กรุณากรอกจังหวัด',
+            'district.required' => 'กรุณากรอกอำเภอ',
+            'subdistrict.required' => 'กรุณากรอกตำบล',
+
+
+            'phone.max' => 'เบอร์โทรศัพท์ยาวเกินไป',
+
+            'gender.required' => 'กรุณาเลือกเพศ',
+            'gender.in' => 'ข้อมูลเพศไม่ถูกต้อง',
+        ]);
         try {
 
             $patient = DB::transaction(function () use ($request) {
 
-                // Lock แถว HN ป้องกันเลขซ้ำ
+                // สาขาของ User
+                $branchId = auth()->user()->branch_id;
+
+
+                // หา running number ของสาขานี้
                 $hn = DB::table('hn_running')
+                    ->where('branch_id', $branchId)
                     ->lockForUpdate()
                     ->first();
 
 
-                // ถ้ายังไม่มีข้อมูล ให้สร้างค่าเริ่มต้น
+                // ถ้ายังไม่มี running ของสาขา ให้สร้าง
                 if (!$hn) {
 
                     $id = DB::table('hn_running')->insertGetId([
+                        'branch_id' => $branchId,
                         'current_number' => 0
                     ]);
 
@@ -104,42 +128,49 @@ class PatientController extends Controller
                         ->first();
                 }
 
+
                 // เพิ่มเลข HN
                 $nextHN = $hn->current_number + 1;
 
-                // Update เลขล่าสุด
+
+                // update เลขล่าสุด
                 DB::table('hn_running')
                     ->where('id', $hn->id)
                     ->update([
                         'current_number' => $nextHN
                     ]);
 
+
                 // สร้างผู้ป่วย
-                $patient = patient::create([
+                return patient::create([
+
+                    'branch_id' => $branchId,
+
                     'hn' => 'HN' . str_pad($nextHN, 6, '0', STR_PAD_LEFT),
+
                     'cid' => $request->cid,
+
                     'firstname_en' => $request->firstname_en,
                     'lastname_en' => $request->lastname_en,
 
-                    'card_issue_date' => $request->card_issue_date,
-                    'card_expire_date' => $request->card_expire_date,
-
-                    'card_photo' => $request->card_photo,
                     'nationality' => $request->nationality,
+
                     'prefix' => $request->prefix,
                     'firstname' => $request->firstname,
                     'lastname' => $request->lastname,
+
                     'birthday' => $request->birthday,
                     'age' => $request->age,
-                    'address' => $request->address,
+
+                    'card_address' => $request->address,
                     'province' => $request->province,
                     'district' => $request->district,
                     'subdistrict' => $request->subdistrict,
                     'zipcode' => $request->zipcode,
+
                     'phone' => $request->phone,
                     'gender' => $request->gender,
                 ]);
-                return $patient;
             });
             return redirect()
                 ->route('patient.index')
@@ -151,6 +182,25 @@ class PatientController extends Controller
                 ->withInput()
                 ->with('error', 'เกิดข้อผิดพลาด ไม่สามารถเพิ่มข้อมูลผู้ป่วยได้');
         }
+    }
+
+    public function checkCid($cid)
+    {
+        $patient = Patient::where('cid', $cid)->first();
+
+        if ($patient) {
+
+            return response()->json([
+                'exists' => true,
+                'message' => 'มีข้อมูลบัตรนี้แล้ว',
+                'patient' => $patient
+            ]);
+        }
+
+
+        return response()->json([
+            'exists' => false
+        ]);
     }
 
     /**
@@ -167,86 +217,106 @@ class PatientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($id);
-        $request->validate(
-            [
-                'cid' => [
-                    'required',
-                    'string',
-                    'max:13',
-                    Rule::unique('patient', 'cid')
-                        ->ignore($id)
-                ],
-                'firstname' => 'required|string|max:100',
-                'lastname' => 'required|string|max:100',
-                'birthday' => 'required|date',
-                'phone' => 'nullable|string|max:20',
-                'prefix' => 'required',
-                'age' => 'required|numeric',
-                'address' => 'required|string|max:100',
-                'province' => 'required|string|max:100',
-                'district' => 'required|string|max:100',
-                'subdistrict' => 'required|string|max:100',
-                'zipcode' => 'required|string|max:100',
-                'nationality' => 'required',
-                'gender' => 'required|in:ชาย,หญิง',
+        $patient = patient::findOrFail($id);
+
+        $request->validate([
+            'cid' => [
+                'required',
+                'digits:13',
+                Rule::unique('patient', 'cid')->ignore($patient->id),
             ],
-            [
-                'cid.required' => 'กรุณากรอกเลขบัตรประชาชน',
-                'cid.unique' => 'เลขบัตรประชาชนนี้มีในระบบแล้ว',
-                'firstname.required' => 'กรุณากรอกชื่อ',
-                'lastname.required' => 'กรุณากรอกนามสกุล',
-                'nationality.required' => 'กรุณากรอกสัญชาติ',
-                'birthday.required' => 'กรุณากรอกวันเดือนปีเกิด',
-                'prefix.required' => 'กรุณาเลือกคำนำหน้าชื่อ',
-                'address.required' => 'กรุณากรอกที่อยู่',
-                'province.required' => 'กรุณากรอกจังหวัด',
-                'district.required' => 'กรุณากรอกอำเภอ',
-                'subdistrict.required' => 'กรุณากรอกตำบล',
-                'zipcode.required' => 'กรุณากรอกรหัสไปรษณีย์',
-                'gender.required' => 'กรุณาเลือกเพศ',
-                'gender.in' => 'ข้อมูลเพศไม่ถูกต้อง',
-            ]
-        );
+
+            'lastname_en' => 'required|string|max:100',
+            'nationality' => 'required|string|max:100',
+
+            'prefix' => 'required|string',
+            'firstname' => 'required|string|max:100',
+            'lastname' => 'required|string|max:100',
+
+            'birthday' => 'required|date',
+            'age' => 'required|integer|min:0',
+
+            'address' => 'required|string|max:255',
+            'province' => 'required|string|max:100',
+            'district' => 'required|string|max:100',
+            'subdistrict' => 'required|string|max:100',
+
+            'phone' => 'nullable|string|max:20',
+
+            'gender' => 'required|in:ชาย,หญิง',
+
+        ], [
+            'cid.required' => 'กรุณากรอกเลขบัตรประชาชน',
+            'cid.digits' => 'เลขบัตรประชาชนต้องมี 13 หลัก',
+            'cid.unique' => 'เลขบัตรประชาชนนี้มีในระบบแล้ว',
+
+            'firstname.required' => 'กรุณากรอกชื่อ',
+            'lastname.required' => 'กรุณากรอกนามสกุล',
+
+            'nationality.required' => 'กรุณากรอกสัญชาติ',
+
+            'prefix.required' => 'กรุณาเลือกคำนำหน้า',
+
+            'birthday.required' => 'กรุณาเลือกวันเกิด',
+            'birthday.date' => 'รูปแบบวันเกิดไม่ถูกต้อง',
+
+            'age.required' => 'กรุณากรอกอายุ',
+            'age.integer' => 'อายุต้องเป็นตัวเลข',
+
+            'address.required' => 'กรุณากรอกที่อยู่',
+            'province.required' => 'กรุณากรอกจังหวัด',
+            'district.required' => 'กรุณากรอกอำเภอ',
+            'subdistrict.required' => 'กรุณากรอกตำบล',
+
+            'phone.max' => 'เบอร์โทรศัพท์ยาวเกินไป',
+
+            'gender.required' => 'กรุณาเลือกเพศ',
+            'gender.in' => 'ข้อมูลเพศไม่ถูกต้อง',
+        ]);
+
 
         try {
 
-            $patient = Patient::findOrFail($id);
+            DB::transaction(function () use ($request, $patient) {
 
-            $patient->update([
-                'cid' => $request->cid,
-                'nationality' => $request->nationality,
-                'firstname_en' => $request->firstname_en,
-                'lastname_en' => $request->lastname_en,
+                $patient->update([
+                    'cid' => $request->cid,
 
-                'card_issue_date' => $request->card_issue_date,
-                'card_expire_date' => $request->card_expire_date,
+                    'firstname_en' => $request->firstname_en,
+                    'lastname_en' => $request->lastname_en,
 
-                'card_photo' => $request->card_photo,
-                'prefix' => $request->prefix,
-                'firstname' => $request->firstname,
-                'lastname' => $request->lastname,
-                'birthday' => $request->birthday,
-                'age' => $request->age,
-                'address' => $request->address,
-                'province' => $request->province,
-                'district' => $request->district,
-                'subdistrict' => $request->subdistrict,
-                'zipcode' => $request->zipcode,
-                'phone' => $request->phone,
-                'gender' => $request->gender,
-            ]);
+                    'nationality' => $request->nationality,
+
+                    'prefix' => $request->prefix,
+                    'firstname' => $request->firstname,
+                    'lastname' => $request->lastname,
+
+                    'birthday' => $request->birthday,
+                    'age' => $request->age,
+
+                    'card_address' => $request->address,
+                    'province' => $request->province,
+                    'district' => $request->district,
+                    'subdistrict' => $request->subdistrict,
+                    'zipcode' => $request->zipcode,
+
+                    'phone' => $request->phone,
+                    'gender' => $request->gender,
+
+                ]);
+            });
+
 
             return redirect()
                 ->route('patient.index')
-                ->with('success', 'แก้ไขข้อมูลผู้ป่วยเรียบร้อย');
+                ->with('success', 'แก้ไขข้อมูลผู้ป่วยเรียบร้อย HN : ' . $patient->hn);
         } catch (\Exception $e) {
 
-            Log::error($e->getMessage());
+            Log::error('Update Patient Error : ' . $e->getMessage());
 
             return back()
                 ->withInput()
-                ->with('error', 'เกิดข้อผิดพลาด');
+                ->with('error', 'เกิดข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลผู้ป่วยได้');
         }
     }
 

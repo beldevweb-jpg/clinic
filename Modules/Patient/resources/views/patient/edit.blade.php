@@ -152,7 +152,7 @@
                     <div class="form-group full">
                         <label>ที่อยู่</label>
 
-                        <textarea name="address">{{ old('address', $patient->address) }}</textarea>
+                        <textarea name="address">{{ old('address', $patient->card_address) }}</textarea>
                     </div>
 
                     <div class="form-group">

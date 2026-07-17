@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Medics\Http\Controllers\MedicsController;
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'role:admin,manager'])->group(function () {
 
     Route::get('/medics', [MedicsController::class, 'index'])
         ->name('medics.index');

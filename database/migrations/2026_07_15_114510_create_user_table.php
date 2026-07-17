@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user', function (Blueprint $table) {
+
             $table->id();
 
             $table->foreignId('branch_id')
@@ -19,7 +20,13 @@ return new class extends Migration
                 ->constrained('branches')
                 ->nullOnDelete();
 
-            $table->string('username')->unique();
+            $table->string('username');
+
+            $table->unique(
+                ['username', 'branch_id'],
+                'user_username_branch_unique'
+            );
+
             $table->string('name');
 
             $table->string('password');

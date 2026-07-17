@@ -15,6 +15,7 @@ class DashboardsController extends Controller
 {
     public function index(Request $request)
     {
+        // dd(auth()->user()->roles);
         $date = $request->date
             ? Carbon::parse($request->date)->format('Y-m-d')
             : Carbon::now()->format('Y-m-d');
@@ -54,24 +55,14 @@ class DashboardsController extends Controller
         $data = [
 
             // ผู้ป่วยทั้งหมด
-            'patients' => Patient::when($branchId, function ($query) use ($branchId) {
-
-                $query->where('branch_id', $branchId);
-            })->count(),
+            'patients' => Patient::count(),
 
 
             // แพทย์ทั้งหมด
-            'medics' => Medics::when($branchId, function ($query) use ($branchId) {
-
-                $query->where('branch_id', $branchId);
-            })->count(),
-
+            'medics' => Medics::count(),
 
             // เอกสารทั้งหมด
-            'documents' => Document::when($branchId, function ($query) use ($branchId) {
-
-                $query->where('branch_id', $branchId);
-            })->count(),
+            'documents' => Document::count(),
 
 
             // เข้าใช้บริการวันนี้
@@ -85,26 +76,10 @@ class DashboardsController extends Controller
                 })
                 ->count(),
 
-            'newPatients' => Patient::whereDate(
-                'created_at',
-                $date
-            )
-                ->when($branchId, function ($query) use ($branchId) {
-
-                    $query->where('branch_id', $branchId);
-                })
-                ->count(),
+            'newPatients' => Patient::whereDate('created_at', $date)->count(),
 
 
-            'todayDocuments' => Document::whereDate(
-                'created_at',
-                $date
-            )
-                ->when($branchId, function ($query) use ($branchId) {
-
-                    $query->where('branch_id', $branchId);
-                })
-                ->count(),
+            'todayDocuments' => Document::whereDate('created_at', $date)->count(),
 
 
             'branchVisits' => $branchVisits,

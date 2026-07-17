@@ -8,15 +8,19 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Modules\Branchs\Models\Branchs;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
+
     public function create(): View
     {
-        return view('auth.login');
+        $branchs = Branchs::where('active', 1)->get();
+
+        return view('auth.login', compact('branchs'));
     }
 
     /**

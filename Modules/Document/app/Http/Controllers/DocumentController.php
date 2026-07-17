@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Document\Models\pt33;
 use Modules\Document\Models\pt28;
-use Modules\branches\Models\branches;
+use Modules\Branchs\Models\Branchs;
 use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;
 use Modules\Document\Models\Document;
@@ -32,7 +32,7 @@ class DocumentController extends Controller
 
         $patients = Patient::orderBy('firstname')->get();
 
-        $branches = branches::first();
+        $branchs = Branchs::first();
 
         $medics = Medics::with('professions.profession')
             ->where('status', 1)
@@ -42,7 +42,7 @@ class DocumentController extends Controller
         return view('document::document.pt33', compact(
             'pt33',
             'patients',
-            'branches',
+            'branchs',
             'medics'
         ));
     }

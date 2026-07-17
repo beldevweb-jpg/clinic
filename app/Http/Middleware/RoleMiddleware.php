@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
         if (!Auth::check()) {
             abort(403);
         }
 
-        if ((int) Auth::user()->role_id !== (int) $role) {
+        if (!in_array(Auth::user()->role_id, array_map('intval', $roles))) {
             abort(403);
         }
 

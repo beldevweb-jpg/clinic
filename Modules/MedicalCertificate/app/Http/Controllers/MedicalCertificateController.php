@@ -5,7 +5,7 @@ namespace Modules\MedicalCertificate\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Patient\Models\patient;
-use Modules\branches\Models\branches;
+use Modules\Branchs\Models\Branchs;
 use Modules\Medics\Models\medics;
 use Modules\PDF\Http\Controllers\PDFController;
 use Modules\MedicalCertificate\Models\MedicalCertificate;
@@ -31,9 +31,9 @@ class MedicalCertificateController extends Controller
     public function create()
     {
         $patients = patient::get();
-        $setting = setting::get();
+        $branchs = Branchs::get();
         $medics = medics::get();
-        return view('medicalcertificate::MedicalCertificate.create', compact('patients', 'setting', 'medics'));
+        return view('medicalcertificate::MedicalCertificate.create', compact('patients', 'branchs', 'medics'));
     }
 
     public function store(Request $request)

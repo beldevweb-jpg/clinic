@@ -20,15 +20,47 @@ document.addEventListener("DOMContentLoaded", function () {
         })
             .then((result) => {
 
+
                 if (result.isConfirmed) {
 
+
+                    const btn = form.querySelector('.btn-save');
+
+
+                    if (btn) {
+
+                        btn.disabled = true;
+                        btn.innerHTML = "⏳ กำลังบันทึก...";
+
+                    }
+
+
+                    // ส่งฟอร์มจริง
                     form.submit();
+
+
+                } else {
+
+
+                    const btn = form.querySelector('.btn-save');
+
+
+                    if (btn) {
+
+                        btn.disabled = false;
+                        btn.innerHTML = "💾 บันทึกข้อมูล";
+
+                    }
+
 
                 }
 
+
             });
 
+
     });
+
 
 });
 
@@ -66,10 +98,17 @@ function fillPatient(card) {
 
     setField('nationality', card.nationality);
 
-    setField(
-        'gender',
-        card.gender === 'M' ? 'ชาย' : 'หญิง'
-    );
+    let gender = '';
+
+    if (card.gender == 'M' || card.gender == 'ชาย') {
+        gender = 'ชาย';
+    }
+    else if (card.gender == 'F' || card.gender == 'หญิง') {
+        gender = 'หญิง';
+    }
+
+
+    setField('gender', gender);
 
 
     // Address
@@ -84,10 +123,6 @@ function fillPatient(card) {
     setField('zipcode', card.zipcode);
 
 
-    // Card information
-    setField('card_issue_date', card.card_issue_date);
-
-    setField('card_expire_date', card.card_expire_date);
 
 
 
@@ -164,9 +199,50 @@ window.readCard = async function () {
             return;
         }
 
+        // ตรวจสอบว่ามี CID หรือไม่
+
+        const check = await fetch(
+            `/patient/check-cid/${data.card.cid}`
+        );
+
+
+        const patientCheck = await check.json();
+
+
+
+        if (patientCheck.exists) {
+
+            Swal.fire({
+                title: "มีข้อมูลบัตรนี้แล้ว",
+                text: "ต้องการดูข้อมูลผู้ป่วยหรือไม่",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "ดูข้อมูล"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    window.location.href =
+                        `/patient/${patientCheck.patient.id}`;
+
+                }
+
+            });
+
+
+            return;
+        }
+
+        // ไม่มีข้อมูล เติมฟอร์ม
 
         fillPatient(data.card);
 
+
+        Swal.fire(
+            "สำเร็จ",
+            "เติมข้อมูลจากบัตรแล้ว",
+            "success"
+        );
 
         Swal.fire(
             "สำเร็จ",

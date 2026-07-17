@@ -28,36 +28,45 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+
+            'name' => 'required|string|max:255',
 
             'username' => [
                 'required',
-                Rule::unique('user', 'username'),
+                Rule::unique('user', 'username')
+                    ->where('branch_id', $request->branch_id),
             ],
 
             'password' => 'required|min:6',
 
             'branch_id' => [
-                'nullable',
+                'required',
                 'exists:branches,id'
             ],
 
         ], [
-            'username.unique' => 'Username นี้มีอยู่ในระบบแล้ว กรุณาใช้ Username อื่น',
+
+            'username.unique' => 'Username นี้มีอยู่แล้วในสาขานี้',
             'username.required' => 'กรุณากรอก Username',
+
+            'branch_id.required' => 'กรุณาเลือกสาขา',
+            'branch_id.exists' => 'ไม่พบข้อมูลสาขา',
+
         ]);
 
 
         $user = User::create([
+
             'name' => $request->name,
 
             'username' => $request->username,
 
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
 
             'branch_id' => $request->branch_id,
 
             'active' => 1,
+
         ]);
 
 

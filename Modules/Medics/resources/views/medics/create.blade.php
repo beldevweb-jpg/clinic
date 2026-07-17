@@ -28,6 +28,30 @@
                                 <button class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         @endif
+                        @if ($errors->any())
+                            <div class="notify notify-danger">
+
+                                <div class="notify-icon">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                </div>
+
+                                <div class="notify-content">
+
+                                    <h6>ข้อมูลไม่ถูกต้อง</h6>
+
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+
+                                </div>
+
+                                <button type="button" class="btn-close" data-bs-dismiss="alert">
+                                </button>
+
+                            </div>
+                        @endif
                         <div class="medic-group medic-full">
                             <label>ประเภทบุคลากร</label>
 
@@ -55,8 +79,8 @@
                                 <option value="นาง">
                                     นาง
                                 </option>
-                                <option value="นาง">
-                                    นาง
+                                <option value="นางสาว">
+                                    นางสาว
                                 </option>
                             </select>
                         </div>

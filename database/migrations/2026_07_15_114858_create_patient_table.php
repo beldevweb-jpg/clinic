@@ -26,11 +26,13 @@ return new class extends Migration
             // ข้อมูลส่วนตัว
             $table->string('title')->nullable();
 
+            $table->string('prefix');
             $table->string('firstname');
             $table->string('lastname');
             $table->string('firstname_en');
             $table->string('lastname_en');
-
+            $table->string('nationality');
+            $table->integer('age');
             $table->date('birthday')->nullable();
 
             $table->string('gender')->nullable();

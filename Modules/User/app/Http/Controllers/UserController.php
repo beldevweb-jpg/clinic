@@ -18,15 +18,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with([
-            'roles',
-            'branch'
-        ])->get();
+        $query = User::with(['roles', 'branch']);
 
+        if (!auth()->user()->hasRole('admin')) {
+            $query->where('branch_id', auth()->user()->branch_id);
+        }
 
+        $users = $query->get();
         return view('User::user.index', compact('users'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -79,6 +79,9 @@ class UserController extends Controller
             'username' => [
                 'required',
                 Rule::unique('user', 'username')
+                    ->where(function ($query) use ($request) {
+                        return $query->where('branch_id', $request->branch_id);
+                    })
                     ->ignore($User->id),
             ],
 
@@ -103,6 +106,22 @@ class UserController extends Controller
                 'exists:roles,id',
             ],
 
+        ], [
+            'name.required' => 'กรุณากรอกชื่อ',
+
+            'username.required' => 'กรุณากรอก Username',
+            'username.unique' => 'Username นี้มีอยู่ในสาขานี้แล้ว',
+
+            'password.min' => 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร',
+            'password.confirmed' => 'ยืนยันรหัสผ่านไม่ตรงกัน',
+
+            'branch_id.exists' => 'ไม่พบข้อมูลสาขาที่เลือก',
+
+            'active.required' => 'กรุณาเลือกสถานะ',
+            'active.boolean' => 'สถานะไม่ถูกต้อง',
+
+            'role.required' => 'กรุณาเลือกสิทธิ์ผู้ใช้งาน',
+            'role.exists' => 'ไม่พบสิทธิ์ที่เลือก',
         ]);
 
 
