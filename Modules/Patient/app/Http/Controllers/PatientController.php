@@ -8,6 +8,7 @@ use Modules\Patient\Models\patient;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Modules\Document\Models\Visits;
 
 class PatientController extends Controller
 {
@@ -40,6 +41,7 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
 
         $request->validate([
             'cid' => [
@@ -67,6 +69,17 @@ class PatientController extends Controller
             'phone' => 'nullable|string|max:20',
 
             'gender' => 'required|in:ชาย,หญิง',
+
+            'blood_pressure' => 'nullable|string|max:20',
+            'pulse_rate' => 'nullable|integer|min:0',
+            'respiratory_rate' => 'nullable|integer|min:0',
+
+            'height' => 'nullable|numeric|min:0|max:300',
+            'weight' => 'nullable|numeric|min:0|max:500',
+
+            'physical_exam' => 'nullable|string',
+            'diagnosis' => 'nullable|string',
+            'treatment' => 'nullable|string',
         ], [
             'cid.required' => 'กรุณากรอกเลขบัตรประชาชน',
             'cid.digits' => 'เลขบัตรประชาชนต้องมี 13 หลัก',
@@ -140,36 +153,75 @@ class PatientController extends Controller
                         'current_number' => $nextHN
                     ]);
 
-
                 // สร้างผู้ป่วย
-                return patient::create([
-
-                    'branch_id' => $branchId,
+                return Patient::create([
 
                     'hn' => 'HN' . str_pad($nextHN, 6, '0', STR_PAD_LEFT),
 
                     'cid' => $request->cid,
 
+                    'title' => $request->title,
+
+                    'prefix' => $request->prefix,
+
+                    'firstname' => $request->firstname,
+
+                    'lastname' => $request->lastname,
+
+
                     'firstname_en' => $request->firstname_en,
+
                     'lastname_en' => $request->lastname_en,
+
 
                     'nationality' => $request->nationality,
 
-                    'prefix' => $request->prefix,
-                    'firstname' => $request->firstname,
-                    'lastname' => $request->lastname,
 
-                    'birthday' => $request->birthday,
                     'age' => $request->age,
 
+                    'birthday' => $request->birthday,
+
+                    'gender' => $request->gender,
+
+
                     'card_address' => $request->address,
-                    'province' => $request->province,
-                    'district' => $request->district,
+
                     'subdistrict' => $request->subdistrict,
+
+                    'district' => $request->district,
+
+                    'province' => $request->province,
+
                     'zipcode' => $request->zipcode,
 
+
                     'phone' => $request->phone,
-                    'gender' => $request->gender,
+
+
+                    // vital signs
+                    'blood_pressure' => $request->bp,
+
+                    'pulse_rate' => $request->pr,
+
+                    'respiratory_rate' => $request->rr,
+
+                    'temperature' => $request->temperature,
+
+
+                    'height' => $request->height,
+
+                    'weight' => $request->weight,
+
+
+                    // medical
+                    'chief_complaint' => $request->chief_complaint,
+
+                    'physical_exam' => $request->physical_exam,
+
+                    'diagnosis' => $request->dx,
+
+                    'treatment' => $request->tx,
+
                 ]);
             });
             return redirect()
@@ -245,6 +297,16 @@ class PatientController extends Controller
 
             'gender' => 'required|in:ชาย,หญิง',
 
+            'blood_pressure' => 'nullable|string|max:20',
+            'pulse_rate' => 'nullable|integer|min:0',
+            'respiratory_rate' => 'nullable|integer|min:0',
+
+            'height' => 'nullable|numeric|min:0|max:300',
+            'weight' => 'nullable|numeric|min:0|max:500',
+
+            'physical_exam' => 'nullable|string',
+            'diagnosis' => 'nullable|string',
+            'treatment' => 'nullable|string',
         ], [
             'cid.required' => 'กรุณากรอกเลขบัตรประชาชน',
             'cid.digits' => 'เลขบัตรประชาชนต้องมี 13 หลัก',
@@ -279,29 +341,72 @@ class PatientController extends Controller
 
             DB::transaction(function () use ($request, $patient) {
 
-                $patient->update([
+                return Patient::create([
+
+                    'hn' => 'HN' . str_pad($nextHN, 6, '0', STR_PAD_LEFT),
+
                     'cid' => $request->cid,
 
+                    'title' => $request->title,
+
+                    'prefix' => $request->prefix,
+
+                    'firstname' => $request->firstname,
+
+                    'lastname' => $request->lastname,
+
+
                     'firstname_en' => $request->firstname_en,
+
                     'lastname_en' => $request->lastname_en,
+
 
                     'nationality' => $request->nationality,
 
-                    'prefix' => $request->prefix,
-                    'firstname' => $request->firstname,
-                    'lastname' => $request->lastname,
 
                     'birthday' => $request->birthday,
+
                     'age' => $request->age,
 
+
+                    'gender' => $request->gender,
+
+
                     'card_address' => $request->address,
-                    'province' => $request->province,
-                    'district' => $request->district,
+
                     'subdistrict' => $request->subdistrict,
+
+                    'district' => $request->district,
+
+                    'province' => $request->province,
+
                     'zipcode' => $request->zipcode,
 
+
                     'phone' => $request->phone,
-                    'gender' => $request->gender,
+
+
+                    'blood_pressure' => $request->blood_pressure,
+
+                    'pulse_rate' => $request->pulse_rate,
+
+                    'respiratory_rate' => $request->respiratory_rate,
+
+                    'temperature' => $request->temperature,
+
+
+                    'height' => $request->height,
+
+                    'weight' => $request->weight,
+
+
+                    'chief_complaint' => $request->chief_complaint,
+
+                    'physical_exam' => $request->physical_exam,
+
+                    'diagnosis' => $request->diagnosis,
+
+                    'treatment' => $request->treatment,
 
                 ]);
             });
@@ -320,8 +425,12 @@ class PatientController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+
+    public function show($id)
+    {
+        $patient = Patient::with([
+            'visits.medic'
+        ])->findOrFail($id);
+        return view('patient::patient.show', compact('patient'));
+    }
 }

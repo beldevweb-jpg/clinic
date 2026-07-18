@@ -15,29 +15,30 @@ class DashboardsController extends Controller
 {
     public function index(Request $request)
     {
-        // dd(auth()->user()->roles);
         $date = $request->date
             ? Carbon::parse($request->date)->format('Y-m-d')
             : Carbon::now()->format('Y-m-d');
 
+
         $user = auth()->user();
 
-        // เงื่อนไขสาขา
         $branchId = $user->branch_id;
 
-        // สาขา + จำนวนเข้าใช้บริการ
+
         $branchVisits = Branchs::withCount([
             'visits as total_visits' => function ($query) use ($date) {
+
                 $query->whereDate('visit_date', $date);
             }
         ])
             ->when($branchId, function ($query) use ($branchId) {
+
                 $query->where('id', $branchId);
             })
             ->get();
 
 
-        // รายการเข้าใช้บริการล่าสุด
+
         $latestVisits = Visits::with([
             'patient',
             'medic',
@@ -45,24 +46,30 @@ class DashboardsController extends Controller
         ])
             ->whereDate('visit_date', $date)
             ->when($branchId, function ($query) use ($branchId) {
-                $query->where('branchs_id', $branchId);
-            })
 
+                $query->where('branch_id', $branchId);
+            })
             ->latest()
             ->limit(10)
             ->get();
+
+
 
         $data = [
 
             // ผู้ป่วยทั้งหมด
             'patients' => Patient::count(),
 
-
             // แพทย์ทั้งหมด
-            'medics' => Medics::count(),
+
+            'medics' => medics::count(),
 
             // เอกสารทั้งหมด
-            'documents' => Document::count(),
+            'documents' => Document::when($branchId, function ($query) use ($branchId) {
+
+                $query->where('branch_id', $branchId);
+            })->count(),
+
 
 
             // เข้าใช้บริการวันนี้
@@ -72,20 +79,49 @@ class DashboardsController extends Controller
             )
                 ->when($branchId, function ($query) use ($branchId) {
 
-                    $query->where('branchs_id', $branchId);
+                    $query->where('branch_id', $branchId);
                 })
                 ->count(),
 
-            'newPatients' => Patient::whereDate('created_at', $date)->count(),
 
 
-            'todayDocuments' => Document::whereDate('created_at', $date)->count(),
+            // ผู้ป่วยใหม่วันนี้ (ตามสาขา)
+            'newPatients' => Visits::whereDate(
+                'visit_date',
+                $date
+            )
+                ->when($branchId, function ($query) use ($branchId) {
+
+                    $query->where('branch_id', $branchId);
+                })
+                ->whereHas('patient', function ($query) use ($date) {
+
+                    $query->whereDate('created_at', $date);
+                })
+                ->distinct('patient_id')
+                ->count('patient_id'),
+
+
+
+            // เอกสารวันนี้
+            'todayDocuments' => Document::whereDate(
+                'created_at',
+                $date
+            )
+                ->when($branchId, function ($query) use ($branchId) {
+
+                    $query->where('branch_id', $branchId);
+                })
+                ->count(),
+
 
 
             'branchVisits' => $branchVisits,
             'latestVisits' => $latestVisits,
             'searchDate' => $date,
+
         ];
+
 
         return view(
             'dashboards::dashboards.index',

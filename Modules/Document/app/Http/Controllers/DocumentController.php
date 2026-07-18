@@ -49,6 +49,8 @@ class DocumentController extends Controller
 
     public function pt33_store(Request $request)
     {
+        $branch_id = auth()->user()->branch_id;
+        // dd($branch_id);
 
         $validated = $request->validate([
             'patient_id'   => 'required|exists:patient,id',
@@ -68,17 +70,18 @@ class DocumentController extends Controller
         try {
 
             $visitId = DB::table('visits')->insertGetId([
+                'branch_id' => $branch_id,
                 'patient_id' => $validated['patient_id'],
                 'visit_no'   => 'VISIT-' . now()->format('YmdHis'),
                 'visit_date' => now()->toDateString(),
                 'medic_id'   => $validated['medic_id'],
-                'diagnosis'  => $validated['diagnosis'],
                 'created_by' => Auth::id() ?? 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
             $pt33 = Pt33::create([
+                'branch_id' => $branch_id,
                 'patient_id' => $validated['patient_id'],
                 'visit_id' => $visitId,
                 'document_no' => 'PT33-' . now()->format('YmdHis'),
@@ -112,6 +115,7 @@ class DocumentController extends Controller
 
             // Save document
             Document::create([
+                'branch_id' => $branch_id,
                 'patient_id' => $validated['patient_id'],
                 'document_no' => $pt33->document_no,
                 'type' => 'PT33',
@@ -148,7 +152,7 @@ class DocumentController extends Controller
 
                 $patients = Patient::orderBy('firstname')->get();
 
-                $branches = branches::first();
+                $branches = Branchs::first();
 
                 $medics = Medics::with('professions.profession')
                     ->where('status', 1)
@@ -201,7 +205,7 @@ class DocumentController extends Controller
 
                 $patients = Patient::orderBy('firstname')->get();
 
-                $branches = branches::first();
+                $branches = Branchs::first();
 
                 $medics = Medics::with('professions.profession')
                     ->where('status', 1)
@@ -347,24 +351,42 @@ class DocumentController extends Controller
 
     public function index(Request $request)
     {
+        $user = auth()->user();
+
+        $branchId = $user->branch_id;
+
         $query = Document::with('patient');
+
+
+        // จำกัดตามสาขา
+        if ($branchId) {
+            $query->where('branch_id', $branchId);
+        }
+
 
         // ค้นหา
         if ($request->search) {
+
             $search = $request->search;
+
             $query->where(function ($q) use ($search) {
+
                 $q->where('document_no', 'like', "%$search%")
                     ->orWhereHas('patient', function ($p) use ($search) {
+
                         $p->where('firstname', 'like', "%$search%")
                             ->orWhere('lastname', 'like', "%$search%");
                     });
             });
         }
+
+
         // ประเภท
         if ($request->type) {
 
             $query->where('type', $request->type);
         }
+
 
         // สถานะ
         if ($request->status) {
@@ -372,9 +394,11 @@ class DocumentController extends Controller
             $query->where('status', $request->status);
         }
 
+
         $document = $query
             ->latest()
             ->paginate(20);
+
 
         return view(
             'document::document.index',
@@ -518,6 +542,8 @@ class DocumentController extends Controller
 
     public function pt28_store(Request $request)
     {
+        $branch_id = auth()->user()->branch_id;
+
         $validated = $request->validate([
 
             'date' => 'required|array',
@@ -567,8 +593,12 @@ class DocumentController extends Controller
             // dd($documentNo);
 
             $pt28 = Pt28::create([
+
+                'branch_id' => auth()->user()->branch_id,
+                'medic_id' => $request->medic_id,
                 'document_no' => $documentNo,
                 'issue_date' => now(),
+                'status' => 'draft',
             ]);
 
 
@@ -581,7 +611,6 @@ class DocumentController extends Controller
 
                 $pt28->details()->create([
                     'patient_id' => $patientId,
-                    'issue_date' => $request->date[$i],
                     'license_no' => $request->license_no[$i] ?? null,
                     'dosage' => $request->qty[$i] ?? 0,
                     'objective' => $request->objective[$i] ?? [],
@@ -598,6 +627,7 @@ class DocumentController extends Controller
             ]);
             // Document 1 รายการ
             Document::create([
+                'branch_id' => $branch_id,
                 'patient_id' => null,
                 'document_no' => $documentNo,
                 'type' => 'PT28',
@@ -623,6 +653,8 @@ class DocumentController extends Controller
 
     public function pt28_update(Request $request, $id)
     {
+        $branch_id = auth()->user()->branch_id;
+
         $validated = $request->validate([
 
             'date' => 'required|array',
@@ -715,6 +747,7 @@ class DocumentController extends Controller
             } else {
 
                 Document::create([
+                    'branch_id' => $branch_id,
                     'patient_id' => null,
                     'document_no' => $pt28->document_no,
                     'type' => 'PT28',
@@ -743,7 +776,7 @@ class DocumentController extends Controller
         ])->findOrFail($id);
 
 
-        $branches = branches::first();
+        $branches = Branchs::first();
 
         $pages = $pt28->details->chunk(14);
 

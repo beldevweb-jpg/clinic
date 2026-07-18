@@ -49,29 +49,30 @@ class AuditObserver
 
     private function log($model, $action, $description)
     {
-        if (!app()->runningInConsole()) {
-
-            AuditLog::create([
-
-                'user_id' => Auth::check()
-                    ? Auth::id()
-                    : null,
-
-                'branch_id' => Auth::check()
-                    ? Auth::user()->branch_id
-                    : null,
-
-                'action' => $action,
-
-                'auditable_type' => get_class($model),
-
-                'auditable_id' => $model->id,
-
-                'description' => $description,
-
-                'ip_address' => request()->ip(),
-
-            ]);
+        if (app()->runningInConsole()) {
+            return;
         }
+
+
+        $user = Auth::user();
+
+
+        AuditLog::create([
+
+            'user_id' => $user?->id,
+
+            'branch_id' => $user?->branch_id,
+
+            'action' => $action,
+
+            'auditable_type' => get_class($model),
+
+            'auditable_id' => $model->id,
+
+            'description' => $description,
+
+            'ip_address' => request()->ip(),
+
+        ]);
     }
 }

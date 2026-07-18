@@ -19,7 +19,7 @@ class MedicalCertificate extends Model
         'symptom',
         'treatment_recommendation',
         'rest_days',
-        'medics_id',
+        'medic_id',
     ];
 
 
@@ -45,7 +45,7 @@ class MedicalCertificate extends Model
     {
         return $this->belongsTo(
             Medics::class,
-            'medics_id'
+            'medic_id'
         );
     }
 }

@@ -22,7 +22,7 @@ class pt33 extends Model
         'patient_id',
         'visit_id',
         'document_id',
-
+        'branch_id',
         'document_no',
         'issue_date',
         'profession',

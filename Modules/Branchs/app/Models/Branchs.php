@@ -4,7 +4,7 @@ namespace Modules\Branchs\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Dashboards\Models\Visits;
+use Modules\Document\Models\Visits;
 use Modules\AuditLog\Models\AuditLog;
 
 
@@ -37,7 +37,7 @@ class Branchs extends Model
     {
         return $this->hasMany(
             Visits::class,
-            'branchs_id'
+            'branch_id'
         );
     }
 }

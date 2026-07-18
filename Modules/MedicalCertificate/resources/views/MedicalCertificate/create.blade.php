@@ -59,7 +59,7 @@
                                                     data-lastname="{{ $patient->lastname }}"
                                                     data-gender="{{ $patient->gender }}"
                                                     data-birthday="{{ $patient->birthday }}"
-                                                    data-address="{{ $patient->address }}" @selected(old('patient_id') == $patient->id)>
+                                                    data-card_address="{{ $patient->card_address }}" @selected(old('patient_id') == $patient->id)>
 
                                                     {{ $patient->hn }}
                                                     -
@@ -149,7 +149,7 @@
                                             ที่อยู่
                                         </label>
 
-                                        <textarea id="address" class="form-control" rows="2" readonly></textarea>
+                                        <textarea id="card_address" class="form-control" rows="2" readonly></textarea>
 
                                     </div>
 
@@ -319,8 +319,8 @@
                     'หญิง' :
                     '';
 
-                document.getElementById('address').value =
-                    option.dataset.address || '';
+                document.getElementById('card_address').value =
+                    option.dataset.card_address || '';
 
                 if (option.dataset.birthday) {
 

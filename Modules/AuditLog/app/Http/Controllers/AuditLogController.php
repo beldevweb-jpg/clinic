@@ -14,16 +14,46 @@ class AuditLogController extends Controller
 
     public function index(Request $request)
     {
+        $user = auth()->user();
+
 
         $logs = AuditLog::with([
             'user',
             'branch'
         ])
 
+
+            // Admin เห็นทั้งหมด
+            // User อื่นเห็นเฉพาะสาขาตัวเอง
+            ->when(
+                !$user->hasRole('Admin'),
+                function ($q) use ($user) {
+
+                    $q->where(
+                        'branch_id',
+                        $user->branch_id
+                    );
+                }
+            )
+
+
+            // Admin filter สาขา
+            ->when(
+                $request->branch_id
+                    && $user->hasRole('Admin'),
+                function ($q) use ($request) {
+
+                    $q->where(
+                        'branch_id',
+                        $request->branch_id
+                    );
+                }
+            )
+
+
             ->when($request->search, function ($q) use ($request) {
 
                 $search = $request->search;
-
 
                 $q->where(function ($query) use ($search) {
 
@@ -56,15 +86,6 @@ class AuditLogController extends Controller
             })
 
 
-            ->when($request->branch_id, function ($q) use ($request) {
-
-                $q->where(
-                    'branch_id',
-                    $request->branch_id
-                );
-            })
-
-
             ->when($request->start_date, function ($q) use ($request) {
 
                 $q->whereDate(
@@ -91,10 +112,20 @@ class AuditLogController extends Controller
 
 
 
-        $branches = Branchs::where(
-            'active',
-            1
-        )->get();
+        $branches = Branchs::where('active', 1)
+
+            ->when(
+                !$user->hasRole('Admin'),
+                function ($q) use ($user) {
+
+                    $q->where(
+                        'id',
+                        $user->branch_id
+                    );
+                }
+            )
+
+            ->get();
 
 
 
@@ -112,13 +143,25 @@ class AuditLogController extends Controller
 
     public function show($id)
     {
+        $user = auth()->user();
 
         $log = AuditLog::with([
             'user',
             'branch'
         ])
-            ->findOrFail($id);
 
+            ->when(
+                !$user->hasRole('Admin') && $user->branch_id,
+                function ($q) use ($user) {
+
+                    $q->where(
+                        'branch_id',
+                        $user->branch_id
+                    );
+                }
+            )
+
+            ->findOrFail($id);
 
 
         return view(

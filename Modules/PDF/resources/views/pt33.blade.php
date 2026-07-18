@@ -373,13 +373,13 @@
         <div class="line">
             ใบอนุญาต/หนังสือรับรอง เลขที่
             <span>
-                {{ thaiNumber($setting->license ?? '-') }}/{{ thaiNumber($medic->license ?? '-') }}
+                {{ thaiNumber($branchs->license ?? '-') }}/{{ thaiNumber($medic->license ?? '-') }}
             </span>
         </div>
 
         <span class="long-line">
             ที่อยู่
-            {{ $setting->address }}
+            {{ $branchs->address }}
         </span>
 
         <div class="line">

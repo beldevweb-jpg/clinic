@@ -42,6 +42,9 @@ return new class extends Migration
                 ->default(0);
 
 
+            $table->string('treatment_recommendation')
+                ->nullable();
+
             $table->string('pdf_path')
                 ->nullable();
 

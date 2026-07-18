@@ -1,25 +1,20 @@
 <?php
 
-namespace Modules\Dashboards\Models;
+namespace Modules\Visits\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-use App\Models\Branchs;
-use App\Models\Patient;
-use App\Models\Medics;
-
+use Modules\Patient\Models\Patient;
+use Modules\Medics\Models\Medics;
+use Modules\Branchs\Models\Branchs;
+use Modules\AuditLog\Models\AuditLog;
 
 class Visits extends Model
 {
-    use HasFactory;
-
-
     protected $table = 'visits';
 
 
     protected $fillable = [
-        'branchs_id',
+        'branch_id',
         'patient_id',
         'medic_id',
         'visit_date',
@@ -27,15 +22,13 @@ class Visits extends Model
     ];
 
 
-
     public function branch()
     {
         return $this->belongsTo(
             Branchs::class,
-            'branchs_id'
+            'branch_id'
         );
     }
-
 
 
     public function patient()
@@ -47,12 +40,20 @@ class Visits extends Model
     }
 
 
-
     public function medic()
     {
         return $this->belongsTo(
             Medics::class,
             'medic_id'
+        );
+    }
+
+
+    public function auditLogs()
+    {
+        return $this->morphMany(
+            AuditLog::class,
+            'auditable'
         );
     }
 }

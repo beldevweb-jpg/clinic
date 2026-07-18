@@ -3,13 +3,18 @@
 namespace Modules\Document\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Medics\Models\medics;
-use Modules\Patient\Models\patient;
+use Modules\Medics\Models\Medics;
+use Modules\Patient\Models\Patient;
 use Modules\Branchs\Models\Branchs;
 use Modules\AuditLog\Models\AuditLog;
 
+
 class Visits extends Model
 {
+
+    protected $table = 'visits';
+
+
     protected $fillable = [
         'branch_id',
         'patient_id',
@@ -17,6 +22,8 @@ class Visits extends Model
         'visit_date',
         'note',
     ];
+
+
 
     public function auditLogs()
     {
@@ -26,19 +33,35 @@ class Visits extends Model
         );
     }
 
+
+
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(
+            Patient::class,
+            'patient_id'
+        );
     }
+
 
 
     public function medic()
     {
-        return $this->belongsTo(Medics::class, 'medic_id');
+        return $this->belongsTo(
+            Medics::class,
+            'medic_id',
+            'id'
+        );
     }
+
+
 
     public function branch()
     {
-        return $this->belongsTo(Branchs::class, 'branch_id');
+        return $this->belongsTo(
+            Branchs::class,
+            'branch_id',
+            'id'
+        );
     }
 }

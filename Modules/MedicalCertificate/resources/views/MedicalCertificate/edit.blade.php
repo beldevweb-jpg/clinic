@@ -101,7 +101,7 @@
                                     <label class="form-label">
                                         ที่อยู่
                                     </label>
-                                    <textarea id="address" class="form-control" rows="2" readonly>{{ $medicalCertificate->patient->address ?? '' }}</textarea>
+                                    <textarea id="address" class="form-control" rows="2" readonly>{{ $medicalCertificate->patient->card_address ?? '' }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                                         </option>
 
                                         @foreach ($medics as $medic)
-                                            <option value="{{ $medic->id }}" @selected($medicalCertificate->medics_id == $medic->id)>
+                                            <option value="{{ $medic->id }}" @selected($medicalCertificate->medic_id == $medic->id)>
                                                 {{ $medic->firstname }}
                                                 {{ $medic->lastname }}
                                             </option>

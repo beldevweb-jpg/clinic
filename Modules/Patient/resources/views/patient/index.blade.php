@@ -64,8 +64,13 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('patient.edit', $item->id) }}" class="btn-action btn-edit">แก้ไข</a>
-                                    <a href="#" class="btn-action btn-delete">ลบ</a>
+                                    <a href="{{ route('patient.show', $item->id) }}" class="btn-action btn-view">
+                                        ดู
+                                    </a>
+
+                                    <a href="{{ route('patient.edit', $item->id) }}" class="btn-action btn-edit">
+                                        แก้ไข
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach

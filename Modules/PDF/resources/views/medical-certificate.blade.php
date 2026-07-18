@@ -57,7 +57,7 @@
 
         {{-- วันที่ --}}
         <div class="text" style="
-        top:81mm;
+        top:86mm;
         left:147mm;
     ">
             {{ \Carbon\Carbon::parse($certificate->certificate_date)->format('d/m/Y') }}
@@ -66,9 +66,10 @@
 
         {{-- ชื่อแพทย์ --}}
         <div class="text" style="
-top:97mm;
-left:53mm;
+top:102mm;
+left:41mm;
 ">
+            {{ $certificate->medic->prefix ?? '' }}
             {{ $certificate->medic->firstname ?? '' }}
             {{ $certificate->medic->lastname ?? '' }}
         </div>
@@ -79,7 +80,7 @@ left:53mm;
 top:30mm;
 left:35mm;
 ">
-            {{ $setting->license ?? '' }}
+            {{ $branchs->license ?? '' }}
         </div>
 
         {{-- ที่อยู่ --}}
@@ -94,7 +95,7 @@ left:35mm;
         line-height:5mm;
         overflow:hidden;
     ">
-            {{ $setting->address ?? '' }}
+            {{ $branchs->address ?? '' }}
         </div>
 
         {{-- เบอร์โทร --}}
@@ -102,22 +103,23 @@ left:35mm;
 top:62mm;
 left:40mm;
 ">
-            {{ $setting->phone ?? '' }}
+            {{ $branchs->phone ?? '' }}
         </div>
 
 
         {{-- ชื่อผู้ป่วย --}}
         <div class="text" style="
-        top:121mm;
-        left:63mm;
+        top:126mm;
+        left:59mm;
     ">
-            {{ $certificate->patient->firstname ?? '' }} {{ $certificate->patient->lastname ?? '' }}
+            {{ $certificate->patient->prefix ?? '' }} {{ $certificate->patient->firstname ?? '' }}
+            {{ $certificate->patient->lastname ?? '' }}
         </div>
 
 
         {{-- อาการ --}}
         <div class="text" style="
-        top:153mm;
+        top:157mm;
         left:45mm;
         width:120mm;
     ">
@@ -127,7 +129,7 @@ left:40mm;
 
         {{-- เลขบัตร --}}
         <div class="text" style="
-        top:137mm;
+        top:142mm;
         left:63mm;
     ">
             {{ $certificate->patient->cid ?? '' }}

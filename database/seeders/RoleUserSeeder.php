@@ -53,7 +53,7 @@ class RoleUserSeeder extends Seeder
             [
                 'name' => 'System Admin',
                 'password' => Hash::make('admin112233'),
-                'branch_id' => null,
+                'branch_id' => 1,
                 'active' => true,
             ]
         );

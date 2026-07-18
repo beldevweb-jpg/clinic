@@ -200,6 +200,67 @@
                 </div>
 
             </div>
+            <div class="card">
+
+                <div class="card-title">
+                    🩺 ข้อมูลการตรวจ
+                </div>
+
+                <div class="grid">
+
+                    <div class="form-group">
+                        <label>BP (mmHg)</label>
+                        <input type="text" name="bp" value="{{ old('bp') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>PR (bpm)</label>
+                        <input type="number" name="pr" value="{{ old('pr') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>RR (bpm)</label>
+                        <input type="number" name="rr" value="{{ old('rr') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Temperature (°C)</label>
+                        <input type="number" step="0.1" name="temperature" value="{{ old('temperature') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>ส่วนสูง (cm)</label>
+                        <input type="number" step="0.01" name="height" value="{{ old('height') }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>น้ำหนัก (kg)</label>
+                        <input type="number" step="0.01" name="weight" value="{{ old('weight') }}">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Chief Complaint (CC)</label>
+                        <textarea name="chief_complaint">{{ old('chief_complaint') }}</textarea>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>ตรวจอื่น ๆ (Physical Exam)</label>
+                        <textarea name="physical_exam">{{ old('physical_exam') }}</textarea>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>DX (Diagnosis)</label>
+                        <textarea name="dx">{{ old('dx') }}</textarea>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>TX (Treatment)</label>
+                        <textarea name="tx">{{ old('tx') }}</textarea>
+                    </div>
+
+                </div>
+
+            </div>
 
             <div class="action">
                 <button type="button" class="btn-reader" onclick="readCard()">

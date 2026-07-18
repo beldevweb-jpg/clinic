@@ -161,8 +161,7 @@
                 <select name="branch_id" class="form-control" required>
 
                     <option value="">เลือกสาขา</option>
-
-                    @foreach ($branchs as $branch)
+                        @foreach ($branchs as $branch)
                         <option value="{{ $branch->id }}" {{ old('branch_id') == $branch->id ? 'selected' : '' }}>
                             {{ $branch->name }}
                         </option>

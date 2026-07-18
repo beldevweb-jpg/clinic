@@ -17,6 +17,7 @@ return new class extends Migration
 
 
             $table->foreignId('patient_id')
+                ->nullable()
                 ->constrained('patient')
                 ->cascadeOnDelete();
 
@@ -30,10 +31,11 @@ return new class extends Migration
 
             $table->enum('type', [
                 'pt28',
+                'MedicalCertificate',
                 'pt33'
             ]);
-
-
+            $table->string('pdf_path')->nullable();
+            $table->date('document_date')->default(now());
             $table->enum('status', [
                 'draft',
                 'completed',

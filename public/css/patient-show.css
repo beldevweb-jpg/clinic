@@ -1,0 +1,252 @@
+.patient-wrapper {
+    padding:20px;
+    background:#f6f8fb;
+}
+
+
+/* Header */
+
+.patient-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+
+.patient-header h3 {
+    margin:0;
+    font-size:22px;
+    font-weight:700;
+    color:#1e293b;
+}
+
+
+
+/* Card */
+
+.patient-card {
+
+    background:white;
+
+    border-radius:14px;
+
+    padding:20px;
+
+    margin-bottom:18px;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.06);
+
+}
+
+
+
+/* Section */
+
+.patient-title {
+
+    font-size:16px;
+
+    font-weight:700;
+
+    color:#334155;
+
+    margin-bottom:15px;
+
+    padding-bottom:10px;
+
+    border-bottom:1px solid #e5e7eb;
+
+}
+
+
+
+/* New Layout */
+
+.patient-card .row {
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:15px;
+
+}
+
+
+
+/* full width */
+
+.patient-card .col-md-12 {
+
+    grid-column:1 / -1;
+
+}
+
+
+/* 2 column */
+
+.patient-card .col-md-8 {
+
+    grid-column:span 3;
+
+}
+
+
+.patient-card .col-md-4 {
+
+    grid-column:span 1;
+
+}
+
+
+.patient-card .col-md-3 {
+
+    grid-column:span 1;
+
+}
+
+
+
+/* Info */
+
+.info-group {
+
+    background:#f8fafc;
+
+    padding:10px 12px;
+
+    border-radius:10px;
+
+    border:1px solid #e5e7eb;
+
+}
+
+
+.info-label {
+
+    font-size:12px;
+
+    color:#64748b;
+
+    margin-bottom:5px;
+
+}
+
+
+.info-value {
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#111827;
+
+}
+
+
+
+/* Text */
+
+.text-box {
+
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    min-height:50px;
+
+    font-size:14px;
+
+}
+
+
+
+/* Table */
+
+.patient-table table {
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+.patient-table th {
+
+    background:#f1f5f9;
+
+    padding:10px;
+
+    font-size:13px;
+
+}
+
+
+.patient-table td {
+
+    padding:10px;
+
+    font-size:13px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+
+
+/* Button */
+
+.btn-back {
+
+    background:#64748b;
+
+    color:#fff;
+
+    padding:8px 18px;
+
+    border-radius:8px;
+
+}
+
+
+
+/* Tablet */
+
+@media(max-width:1200px){
+
+    .patient-card .row {
+
+        grid-template-columns:repeat(3,1fr);
+
+    }
+
+}
+
+
+
+/* Mobile */
+
+@media(max-width:768px){
+
+    .patient-card .row {
+
+        grid-template-columns:1fr;
+
+    }
+
+
+    .patient-card .col-md-4,
+    .patient-card .col-md-3,
+    .patient-card .col-md-8 {
+
+        grid-column:1;
+
+    }
+
+}

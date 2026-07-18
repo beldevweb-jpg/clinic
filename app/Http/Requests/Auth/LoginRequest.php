@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class LoginRequest extends FormRequest
 {
@@ -39,8 +41,8 @@ class LoginRequest extends FormRequest
             ],
 
             'branch_id' => [
-                'nullable',
-                'exists:branches,id'
+                'required',
+                'exists:branches,id',
             ],
         ];
     }
@@ -55,16 +57,31 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $loginValue = $this->input('username', $this->input('email'));
-        $user = \App\Models\User::where('username', $loginValue)
-            ->where(function ($query) {
 
-                // admin ไม่มีสาขา
-                $query->whereNull('branch_id')
-                    ->orWhere('branch_id', $this->branch_id);
-            })
-            ->first();
-        if ($user && !$user->active) {
+        $query = User::where('username', $loginValue);
 
+        // เลือกสาขา = พนักงาน
+        if ($this->filled('branch_id')) {
+            $query->where('branch_id', $this->branch_id);
+        }
+        // ไม่เลือกสาขา = Admin
+        else {
+            $query->whereNull('branch_id');
+        }
+
+        $user = $query->first();
+
+        // ไม่พบผู้ใช้
+        if (!$user) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'username' => trans('auth.failed'),
+            ]);
+        }
+
+        // บัญชีถูกปิด
+        if (!$user->active) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -72,17 +89,17 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        if (!$user || !Auth::attempt([
-            'username' => $user->username,
-            'password' => $this->password,
-        ], $this->boolean('remember'))) {
-
+        // รหัสผ่านไม่ถูกต้อง
+        if (!Hash::check($this->password, $user->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'username' => trans('auth.failed'),
             ]);
         }
+
+        // Login
+        Auth::login($user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }

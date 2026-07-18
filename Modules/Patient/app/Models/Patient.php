@@ -21,30 +21,45 @@ class patient extends Model
     protected $table = 'patient';
 
     protected $fillable = [
+
         'hn',
         'cid',
+
+        'title',
         'prefix',
         'firstname',
         'lastname',
 
-        // Smart Card
         'firstname_en',
         'lastname_en',
-        'card_issue_date',
-        'card_expire_date',
-        'card_photo',
 
-        'birthday',
-        'age',
-        'district',
-        'subdistrict',
-        'zipcode',
         'nationality',
-        'province',
+
+        'age',
+        'birthday',
         'gender',
-        'address',
+
+        'card_address',
+        'subdistrict',
+        'district',
+        'province',
+        'zipcode',
+
         'phone',
-        'email',
+
+        'blood_pressure',
+        'pulse_rate',
+        'respiratory_rate',
+        'temperature',
+
+        'height',
+        'weight',
+
+        'chief_complaint',
+        'physical_exam',
+        'diagnosis',
+        'treatment',
+
     ];
 
     public function pt33s()

@@ -76,6 +76,47 @@ function setField(name, value) {
 
 }
 
+function translateNationality(nationality) {
+
+    const map = {
+
+        'TH': 'ไทย',
+        'Thai': 'ไทย',
+        'THAI': 'ไทย',
+        'Thailand': 'ไทย',
+
+        'MM': 'เมียนมา',
+        'Myanmar': 'เมียนมา',
+        'MYANMAR': 'เมียนมา',
+
+        'LA': 'ลาว',
+        'Laos': 'ลาว',
+        'LAO': 'ลาว',
+
+        'KH': 'กัมพูชา',
+        'Cambodia': 'กัมพูชา',
+        'CAMBODIA': 'กัมพูชา',
+
+        'CN': 'จีน',
+        'China': 'จีน',
+        'CHINESE': 'จีน',
+
+        'JP': 'ญี่ปุ่น',
+        'Japan': 'ญี่ปุ่น',
+
+        'KR': 'เกาหลี',
+        'Korea': 'เกาหลี',
+
+        'US': 'สหรัฐอเมริกา',
+        'USA': 'สหรัฐอเมริกา',
+        'American': 'อเมริกัน'
+
+    };
+
+
+    return map[nationality] ?? nationality ?? '';
+}
+
 
 function fillPatient(card) {
 
@@ -96,8 +137,10 @@ function fillPatient(card) {
 
     setField('birthday', card.birthday);
 
-    setField('nationality', card.nationality);
-
+    setField(
+        'nationality',
+        translateNationality(card.nationality)
+    );
     let gender = '';
 
     if (card.gender == 'M' || card.gender == 'ชาย') {

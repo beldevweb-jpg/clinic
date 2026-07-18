@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('visits', function (Blueprint $table) {
 
             $table->id();
-            $table->foreignId('branchs_id')
+            $table->foreignId('branch_id')
                 ->constrained('branches')
                 ->cascadeOnDelete();
 
+            $table->text('created_by');
+            $table->text('visit_no');
 
             $table->foreignId('patient_id')
                 ->constrained('patient')
