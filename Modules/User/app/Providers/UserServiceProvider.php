@@ -19,7 +19,7 @@ class UserServiceProvider extends ModuleServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(
-            module_path('User', 'resources/views')
+            module_path('User', 'resources/views'),
             'User'
         );
     }
