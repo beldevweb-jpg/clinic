@@ -219,7 +219,9 @@ window.readCard = async function () {
         });
 
 
-        const response = await fetch('/ekyc/check-card');
+        const response = await fetch(
+            'http://localhost:5268/api/card/read'
+        );
 
 
         const data = await response.json();
@@ -242,7 +244,8 @@ window.readCard = async function () {
             return;
         }
 
-        // ตรวจสอบว่ามี CID หรือไม่
+
+        // ตรวจสอบ CID กับ Laravel
 
         const check = await fetch(
             `/patient/check-cid/${data.card.cid}`
@@ -276,16 +279,9 @@ window.readCard = async function () {
             return;
         }
 
-        // ไม่มีข้อมูล เติมฟอร์ม
 
         fillPatient(data.card);
 
-
-        Swal.fire(
-            "สำเร็จ",
-            "เติมข้อมูลจากบัตรแล้ว",
-            "success"
-        );
 
         Swal.fire(
             "สำเร็จ",
@@ -303,7 +299,7 @@ window.readCard = async function () {
 
         Swal.fire(
             "Error",
-            "ไม่สามารถเชื่อมต่อ Smart Card ได้",
+            "ไม่พบโปรแกรมอ่านบัตร กรุณาเปิด ThaiSmartCardService",
             "error"
         );
 
