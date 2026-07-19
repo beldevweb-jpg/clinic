@@ -66,43 +66,43 @@ class RoleUserSeeder extends Seeder
 
 
 
-        // Manager
-        $manager = User::updateOrCreate(
-            [
-                'username' => 'manager112233'
-            ],
-            [
-                'name' => 'Manager',
-                'password' => Hash::make('manager112233'),
-                'branch_id' => 1,
-                'active' => true,
-            ]
-        );
+        // // Manager
+        // $manager = User::updateOrCreate(
+        //     [
+        //         'username' => 'manager112233'
+        //     ],
+        //     [
+        //         'name' => 'Manager',
+        //         'password' => Hash::make('manager112233'),
+        //         'branch_id' => 1,
+        //         'active' => true,
+        //     ]
+        // );
 
 
-        $manager->roles()->sync([
-            Roles::where('slug', 'manager')->first()->id
-        ]);
+        // $manager->roles()->sync([
+        //     Roles::where('slug', 'manager')->first()->id
+        // ]);
 
 
 
 
-        // Staff
-        $staff = User::updateOrCreate(
-            [
-                'username' => 'staff112233'
-            ],
-            [
-                'name' => 'Staff',
-                'password' => Hash::make('staff112233'),
-                'branch_id' => 1,
-                'active' => true,
-            ]
-        );
+        // // Staff
+        // $staff = User::updateOrCreate(
+        //     [
+        //         'username' => 'staff112233'
+        //     ],
+        //     [
+        //         'name' => 'Staff',
+        //         'password' => Hash::make('staff112233'),
+        //         'branch_id' => 1,
+        //         'active' => true,
+        //     ]
+        // );
 
 
-        $staff->roles()->sync([
-            Roles::where('slug', 'staff')->first()->id
-        ]);
+        // $staff->roles()->sync([
+        //     Roles::where('slug', 'staff')->first()->id
+        // ]);
     }
 }
