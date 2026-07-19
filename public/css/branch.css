@@ -1,92 +1,346 @@
 :root {
-    --primary-color: #0d6efd;
-    --transition-speed: 0.2s;
+    --branch-primary: #2563eb;
+    --branch-primary-hover: #1d4ed8;
+    --branch-text: #1f2937;
+    --branch-muted: #6b7280;
+    --branch-border: #e5e7eb;
+    --branch-bg: #f8fafc;
+    --branch-radius: 18px;
+    --transition: .25s ease;
 }
 
-/* ตั้งค่าพื้นฐานป้องกันการคำนวณขนาดกล่องเพี้ยน */
-.branch-card,
-.branch-card * {
-    box-sizing: border-box;
-}
 
-/* ตัวการ์ดหลัก */
+/* =========================
+   Card Layout
+========================= */
+
 .branch-card {
-    max-width: 700px;
+    max-width: 760px;
     width: 100%;
-    border-radius: 16px !important;
+    border-radius: var(--branch-radius) !important;
     overflow: hidden;
-    background: #ffffff;
+    background: #fff;
+    border: 1px solid var(--branch-border);
+    box-shadow:
+        0 10px 25px rgba(15, 23, 42, .06),
+        0 2px 6px rgba(15, 23, 42, .04);
+    transition: var(--transition);
 }
 
-/* ไอคอน */
+
+.branch-card:hover {
+    box-shadow:
+        0 20px 40px rgba(15, 23, 42, .10);
+}
+
+
+
+/* =========================
+   Header
+========================= */
+
+.branch-card .card-header {
+    background:
+        linear-gradient(
+            135deg,
+            #eff6ff,
+            #ffffff
+        ) !important;
+
+    border-bottom: 1px solid var(--branch-border);
+}
+
+
 .branch-icon-wrapper {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
+
+    width: 46px;
+    height: 46px;
+
+    background: white;
+
+    border: 1px solid #dbeafe;
+
+    color: var(--branch-primary);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
 }
 
-/* ส่วนช่องรับข้อมูล: ปรับความกว้าง 100% เสมอเพื่อให้พอดีกับ Grid ของ Bootstrap */
-.custom-input {
-    width: 100% !important;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 0.6rem 0.9rem;
-    font-size: 0.95rem;
-    color: #212529;
-    transition: all var(--transition-speed) ease-in-out;
+
+
+/* =========================
+   Form Section
+========================= */
+
+
+.form-section h6 {
+
+    letter-spacing: .2px;
+
 }
+
+
+.form-section .badge {
+
+    width: 28px;
+    height: 28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size: .85rem;
+
+}
+
+
+
+/* =========================
+   Input
+========================= */
+
+
+.custom-input {
+
+    width:100%;
+
+    min-height:44px;
+
+    background:#fff;
+
+    border-radius:10px !important;
+
+    border:1px solid #d1d5db;
+
+    padding:
+    .65rem .9rem;
+
+    font-size:.95rem;
+
+    color:var(--branch-text);
+
+    transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+
+}
+
+
+
+.custom-input:hover {
+
+    border-color:#93c5fd;
+
+}
+
+
 
 .custom-input:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+
+    border-color:var(--branch-primary);
+
+    box-shadow:
+    0 0 0 4px rgba(37,99,235,.12);
+
+    outline:none;
+
 }
 
-.custom-input.is-invalid:focus {
-    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.15) !important;
-}
 
-.form-label {
-    font-size: 0.875rem;
-    color: #495057;
-    margin-bottom: 0.4rem;
-}
 
 textarea.custom-input {
-    min-height: 100px;
-    resize: none;
+
+    min-height:120px;
+
+    resize:vertical;
+
 }
+
+
+
+/* Error */
+
+.custom-input.is-invalid {
+
+    border-color:#dc3545;
+
+}
+
+
+
+.invalid-feedback {
+
+    font-size:.85rem;
+
+}
+
+
+
+/* =========================
+   Switch
+========================= */
+
+
+.card.bg-light {
+
+    background:#f8fafc !important;
+
+    border:1px solid var(--branch-border) !important;
+
+}
+
+
 
 .custom-switch {
-    cursor: pointer;
+
+    width:48px !important;
+
+    height:25px !important;
+
 }
 
-.form-check-label {
-    cursor: pointer;
+
+
+.custom-switch:checked {
+
+    background-color:var(--branch-primary);
+
+    border-color:var(--branch-primary);
+
 }
+
+
+
+
+/* =========================
+   Buttons
+========================= */
+
 
 .btn {
-    border-radius: 8px;
-    transition: all var(--transition-speed) ease;
+
+    height:44px;
+
+    border-radius:10px;
+
+    font-size:.95rem;
+
+    transition:
+    all var(--transition);
+
 }
+
+
+
+.btn-primary {
+
+    background:
+    linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
+    border:none;
+
+}
+
+
 
 .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25) !important;
+
+    background:
+    linear-gradient(
+        135deg,
+        #1d4ed8,
+        #1e40af
+    );
+
+    transform:
+    translateY(-2px);
+
+    box-shadow:
+    0 8px 20px rgba(37,99,235,.25)!important;
+
 }
+
+
+
+.btn-light {
+
+    background:#fff;
+
+    border:1px solid #d1d5db;
+
+}
+
+
 
 .btn-light:hover {
-    background-color: #f1f3f5;
+
+    background:#f8fafc;
+
 }
 
-/* การแสดงผลบนสมาร์ตโฟน (ชิดขอบจออย่างสวยงาม ไม่ล้นจอ) */
-@media (max-width: 768px) {
+
+
+/* =========================
+   Divider
+========================= */
+
+
+hr {
+
+    opacity:.15;
+
+}
+
+
+
+/* =========================
+   Mobile
+========================= */
+
+
+@media(max-width:768px){
+
+
+    .container {
+
+        padding-left:15px;
+        padding-right:15px;
+
+    }
+
+
     .branch-card {
-        border-radius: 0px !important;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        border: none;
+
+        border-radius:14px !important;
+
     }
+
+
     .card-body {
-        padding: 1.5rem !important;
+
+        padding:1.25rem !important;
+
     }
+
+
+    .d-flex.justify-content-end {
+
+        flex-direction:column-reverse;
+
+    }
+
+
+    .d-flex.justify-content-end .btn {
+
+        width:100%;
+
+    }
+
 }
