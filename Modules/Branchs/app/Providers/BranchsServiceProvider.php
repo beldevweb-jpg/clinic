@@ -17,30 +17,27 @@ class BranchsServiceProvider extends ModuleServiceProvider
      */
     protected string $nameLower = 'branchs';
 
-    /**
-     * Command classes to register.
-     *
-     * @var string[]
-     */
-    // protected array $commands = [];
 
-    /**
-     * Provider classes to register.
-     *
-     * @var string[]
-     */
     protected array $providers = [
         EventServiceProvider::class,
         RouteServiceProvider::class,
     ];
 
-    /**
-     * Define module schedules.
-     * 
-     * @param $schedule
-     */
-    // protected function configureSchedules(Schedule $schedule): void
-    // {
-    //     $schedule->command('inspire')->hourly();
-    // }
+
+    public function boot(): void
+    {
+        $this->loadViewsFrom(
+            module_path('Branchs', 'resources/views'),
+            'Branchs'
+        );
+
+        $this->loadTranslationsFrom(
+            module_path('Branchs', 'resources/lang'),
+            'Branchs'
+        );
+
+        $this->loadMigrationsFrom(
+            module_path('Branchs', 'database/migrations')
+        );
+    }
 }
