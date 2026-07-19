@@ -16,7 +16,7 @@ use Modules\Visits\Models\Visits;
 
 use Modules\MedicalCertificate\Models\MedicalCertificate;
 
-use Modules\Medics\Models\medics;
+use Modules\Medics\Models\Medics;
 
 use Modules\Branchs\Models\Branchs;
 

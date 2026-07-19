@@ -4,7 +4,7 @@ namespace Modules\Dashboards\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Modules\Patient\Models\Patient;
-use Modules\Medics\Models\medics;
+use Modules\Medics\Models\Medics;
 use Modules\Document\Models\Document;
 use Modules\Visits\Models\Visits;
 use Carbon\Carbon;
