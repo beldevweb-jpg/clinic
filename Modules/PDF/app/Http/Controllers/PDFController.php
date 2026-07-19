@@ -12,7 +12,7 @@ use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;
 use Modules\Document\Models\Document;
 use App\Helpers\ThaiHelper;
-use Modules\Document\Models\Pt28;
+use Modules\Document\Models\PT28;
 use Modules\MedicalCertificate\Models\MedicalCertificate;
 
 

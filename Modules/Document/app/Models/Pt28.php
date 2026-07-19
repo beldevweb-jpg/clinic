@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Modules\Document\Database\Factories\Pt28Factory;
 use Modules\AuditLog\Models\AuditLog;
 
-class Pt28 extends Model
+class PT28 extends Model
 {
     use HasFactory;
 
