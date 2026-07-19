@@ -8,7 +8,7 @@ use Modules\AuditLog\Observers\AuditObserver;
 
 
 // Models ที่ต้องเก็บ Audit
-use Modules\Patient\Models\patient;
+use Modules\Patient\Models\Patient;
 use Modules\Document\Models\Document;
 use Modules\Document\Models\pt33;
 use Modules\Document\Models\Pt28;
