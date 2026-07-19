@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Medics\Models\Professions;
 use Modules\Medics\Models\MedicProfessions;
-use Modules\Medics\Models\medics;
+use Modules\Medics\Models\Medics;
 use DB;
 
 class MedicsController extends Controller
