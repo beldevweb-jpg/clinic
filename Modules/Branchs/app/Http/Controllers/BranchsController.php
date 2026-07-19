@@ -15,7 +15,7 @@ class BranchsController extends Controller
     public function index()
     {
         $branchs = branchs::get();
-        return view('branchs::branchs.index', compact('branchs'));
+        return view('Branchs::Branchs.index', compact('branchs'));
     }
 
     /**
@@ -23,7 +23,7 @@ class BranchsController extends Controller
      */
     public function create()
     {
-        return view('branchs::branchs.create');
+        return view('Branchs::Branchs.create');
     }
 
     /**
@@ -72,7 +72,7 @@ class BranchsController extends Controller
     public function edit($id)
     {
         $branchs = branchs::find($id);
-        return view('branchs::branchs.edit', compact('branchs'));
+        return view('Branchs::Branchs.edit', compact('branchs'));
     }
 
     /**
