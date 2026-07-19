@@ -20,7 +20,7 @@ class MedicalCertificateServiceProvider extends ModuleServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(
-            module_path('MedicalCertificate', 'Resources/views'),
+            module_path('MedicalCertificate', 'resources/views')
             'medicalcertificate'
         );
     }
