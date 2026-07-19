@@ -65,7 +65,7 @@
                 </div>
                 <div>
                     <span>เข้าใช้บริการวันนี้</span>
-                    <h2>{{ $visits }}</h2>
+                    <h2>{{ $totalVisits }}</h2>
                 </div>
             </div>
         </div>
@@ -117,7 +117,7 @@
                 </div>
 
 
-                <a href="{{ route('visitsList') }}" class="view-btn">
+                <a href="{{ route('visits.index') }}" class="view-btn">
                     ดูทั้งหมด
                 </a>
 
@@ -127,59 +127,109 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Visit No</th>
+                            <th>วันที่</th>
+                            <th>ประเภท</th>
                             <th>HN</th>
                             <th>ผู้ป่วย</th>
                             <th>แพทย์</th>
                             <th>สาขา</th>
-                            <th>เวลา</th>
-                            <th>สถานะ</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($latestVisits as $visit)
                             <tr>
-                                <td>
-                                    {{ $visit->patient?->hn ?? '-' }} </td>
 
                                 <td>
-                                    <div class="patient-info">
-                                        <div class="avatar">
-                                            <i class="fas fa-user"></i>
-                                        </div>
-                                        <span>
-                                            {{ $visit->patient->firstname }}
-                                            {{ $visit->patient->lastname }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    {{ $visit->medic?->firstname }}
-                                    {{ $visit->medic?->lastname }}
-                                </td>
-                                <td>
-                                    {{ $visit->branch?->name ?? '-' }}
+                                    {{ $visit->visit_no ?? '-' }}
                                 </td>
 
-                                <td>
-                                    {{ \Carbon\Carbon::parse($visit->visit_date)->format('H:i') }}
-                                </td>
 
                                 <td>
-                                    <span class="status success">
-                                        เข้ารับบริการ
-                                    </span>
+                                    {{ \Carbon\Carbon::parse($visit->visit_date)->format('d/m/Y') }}
                                 </td>
+
+
+                                <td>
+
+                                    @switch($visit->type)
+                                        @case('register')
+                                            ลงทะเบียน
+                                        @break
+
+                                        @case('pt33')
+                                            PT33
+                                        @break
+
+                                        @case('pt28')
+                                            PT28
+                                        @break
+
+                                        @default
+                                            อื่นๆ
+                                    @endswitch
+
+                                </td>
+
+
+                                <td>
+                                    {{ $visit->patient->hn ?? '-' }}
+                                </td>
+
+
+                                <td>
+                                    {{ $visit->patient->firstname ?? '-' }}
+                                    {{ $visit->patient->lastname ?? '' }}
+                                </td>
+
+
+                                <td>
+                                    {{ $visit->medic->name ?? '-' }}
+                                </td>
+
+
+                                <td>
+                                    {{ $visit->branch->name ?? '-' }}
+                                </td>
+
+
+                                <td>
+
+                                    <a href="{{ route('visits.edit', $visit->id) }}" class="btn-edit">
+                                        แก้ไข
+                                    </a>
+
+
+                                    <form action="{{ route('visits.destroy', $visit->id) }}" method="POST"
+                                        style="display:inline">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button class="btn-delete" onclick="return confirm('ยืนยันการลบ?')">
+                                            ลบ
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="empty">
-                                    ไม่มีข้อมูลเข้าใช้บริการ
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+
+
+                            @empty
+
+                                <tr>
+                                    <td colspan="8" class="empty">
+                                        ไม่พบข้อมูลการเข้ารับบริการ
+                                    </td>
+                                </tr>
+                            @endforelse
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection

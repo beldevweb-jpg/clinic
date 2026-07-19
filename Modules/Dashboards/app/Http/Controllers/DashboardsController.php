@@ -22,7 +22,9 @@ class DashboardsController extends Controller
 
         $user = auth()->user();
 
-        $branchId = $user->branch_id;
+        $branchId = $user->hasRole('Admin')
+            ? null
+            : $user->branch_id;
 
 
         $branchVisits = Branchs::withCount([
@@ -73,12 +75,11 @@ class DashboardsController extends Controller
 
 
             // เข้าใช้บริการวันนี้
-            'visits' => Visits::whereDate(
+            'totalVisits' => Visits::whereDate(
                 'visit_date',
                 $date
             )
                 ->when($branchId, function ($query) use ($branchId) {
-
                     $query->where('branch_id', $branchId);
                 })
                 ->count(),
@@ -131,11 +132,22 @@ class DashboardsController extends Controller
 
     public function visitsList()
     {
+        $user = auth()->user();
+
+        $branchId = $user->hasRole('Admin')
+            ? null
+            : $user->branch_id;
+
+
         $visits = Visits::with([
             'patient',
             'medic',
             'branch'
         ])
+            ->when($branchId, function ($query) use ($branchId) {
+
+                $query->where('branch_id', $branchId);
+            })
             ->latest()
             ->paginate(20);
 
