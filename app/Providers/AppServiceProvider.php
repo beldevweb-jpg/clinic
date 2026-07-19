@@ -11,7 +11,7 @@ use Modules\AuditLog\Observers\AuditObserver;
 use Modules\Patient\Models\Patient;
 use Modules\Document\Models\Document;
 use Modules\Document\Models\Pt33;
-use Modules\Document\Models\PT28;
+use Modules\Document\Models\Pt28;
 use Modules\Visits\Models\Visits;
 
 use Modules\MedicalCertificate\Models\MedicalCertificate;
