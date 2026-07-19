@@ -32,7 +32,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('User::create');
+        return view('user::create');
     }
 
     /**
@@ -45,7 +45,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return view('User::show');
+        return view('user::show');
     }
 
     /**
