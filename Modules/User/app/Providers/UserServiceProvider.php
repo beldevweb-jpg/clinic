@@ -20,7 +20,7 @@ class UserServiceProvider extends ModuleServiceProvider
     {
         $this->loadViewsFrom(
             module_path('User', 'resources/views'),
-            'User'
+            'user'
         );
     }
 }
