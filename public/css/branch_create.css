@@ -199,4 +199,72 @@ hr {
         width: 100%;
     }
 
+
+    /* =========================
+   Fix Branch Create Layout
+   ========================= */
+
+    .branch-card {
+        width: 100%;
+        max-width: 900px;
+        margin: auto;
+    }
+
+
+    /* Card body */
+    .branch-card .card-body {
+        padding: 40px 50px;
+    }
+
+
+    /* Header */
+    .branch-card .card-header {
+        padding: 20px 40px;
+    }
+
+
+    /* Input full width */
+    .custom-input {
+        width: 100%;
+        height: 45px;
+    }
+
+
+    /* Textarea */
+    textarea.custom-input {
+        height: auto;
+        min-height: 120px;
+    }
+
+
+    /* Section spacing */
+    .form-section {
+        margin-bottom: 25px;
+    }
+
+
+    /* Buttons */
+    .d-flex.justify-content-end {
+        margin-top: 20px;
+    }
+
+
+    /* Container center */
+    .branch-container {
+        min-height: calc(100vh - 60px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    /* Mobile */
+    @media(max-width:768px) {
+
+        .branch-card .card-body {
+            padding: 25px;
+        }
+
+    }
+
 }
