@@ -25,7 +25,7 @@ class UserController extends Controller
         }
 
         $users = $query->get();
-        return view('User::user.index', compact('users'));
+        return view('user::user.index', compact('users'));
     }
     /**
      * Show the form for creating a new resource.
@@ -60,7 +60,7 @@ class UserController extends Controller
         $roles = Roles::all();
 
 
-        return view('User::User.edit', compact(
+        return view('user::user.edit', compact(
             'user',
             'branches',
             'roles'
