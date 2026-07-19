@@ -5,7 +5,7 @@
 @endpush
 
 @section('content')
-    <div class="container py-5">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100 py-5">
         <div class="card branch-card shadow-sm border-0 mx-auto">
 
             <div class="card-header bg-light py-3 px-4 d-flex align-items-center gap-2 border-bottom">
