@@ -120,6 +120,11 @@ function translateNationality(nationality) {
 
 function fillPatient(card) {
 
+
+    // รองรับทั้ง Laravel DTO และ .NET API
+    card.prefix = card.prefix ?? card.title;
+
+
     setField('cid', card.cid);
 
     setField('prefix', card.prefix);
@@ -137,10 +142,13 @@ function fillPatient(card) {
 
     setField('birthday', card.birthday);
 
+
     setField(
         'nationality',
         translateNationality(card.nationality)
     );
+
+
     let gender = '';
 
     if (card.gender == 'M' || card.gender == 'ชาย') {
@@ -167,39 +175,13 @@ function fillPatient(card) {
 
 
 
-
-
-    // คำนวณอายุ
     if (card.birthday) {
 
-        const birthDate = new Date(card.birthday);
+        setField(
+            'age',
+            calculateAge(card.birthday)
+        );
 
-        const today = new Date();
-
-        let age =
-            today.getFullYear()
-            -
-            birthDate.getFullYear();
-
-
-        const month =
-            today.getMonth()
-            -
-            birthDate.getMonth();
-
-
-        if (
-            month < 0 ||
-            (
-                month === 0 &&
-                today.getDate() < birthDate.getDate()
-            )
-        ) {
-            age--;
-        }
-
-
-        setField('age', age);
     }
 
 }
@@ -220,9 +202,8 @@ window.readCard = async function () {
 
 
         const response = await fetch(
-            'http://localhost:5268/api/card/read'
+            'http://localhost:5000/api/card/read'
         );
-
 
         const data = await response.json();
 

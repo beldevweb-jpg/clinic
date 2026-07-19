@@ -2,7 +2,6 @@
 
 namespace Modules\EKYC\DTO;
 
-
 class CardData
 {
     public function __construct(
@@ -10,11 +9,11 @@ class CardData
         // ข้อมูลหลัก
         public string $cid,
 
-        public string $prefix,
+        public ?string $prefix = null,
 
-        public string $firstname,
+        public ?string $firstname = null,
 
-        public string $lastname,
+        public ?string $lastname = null,
 
 
         // ข้อมูลภาษาอังกฤษจากบัตร
@@ -55,6 +54,7 @@ class CardData
         public ?string $card_photo = null,
 
     ) {}
+
 
     public function toArray(): array
     {

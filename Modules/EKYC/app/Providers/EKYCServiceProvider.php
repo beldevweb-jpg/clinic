@@ -4,9 +4,11 @@ namespace Modules\EKYC\Providers;
 
 use Nwidart\Modules\Support\ModuleServiceProvider;
 use Illuminate\Support\Facades\Route;
+
 use Modules\EKYC\Contracts\SmartCardReaderInterface;
 use Modules\EKYC\Drivers\MockSmartCardReader;
-use Modules\EKYC\Readers\ThaiSmartCardReader;
+use Modules\EKYC\Services\ThaiSmartCardReader;
+
 
 class EKYCServiceProvider extends ModuleServiceProvider
 {
