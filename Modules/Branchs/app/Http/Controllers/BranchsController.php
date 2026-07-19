@@ -14,7 +14,7 @@ class BranchsController extends Controller
      */
     public function index()
     {
-        $branchs = branchs::get();
+        $branchs = Branchs::get();
         return view('Branchs::Branchs.index', compact('branchs'));
     }
 
