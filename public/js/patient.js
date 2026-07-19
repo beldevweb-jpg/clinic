@@ -228,9 +228,16 @@ window.readCard = async function () {
 
         // ตรวจสอบ CID กับ Laravel
 
+        console.log("อ่านบัตรสำเร็จ", data);
+
         const check = await fetch(
             `/patient/check-cid/${data.card.cid}`
         );
+
+        console.log("CHECK STATUS", check.status);
+
+
+        console.log(patientCheck);
 
 
         const patientCheck = await check.json();
@@ -320,6 +327,6 @@ function calculateAge(birthday) {
     }
 
 
+    console.log("PATIENT JS NEW VERSION");
     return age;
-
 }

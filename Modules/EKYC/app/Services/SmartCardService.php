@@ -10,8 +10,7 @@ use Modules\EKYC\DTO\CardData;
 class ThaiSmartCardReader implements SmartCardReaderInterface
 {
 
-    protected string $url = 'http://localhost:5268';
-
+    protected string $url = 'http://localhost:5000';
 
 
     public function connected(): bool
@@ -24,8 +23,6 @@ class ThaiSmartCardReader implements SmartCardReaderInterface
 
 
             return $response->json('connected') ?? false;
-
-
         } catch (\Exception $e) {
 
             return false;
@@ -48,7 +45,6 @@ class ThaiSmartCardReader implements SmartCardReaderInterface
             if (!$response->successful()) {
 
                 return null;
-
             }
 
 
@@ -60,7 +56,6 @@ class ThaiSmartCardReader implements SmartCardReaderInterface
             if (!$card) {
 
                 return null;
-
             }
 
 
@@ -108,14 +103,9 @@ class ThaiSmartCardReader implements SmartCardReaderInterface
                 card_photo: $card['card_photo'] ?? null,
 
             );
-
-
         } catch (\Exception $e) {
 
             return null;
-
         }
-
     }
-
 }

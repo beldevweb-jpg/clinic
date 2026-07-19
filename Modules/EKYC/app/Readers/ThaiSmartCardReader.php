@@ -9,8 +9,7 @@ use Modules\EKYC\DTO\CardData;
 class ThaiSmartCardReader implements SmartCardReaderInterface
 {
 
-    private string $url = 'http://localhost:5268/api/card';
-
+    private string $url = 'http://localhost:5000/api/card';
 
     public function connected(): bool
     {

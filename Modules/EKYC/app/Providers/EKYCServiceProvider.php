@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 use Modules\EKYC\Contracts\SmartCardReaderInterface;
 use Modules\EKYC\Drivers\MockSmartCardReader;
-use Modules\EKYC\Services\ThaiSmartCardReader;
-
+use Modules\EKYC\Readers\ThaiSmartCardReader;
 
 class EKYCServiceProvider extends ModuleServiceProvider
 {
