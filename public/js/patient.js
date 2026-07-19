@@ -68,14 +68,12 @@ function setField(name, value) {
 
     const field = document.querySelector(`[name="${name}"]`);
 
+    console.log(name, field, value);
+
     if (field) {
-
         field.value = value ?? '';
-
     }
-
 }
-
 function translateNationality(nationality) {
 
     const map = {
@@ -188,7 +186,7 @@ function fillPatient(card) {
 
 
 window.readCard = async function () {
-
+    console.log("READ CARD CLICK");
     try {
 
         Swal.fire({
@@ -202,7 +200,11 @@ window.readCard = async function () {
 
 
         const response = await fetch(
-            'http://localhost:5000/api/card/read'
+            'http://localhost:5000/api/card/read',
+            {
+                method: 'GET',
+                cache: 'no-cache'
+            }
         );
 
         const data = await response.json();
@@ -230,6 +232,10 @@ window.readCard = async function () {
 
         console.log("อ่านบัตรสำเร็จ", data);
 
+        fillPatient(data.card);
+
+        return;
+
         const check = await fetch(
             `/patient/check-cid/${data.card.cid}`
         );
@@ -237,10 +243,11 @@ window.readCard = async function () {
         console.log("CHECK STATUS", check.status);
 
 
+        const patientCheck = await check.json();
+
         console.log(patientCheck);
 
-
-        const patientCheck = await check.json();
+        ;
 
 
 
