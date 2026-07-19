@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Patient\Models\patient;
 use Modules\Medics\Models\medics;
-use Modules\Document\Models\Visits;
+use Modules\Visits\Models\Visits;
 use Modules\AuditLog\Models\AuditLog;
 
 // use Modules\Document\Database\Factories\Pt33Factory;

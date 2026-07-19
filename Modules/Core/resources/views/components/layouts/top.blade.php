@@ -40,6 +40,10 @@
                 ประวัติการใช้งาน
             </a>
         @endif
+
+        <a href="{{ route('visits.index') }}" class="{{ request()->routeIs('visits.index') ? 'active' : '' }}">
+            รายชื่อผู้เข้าใช้บริการ
+        </a>
     </nav>
 
     <div class="profile">

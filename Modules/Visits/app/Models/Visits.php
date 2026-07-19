@@ -18,7 +18,10 @@ class Visits extends Model
         'patient_id',
         'medic_id',
         'visit_date',
+        'type',
         'note',
+        'visit_no',
+        'created_by',
     ];
 
 

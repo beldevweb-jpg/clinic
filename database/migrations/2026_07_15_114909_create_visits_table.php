@@ -18,6 +18,8 @@ return new class extends Migration
                 ->constrained('branches')
                 ->cascadeOnDelete();
 
+            $table->string('type')->nullable();
+
             $table->text('created_by');
             $table->text('visit_no');
 

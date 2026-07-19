@@ -12,7 +12,7 @@ use Modules\Patient\Models\patient;
 use Modules\Document\Models\Document;
 use Modules\Document\Models\pt33;
 use Modules\Document\Models\Pt28;
-use Modules\Document\Models\Visits;
+use Modules\Visits\Models\Visits;
 
 use Modules\MedicalCertificate\Models\MedicalCertificate;
 

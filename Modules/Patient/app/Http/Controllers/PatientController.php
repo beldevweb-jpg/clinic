@@ -8,7 +8,7 @@ use Modules\Patient\Models\patient;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
-use Modules\Document\Models\Visits;
+use Modules\Visits\Models\Visits;
 
 class PatientController extends Controller
 {
@@ -116,6 +116,7 @@ class PatientController extends Controller
 
             $patient = DB::transaction(function () use ($request) {
 
+
                 // สาขาของ User
                 $branchId = auth()->user()->branch_id;
 
@@ -154,75 +155,55 @@ class PatientController extends Controller
                     ]);
 
                 // สร้างผู้ป่วย
-                return Patient::create([
-
+                $patient = Patient::create([
                     'hn' => 'HN' . str_pad($nextHN, 6, '0', STR_PAD_LEFT),
-
                     'cid' => $request->cid,
-
                     'title' => $request->title,
-
                     'prefix' => $request->prefix,
-
                     'firstname' => $request->firstname,
-
                     'lastname' => $request->lastname,
-
-
                     'firstname_en' => $request->firstname_en,
-
                     'lastname_en' => $request->lastname_en,
-
-
                     'nationality' => $request->nationality,
-
-
                     'age' => $request->age,
-
                     'birthday' => $request->birthday,
-
                     'gender' => $request->gender,
-
-
                     'card_address' => $request->address,
-
                     'subdistrict' => $request->subdistrict,
-
                     'district' => $request->district,
-
                     'province' => $request->province,
-
                     'zipcode' => $request->zipcode,
-
-
                     'phone' => $request->phone,
-
-
-                    // vital signs
                     'blood_pressure' => $request->bp,
-
                     'pulse_rate' => $request->pr,
-
                     'respiratory_rate' => $request->rr,
-
                     'temperature' => $request->temperature,
-
-
                     'height' => $request->height,
-
                     'weight' => $request->weight,
-
-
-                    // medical
                     'chief_complaint' => $request->chief_complaint,
-
                     'physical_exam' => $request->physical_exam,
-
                     'diagnosis' => $request->dx,
-
                     'treatment' => $request->tx,
-
                 ]);
+
+                Visits::create([
+                    'branch_id'  => $branchId,
+
+                    'visit_no'   => 'VISIT-' . now()->format('YmdHis'),
+
+                    'patient_id' => $patient->id,
+
+                    'medic_id'   => null,
+
+                    'visit_date' => now(),
+
+                    'note'       => 'ลงทะเบียนผู้ป่วยใหม่',
+
+                    'type'       => 'register',
+
+                    'created_by' => auth()->id(),
+                ]);
+                return $patient;
             });
             return redirect()
                 ->route('patient.index')
@@ -341,80 +322,49 @@ class PatientController extends Controller
 
             DB::transaction(function () use ($request, $patient) {
 
-                return Patient::create([
-
-                    'hn' => 'HN' . str_pad($nextHN, 6, '0', STR_PAD_LEFT),
+                $patient->update([
 
                     'cid' => $request->cid,
-
                     'title' => $request->title,
-
                     'prefix' => $request->prefix,
-
                     'firstname' => $request->firstname,
-
                     'lastname' => $request->lastname,
-
-
                     'firstname_en' => $request->firstname_en,
-
                     'lastname_en' => $request->lastname_en,
-
-
                     'nationality' => $request->nationality,
-
-
                     'birthday' => $request->birthday,
-
                     'age' => $request->age,
-
-
                     'gender' => $request->gender,
-
-
                     'card_address' => $request->address,
-
                     'subdistrict' => $request->subdistrict,
-
                     'district' => $request->district,
-
                     'province' => $request->province,
-
                     'zipcode' => $request->zipcode,
-
-
                     'phone' => $request->phone,
-
-
                     'blood_pressure' => $request->blood_pressure,
-
                     'pulse_rate' => $request->pulse_rate,
-
                     'respiratory_rate' => $request->respiratory_rate,
-
                     'temperature' => $request->temperature,
-
-
                     'height' => $request->height,
-
                     'weight' => $request->weight,
-
-
                     'chief_complaint' => $request->chief_complaint,
-
                     'physical_exam' => $request->physical_exam,
-
                     'diagnosis' => $request->diagnosis,
-
                     'treatment' => $request->treatment,
 
                 ]);
             });
 
-
             return redirect()
                 ->route('patient.index')
                 ->with('success', 'แก้ไขข้อมูลผู้ป่วยเรียบร้อย HN : ' . $patient->hn);
+        } catch (\Exception $e) {
+
+            Log::error('Update Patient Error : ' . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->with('error', 'เกิดข้อผิดพลาด ไม่สามารถแก้ไขข้อมูลผู้ป่วยได้');
         } catch (\Exception $e) {
 
             Log::error('Update Patient Error : ' . $e->getMessage());

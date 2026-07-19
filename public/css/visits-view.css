@@ -1,0 +1,168 @@
+.visit-wrapper {
+    padding: 25px;
+    background: #f5f7fb;
+    min-height: calc(100vh - 60px);
+}
+
+
+.visit-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+}
+
+
+.visit-header-flex {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+
+.visit-header h3 {
+
+    margin: 0;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+    color: #1f2937;
+
+}
+
+
+
+.btn-save {
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+}
+
+
+.btn-save:hover {
+
+    background: #1d4ed8;
+
+}
+
+
+
+/* Table */
+
+.table-responsive {
+
+    overflow-x: auto;
+
+}
+
+
+
+.visit-table {
+
+    width: 100%;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+}
+
+
+
+.visit-table thead th {
+
+    background: #f8fafc;
+
+    color: #374151;
+
+    font-weight: 700;
+
+    padding: 14px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+}
+
+
+
+.visit-table tbody td {
+
+    padding: 14px;
+
+    border-bottom: 1px solid #f0f0f0;
+
+    color: #374151;
+
+}
+
+
+
+.visit-table tbody tr:hover {
+
+    background: #f9fafb;
+
+}
+
+
+
+/* ปุ่ม */
+
+.btn-edit {
+
+    background: #f59e0b;
+
+    color: white;
+
+    padding: 6px 12px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+}
+
+
+
+.btn-delete {
+
+    background: #ef4444;
+
+    color: white;
+
+    border: none;
+
+    padding: 6px 12px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+}
+
+
+.empty {
+
+    text-align: center;
+
+    padding: 30px;
+
+    color: #9ca3af;
+
+}

@@ -16,40 +16,11 @@ class AuditLogController extends Controller
     {
         $user = auth()->user();
 
-
         $logs = AuditLog::with([
             'user',
             'branch'
         ])
-
-
-            // Admin เห็นทั้งหมด
-            // User อื่นเห็นเฉพาะสาขาตัวเอง
-            ->when(
-                !$user->hasRole('Admin'),
-                function ($q) use ($user) {
-
-                    $q->where(
-                        'branch_id',
-                        $user->branch_id
-                    );
-                }
-            )
-
-
-            // Admin filter สาขา
-            ->when(
-                $request->branch_id
-                    && $user->hasRole('Admin'),
-                function ($q) use ($request) {
-
-                    $q->where(
-                        'branch_id',
-                        $request->branch_id
-                    );
-                }
-            )
-
+            ->where('branch_id', $user->branch_id)
 
             ->when($request->search, function ($q) use ($request) {
 
@@ -57,25 +28,11 @@ class AuditLogController extends Controller
 
                 $q->where(function ($query) use ($search) {
 
-                    $query->where(
-                        'description',
-                        'like',
-                        "%{$search}%"
-                    )
-
-                        ->orWhere(
-                            'ip_address',
-                            'like',
-                            "%{$search}%"
-                        )
-
-                        ->orWhere(
-                            'auditable_id',
-                            $search
-                        );
+                    $query->where('description', 'like', "%{$search}%")
+                        ->orWhere('ip_address', 'like', "%{$search}%")
+                        ->orWhere('auditable_id', $search);
                 });
             })
-
 
             ->when($request->action, function ($q) use ($request) {
 
@@ -84,7 +41,6 @@ class AuditLogController extends Controller
                     $request->action
                 );
             })
-
 
             ->when($request->start_date, function ($q) use ($request) {
 
@@ -95,7 +51,6 @@ class AuditLogController extends Controller
                 );
             })
 
-
             ->when($request->end_date, function ($q) use ($request) {
 
                 $q->whereDate(
@@ -105,26 +60,17 @@ class AuditLogController extends Controller
                 );
             })
 
-
             ->latest()
             ->paginate(20)
             ->withQueryString();
 
 
 
-        $branches = Branchs::where('active', 1)
-
-            ->when(
-                !$user->hasRole('Admin'),
-                function ($q) use ($user) {
-
-                    $q->where(
-                        'id',
-                        $user->branch_id
-                    );
-                }
-            )
-
+        $branches = Branchs::where(
+            'id',
+            $user->branch_id
+        )
+            ->where('active', 1)
             ->get();
 
 

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\medics;
 use Modules\Document\Models\Document;
-use Modules\Document\Models\Visits;
+use Modules\Visits\Models\Visits;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Modules\Branchs\Models\Branchs;

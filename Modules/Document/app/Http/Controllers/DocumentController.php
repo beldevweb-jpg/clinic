@@ -69,16 +69,23 @@ class DocumentController extends Controller
 
         try {
 
-            $visitId = DB::table('visits')->insertGetId([
-                'branch_id' => $branch_id,
-                'patient_id' => $validated['patient_id'],
-                'visit_no'   => 'VISIT-' . now()->format('YmdHis'),
-                'visit_date' => now()->toDateString(),
-                'medic_id'   => $validated['medic_id'],
-                'created_by' => Auth::id() ?? 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+
+            $visit = Visit::where('patient_id', $validated['patient_id'])
+                ->whereDate('visit_date', today())
+                ->first();
+
+            if (!$visit) {
+
+                $visit = Visit::create([
+                    'branch_id'  => $branch_id,
+                    'patient_id' => $validated['patient_id'],
+                    'visit_no'   => 'VISIT-' . now()->format('YmdHis'),
+                    'visit_date' => now()->toDateString(),
+                    'medic_id'   => $validated['medic_id'],
+                    'created_by' => Auth::id(),
+                    'type'      => 'pt33'
+                ]);
+            }
 
             $pt33 = Pt33::create([
                 'branch_id' => $branch_id,

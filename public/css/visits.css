@@ -1,0 +1,73 @@
+.visit-wrapper {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.visit-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .08);
+}
+
+.visit-header {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #ececec;
+    padding-bottom: 15px;
+}
+
+.visit-header h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.form-control {
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: .2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 .15rem rgba(13, 110, 253, .15);
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+.form-footer {
+    margin-top: 25px;
+}
+
+.btn-save {
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-save:hover {
+    background: #0b5ed7;
+}
