@@ -4,7 +4,7 @@ namespace Modules\Patient\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Document\Models\pt33;
+use Modules\Document\Models\PT33;
 use Modules\Document\Models\Document;
 use Modules\Visits\Models\Visits;
 use Modules\AuditLog\Models\AuditLog;

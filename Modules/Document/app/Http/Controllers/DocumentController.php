@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Document\Models\pt33;
-use Modules\Document\Models\pt28;
+use Modules\Document\Models\Pt28;
 use Modules\Branchs\Models\Branchs;
 use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;

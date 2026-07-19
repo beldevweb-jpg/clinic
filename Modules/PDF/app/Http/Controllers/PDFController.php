@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Modules\Document\Models\Pt33;
+use Modules\Document\Models\PT33;
 use Modules\Branchs\Models\Branchs;
 use Modules\Patient\Models\Patient;
 use Modules\Medics\Models\Medics;

@@ -6,7 +6,7 @@ $kernel->bootstrap();
 
 try {
     $ctrl = $app->make(Modules\PDF\Http\Controllers\PDFController::class);
-    $pt = Modules\Document\Models\Pt33::first();
+    $pt = Modules\Document\Models\PT33::first();
     if (!$pt) {
         echo "NO_PT33_RECORD\n";
         exit(1);
