@@ -1,7 +1,7 @@
 @extends('core::components.layouts.master')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/branch.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/branch_create.css') }}">
 @endpush
 
 @section('content')
